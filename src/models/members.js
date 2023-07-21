@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             primaryKey: true,
         },
-        is_mute: {
+        mute_time: {
             type: DataTypes.DATE,
             allowNull: true,
         },

@@ -7,6 +7,6 @@ const sequelize = new Sequelize("database", "username", "password", {
     storage: "database.sqlite",
 });
 
-const Members = require("./models/members.js")(sequelize, Sequelize.DataTypes);
+const Members = require("./models/Members.js")(sequelize, Sequelize.DataTypes);
 
 module.exports = { Members, sequelize };
