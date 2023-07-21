@@ -1,21 +1,21 @@
 {
-  "name": "bot-base_general",
-  "version": "1.0.0",
-  "description": "Voici la structure pour créer un bot général.",
+  "name": "bot-mascotte",
+  "version": "0.1.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Guscraftin/Bot-base_General.git"
+    "url": "git+https://github.com/Guscraftin/Bot-mascotte.git"
   },
   "author": "Guscraftin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Guscraftin/Bot-base_General/issues"
+    "url": "https://github.com/Guscraftin/Bot-mascotte/issues"
   },
-  "homepage": "https://github.com/Guscraftin/Bot-base_General#readme",
+  "homepage": "https://github.com/Guscraftin/Bot-mascotte#readme",
   "dependencies": {
     "discord.js": "^14.11.0",
     "dotenv": "16.0.3",
