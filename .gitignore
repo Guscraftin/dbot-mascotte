@@ -4,3 +4,6 @@
 # OS Files
 package-lock.json
 node_modules
+
+# Database
+*.sqlite
