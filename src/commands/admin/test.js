@@ -3,7 +3,7 @@ const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("test")
-        .setDescription("Permet de tester les différents composants.")
+        .setDescription("🚧 Permet de tester les différents composants.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false),
     async execute(interaction) {

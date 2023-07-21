@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("info")
-        .setDescription("Afficher les informations du bot.")
+        .setDescription("👤 Afficher les informations du bot.")
         .setDMPermission(true),
     async execute(interaction) {
         const botUser = interaction.client.user;
