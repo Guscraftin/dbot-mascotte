@@ -5,10 +5,8 @@ dotenv.config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 client.buttons = new Collection();
-client.selectMenus = new Collection();
-client.modals = new Collection();
 
-['commands', 'events', 'buttons', 'modals', 'selectMenus'].forEach((handler) => {
+['commands', 'events', 'buttons'].forEach((handler) => {
     require(`./src/handlers/${handler}`)(client);
 });
 
