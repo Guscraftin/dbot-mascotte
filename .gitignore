@@ -1,3 +1,6 @@
-*lock.json
-node_modules
+# Environment Variables
 .env
+
+# OS Files
+package-lock.json
+node_modules
