@@ -2,11 +2,11 @@ const { ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits }
 
 module.exports = {
     data: new ContextMenuCommandBuilder()
-        .setName('Test user')
-        .setType(ApplicationCommandType.User)
+        .setName('Test msg')
+        .setType(ApplicationCommandType.Message)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false),
     async execute(interaction) {
-        return interaction.reply({ content: "Voici le menu contextuel test qui fonctionne correctement !", ephemeral: true})
+        return interaction.reply({ content: "Voici le message test qui fonctionne correctement !", ephemeral: true})
     }
 }
