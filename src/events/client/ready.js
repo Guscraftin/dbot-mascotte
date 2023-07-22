@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { roleMute } = require(process.env.CONSTANT);
+const { categoryVocals, roleMute, roleStudents, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects.js');
 const { Op } = require('sequelize');
 
@@ -15,6 +15,7 @@ module.exports = {
 
         // Relaunch the timeout of the mute
         muteTimeout(client);
+        removeEmptyVoiceChannel(client);
 
         // Log the bot is ready
         return console.log(`${client.user.username} est prêt à être utilisé par ${usersCount} utilisateurs sur ${guildsCount.size} serveurs !`);
@@ -30,7 +31,7 @@ module.exports = {
 async function muteTimeout(client) {
     const members = await Members.findAll({ where: { mute_time: { [Op.not]: null } } });
     const guild = await client.guilds.fetch(process.env.GUILD_ID);
-    if (!guild) return console.error("Le bot n'est pas sur le serveur !");
+    if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
 
     for (const member of members) {
         const timeRemaining = member.mute_time - Date.now();
@@ -55,4 +56,25 @@ async function muteTimeout(client) {
             }, timeRemaining);
         }
     }
+}
+
+
+/**
+ * Remove the empty voice channel except the vocalGeneral, vocalCourse, vocalSleep and vocalPanel in the categoryVocals
+ * @param {import('discord.js').Client} client
+ * @returns {void}
+ */
+async function removeEmptyVoiceChannel(client) {
+    const channelsNotDelete = [vocalGeneral, vocalCourse, vocalSleep, vocalPanel];
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
+    if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
+
+    const category = await guild.channels.fetch(categoryVocals);
+    if (!category) return console.error("ready.js - La catégorie n'existe pas !");
+
+    await category.children.cache.forEach(async channel => {
+        if (channel.members.size === 0 && !channelsNotDelete.includes(channel.id)) {
+            await channel.delete();
+        }
+    });
 }
