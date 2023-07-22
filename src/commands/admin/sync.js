@@ -1,5 +1,5 @@
-const { ChannelType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { channelMuted, roleMute } = require(process.env.CONSTANT);
+const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
+const { categoryVocals, channelMuted, roleMute, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,19 +12,22 @@ module.exports = {
                 .setDescription("🚧 Module à synchroniser.")
                 .addChoices(
                     { name: 'role_mute', value: 'role_mute' },
+                    { name: 'vocals', value: 'vocals' },
                 )
                 .setRequired(true)
         ),
     async execute(interaction) {
+        const guild = interaction.guild;
+
+        let promises;
         switch (interaction.options.getString("module")) {
             /**
              * Sync permissions of the mute role
              */
             case "role_mute":
-                const guild = interaction.guild;
                 const channels = await guild.channels.fetch();
 
-                const promises = channels.map(async (channel) => {
+                promises = channels.map(async (channel) => {
                     if (channel.id === channelMuted) {
                         await channel.permissionOverwrites.edit(roleMute, {
                             ViewChannel: true,
@@ -48,6 +51,25 @@ module.exports = {
                 await Promise.all(promises);
 
                 return interaction.reply({ content: `Les permissions du rôle <@&${roleMute}> ont bien été synchroniser dans tous les salons notamment dans <#${channelMuted}>.`, ephemeral: true });
+
+
+            /**
+             * Sync vocals channels
+             */
+            case "vocals":
+                const channelsNotDelete = [vocalGeneral, vocalCourse, vocalSleep, vocalPanel];
+
+                const category = await guild.channels.fetch(categoryVocals);
+                if (!category) return console.error("ready.js - La catégorie n'existe pas !");
+
+                promises = await category.children.cache.map(async channel => {
+                    if (channel.members.size === 0 && !channelsNotDelete.includes(channel.id)) {
+                        await channel.delete();
+                    }
+                });
+                await Promise.all(promises);
+
+                return interaction.reply({ content: `Les salons vocaux ont bien été synchroniser.`, ephemeral: true });
 
 
             /**
