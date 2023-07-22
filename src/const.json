@@ -1,15 +1,22 @@
 {
+    "categoryVocals": "1127469395367702528",
+
     "channelMuted": "1130460274533609482",
 
-    "roleAniversaire": "1127472183963303988",
-    "roleDelegues": "1127470460230180938",
-    "roleEtudiants": "1127470474385969174",
+    "vocalGeneral": "1130460643846267031",
+    "vocalCourse": "1130460690654699590",
+    "vocalSleep": "1130460749668552714",
+    "vocalPanel": "1130460931940421734",
+
+    "roleBirthday": "1127472183963303988",
+    "roleDelegates": "1127470460230180938",
+    "roleStudents": "1127470474385969174",
     "roleVocal": "1127470796365889548",
     "roleMute": "1127471156895686676",
 
-    "roleSeparateur": "1127471366032085082",
+    "roleSeparator": "1127471366032085082",
     "roleMail": "1127471501533270027",
-    "roleIdeeSondage": "1127471522043412510",
+    "roleIdeaPoll": "1127471522043412510",
     "roleAgenda": "1127471534848606248",
     "roleAbsence": "1127471556596076555",
 
