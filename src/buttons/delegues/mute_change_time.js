@@ -1,3 +1,4 @@
+const { roleMute } = require(process.env.CONSTANT);
 const { Members } = require("../../dbObjects");
 
 module.exports = {
@@ -16,6 +17,14 @@ module.exports = {
 
         // Update the mute time
         await memberDB.update({ mute_time: duration * 1000 });
+
+        // Launch the timeout
+        setTimeout(async () => {
+            const memberDB = await Members.findOne({ where: { id: member.id } });
+            if (memberDB.mute_time > Date.now()) return;
+            await Members.update({ mute_time: null }, { where: { id: member.id } });
+            await member.roles.remove(roleMute, "Fin de l'exclusion");
+        }, duration*1000 - Date.now());
 
         // Return the message
         return interaction.reply({

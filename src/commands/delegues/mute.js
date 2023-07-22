@@ -51,6 +51,8 @@ module.exports = {
 
         // Launch the timeout
         setTimeout(async () => {
+            const memberDB = await Members.findOne({ where: { id: member.id } });
+            if (memberDB.mute_time > Date.now()) return;
             await Members.update({ mute_time: null }, { where: { id: member.id } });
             await member.roles.remove(roleMute, "Fin de l'exclusion");
         }, duration * 60000);

@@ -44,7 +44,8 @@ async function muteTimeout(client) {
             }
         } else {
             setTimeout(async () => {
-                await Members.update({ mute_time: null }, { where: { id: member.id } });
+                const memberDB = await Members.findOne({ where: { id: member.id } });
+                if (memberDB.mute_time > Date.now()) return;
                 await Members.update({ mute_time: null }, { where: { id: member.id } });
                 const user = await guild.members.fetch(member.id);
                 if (!user) await member.destroy();
