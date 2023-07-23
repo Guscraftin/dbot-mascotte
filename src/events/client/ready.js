@@ -1,5 +1,9 @@
 const { Events } = require('discord.js');
-const { categoryVocals, roleMute, roleVocal, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
+const {
+    categoryVocals,
+    roleMute, roleSeparator, roleVocal,
+    vocalGeneral, vocalCourse, vocalSleep, vocalPanel
+} = require(process.env.CONSTANT);
 const { Guilds, Members } = require('../../dbObjects.js');
 const { Op } = require('sequelize');
 
@@ -19,7 +23,7 @@ module.exports = {
         if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
         if (!guild.available) return console.error("ready.js - Le serveur n'est pas disponible !");
 
-        // TODO: Wait this functions before continue
+        // TODO: Wait this functions before continue + Fusion this functions with the functions in the sync cmd
         muteTimeout(guild);
         removeEmptyVoiceChannel(guild);
         syncVocalRole(guild);
@@ -84,7 +88,7 @@ async function removeEmptyVoiceChannel(guild) {
 
 
 /**
- * Sync the vocal role
+ * Sync roles (roleSeparator and roleVocal)
  * @param {import('discord.js').Guild} guild
  * @returns {void}
  */
@@ -94,6 +98,9 @@ async function syncVocalRole(guild) {
 
     const members = await guild.members.fetch();
     members.forEach(async member => {
+        if (member.user.bot) return;
+
+        await member.roles.add(roleSeparator);
         if (member.voice.channelId) await member.roles.add(role);
         else await member.roles.remove(role);
     });
