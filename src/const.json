@@ -1,6 +1,7 @@
 {
     "categoryVocals": "1127469395367702528",
 
+    "channelSuggestions": "1130460103888339005",
     "channelMuted": "1130460274533609482",
 
     "vocalGeneral": "1130460643846267031",
@@ -20,6 +21,14 @@
     "roleAgenda": "1127471534848606248",
     "roleAbsence": "1127471556596076555",
 
+
+    "emojiYes": "<:Check:1132618369284198471>",
+    "emojiNeutral": "<:Neutral:1132618367241551873>",
+    "emojiNo": "<:Red_cross:1132618364745961502>",
+
+    "colorYes": "#43B581",
+    "colorNeutral": "#FAA61A",
+    "colorNo": "#F04747",
 
     "colorBasic": "#5865F2"
 }
