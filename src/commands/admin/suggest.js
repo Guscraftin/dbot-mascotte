@@ -36,7 +36,12 @@ module.exports = {
         if (authorName.includes(" - ")) return interaction.reply({ content: `Cette [suggestion](${message.url}) a déjà été traitée.`, ephemeral: true });
         const authorId = authorName.split(" (")[1].split(")")[0];
         const author = await interaction.guild.members.fetch(authorId);
-        
+
+        // Remove the specials emojis
+        const deleteEmojis = ["💬", "🗑️"];
+        const reactions = await message.reactions.cache.filter(reactionEmoji => deleteEmojis.includes(reactionEmoji.emoji.name));
+        await reactions.each(reaction => reaction.remove());
+
         // Update the suggestion
         switch (action) {
             /**
