@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { categoryVocals, channelMuted, roleMute, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
+const { categoryVocals, channelMuted, roleMute, roleVocal, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,6 +13,7 @@ module.exports = {
                 .addChoices(
                     { name: 'role_mute', value: 'role_mute' },
                     { name: 'vocals', value: 'vocals' },
+                    { name: 'roles', value: 'roles' },
                 )
                 .setRequired(true)
         ),
@@ -70,6 +71,23 @@ module.exports = {
                 await Promise.all(promises);
 
                 return interaction.reply({ content: `Les salons vocaux ont bien été synchroniser.`, ephemeral: true });
+
+
+            /**
+             * Sync roles
+             */
+            case "roles":
+                const role = await guild.roles.fetch(roleVocal);
+                if (!role) return;
+                const members = await guild.members.fetch();
+
+                promises = await members.map(async member => {
+                    if (member.voice.channelId) await member.roles.add(role);
+                    else await member.roles.remove(role);
+                });
+                await Promise.all(promises);
+
+                return interaction.reply({ content: `Les rôles ont bien été synchroniser.`, ephemeral: true });
 
 
             /**

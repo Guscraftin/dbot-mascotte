@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { categoryVocals, roleMute, roleStudents, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
+const { categoryVocals, roleMute, roleVocal, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects.js');
 const { Op } = require('sequelize');
 
@@ -14,8 +14,13 @@ module.exports = {
         await Members.sync({ alter: true });
 
         // Relaunch the timeout of the mute
-        muteTimeout(client);
-        removeEmptyVoiceChannel(client);
+        const guild = await client.guilds.fetch(process.env.GUILD_ID);
+        if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
+        if (!guild.available) return console.error("ready.js - Le serveur n'est pas disponible !");
+
+        muteTimeout(guild);
+        removeEmptyVoiceChannel(guild);
+        syncVocalRole(guild);
 
         // Log the bot is ready
         return console.log(`${client.user.username} est prêt à être utilisé par ${usersCount} utilisateurs sur ${guildsCount.size} serveurs !`);
@@ -25,13 +30,11 @@ module.exports = {
 
 /**
  * Relaunch the timeout of the mute
- * @param {import('discord.js').Client} client
+ * @param {import('discord.js').Guild} guild
  * @returns {void}
  */
-async function muteTimeout(client) {
+async function muteTimeout(guild) {
     const members = await Members.findAll({ where: { mute_time: { [Op.not]: null } } });
-    const guild = await client.guilds.fetch(process.env.GUILD_ID);
-    if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
 
     for (const member of members) {
         const timeRemaining = member.mute_time - Date.now();
@@ -61,13 +64,11 @@ async function muteTimeout(client) {
 
 /**
  * Remove the empty voice channel except the vocalGeneral, vocalCourse, vocalSleep and vocalPanel in the categoryVocals
- * @param {import('discord.js').Client} client
+ * @param {import('discord.js').Guild} guild
  * @returns {void}
  */
-async function removeEmptyVoiceChannel(client) {
+async function removeEmptyVoiceChannel(guild) {
     const channelsNotDelete = [vocalGeneral, vocalCourse, vocalSleep, vocalPanel];
-    const guild = await client.guilds.fetch(process.env.GUILD_ID);
-    if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
 
     const category = await guild.channels.fetch(categoryVocals);
     if (!category) return console.error("ready.js - La catégorie n'existe pas !");
@@ -76,5 +77,22 @@ async function removeEmptyVoiceChannel(client) {
         if (channel.members.size === 0 && !channelsNotDelete.includes(channel.id)) {
             await channel.delete();
         }
+    });
+}
+
+
+/**
+ * Sync the vocal role
+ * @param {import('discord.js').Guild} guild
+ * @returns {void}
+ */
+async function syncVocalRole(guild) {
+    const role = await guild.roles.fetch(roleVocal);
+    if (!role) return console.error("ready.js - Le rôle n'existe pas !");
+
+    const members = await guild.members.fetch();
+    members.forEach(async member => {
+        if (member.voice.channelId) await member.roles.add(role);
+        else await member.roles.remove(role);
     });
 }

@@ -4,6 +4,7 @@ dotenv.config();
 
 const client = new Client({ intents: [
     GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.Guilds,
 ]});
 client.commands = new Collection();

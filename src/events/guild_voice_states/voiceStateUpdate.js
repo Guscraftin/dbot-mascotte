@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { roleMute, roleStudents, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
+const { roleMute, roleStudents, roleVocal, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.VoiceStateUpdate,
@@ -48,6 +48,10 @@ module.exports = {
         /**
          * Manage the voice role
          */
-        // TODO: Manage the voice role
+        const oldRole = await oldState.guild.roles.fetch(roleVocal);
+        if (oldRole) {
+            if (!oldState?.channelId) await oldState.member.roles.add(oldRole);
+            else if (!newState?.channelId) await newState.member.roles.remove(oldRole);
+        }
     }
 };
