@@ -11,7 +11,7 @@ module.exports = {
         /**
          * Suggestions system
          */
-        if (channel.id === channelSuggestions) {
+        if (channel.id === channelSuggestions && !messageReaction.message.embeds[0].author.name.includes(" - ")) {
             const authorSuggestion = messageReaction.message.embeds[0].author.name.split(" (");
             const authorName = authorSuggestion[0];
             const authorId = authorSuggestion[1].split(")")[0];
