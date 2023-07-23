@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 const { categoryVocals, roleMute, roleVocal, vocalGeneral, vocalCourse, vocalSleep, vocalPanel } = require(process.env.CONSTANT);
-const { Members } = require('../../dbObjects.js');
+const { Guilds, Members } = require('../../dbObjects.js');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -11,6 +11,7 @@ module.exports = {
         let usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
         // Sync the database
+        await Guilds.sync({ alter: true });
         await Members.sync({ alter: true });
 
         // Relaunch the timeout of the mute
@@ -18,6 +19,7 @@ module.exports = {
         if (!guild) return console.error("ready.js - Le bot n'est pas sur le serveur !");
         if (!guild.available) return console.error("ready.js - Le serveur n'est pas disponible !");
 
+        // TODO: Wait this functions before continue
         muteTimeout(guild);
         removeEmptyVoiceChannel(guild);
         syncVocalRole(guild);
