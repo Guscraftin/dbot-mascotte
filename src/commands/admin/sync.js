@@ -1,9 +1,6 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const {
-    categoryVocals,channelMuted,
-    roleMute, roleSeparator, roleVocal,
-    vocalGeneral, vocalCourse, vocalSleep, vocalPanel
-} = require(process.env.CONSTANT);
+const { channelMuted, roleMute } = require(process.env.CONSTANT);
+const { removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -64,17 +61,7 @@ module.exports = {
              * Sync vocals channels
              */
             case "vocals":
-                const channelsNotDelete = [vocalGeneral, vocalCourse, vocalSleep, vocalPanel];
-
-                const category = await guild.channels.fetch(categoryVocals);
-                if (!category) return console.error("ready.js - La catégorie n'existe pas !");
-
-                promises = await category.children.cache.map(async channel => {
-                    if (channel.members.size === 0 && !channelsNotDelete.includes(channel.id)) {
-                        await channel.delete();
-                    }
-                });
-                await Promise.all(promises);
+                await removeEmptyVoiceChannel(guild);
 
                 return interaction.editReply({ content: `Les salons vocaux ont bien été synchroniser.`, ephemeral: true });
 
@@ -83,18 +70,7 @@ module.exports = {
              * Sync roles (roleSeparator and roleVocal)
              */
             case "roles":
-                const role = await guild.roles.fetch(roleVocal);
-                if (!role) return;
-                const members = await guild.members.fetch();
-
-                promises = await members.map(async member => {
-                    if (member.user.bot) return;
-
-                    await member.roles.add(roleSeparator);
-                    if (member.voice.channelId) await member.roles.add(role);
-                    else await member.roles.remove(role);
-                });
-                await Promise.all(promises);
+                await syncRoles(guild);
 
                 return interaction.editReply({ content: `Les rôles ont bien été synchroniser.`, ephemeral: true });
 
