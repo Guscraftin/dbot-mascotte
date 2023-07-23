@@ -5,12 +5,12 @@ const { removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("sync")
-        .setDescription("🚧 Permet de synchroniser certains modules.")
+        .setDescription("🔧 Permet de synchroniser certains modules.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
         .addStringOption(option =>
             option.setName("module")
-                .setDescription("🚧 Module à synchroniser.")
+                .setDescription("🔧 Module à synchroniser.")
                 .addChoices(
                     { name: 'role_mute', value: 'role_mute' },
                     { name: 'vocals', value: 'vocals' },
