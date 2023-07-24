@@ -12,7 +12,8 @@ module.exports = {
             option.setName('action').addChoices(
                 { name: 'accepter', value: 'accepter' },
                 { name: 'refuser', value: 'refuser' },
-            ).setDescription("🔧 Action à effectuer sur la suggestion.").setRequired(true))
+                { name: 'commenter', value: 'commenter' },
+            ).setDescription("Action à effectuer sur la suggestion.").setRequired(true))
         .addStringOption(option => option.setName('id').setDescription("L'id du message de la suggestion.").setRequired(true))
         .addStringOption(option => option.setName('commentaire').setDescription("Le commentaire a ajouter.").setRequired(true)),
     async execute(interaction) {
@@ -48,42 +49,60 @@ module.exports = {
              * Accept a suggestion
              */
             case "accepter":
-                let embed;    
+                let acceptEmbed;    
                 if (comment) {
-                    embed = new EmbedBuilder()
+                    acceptEmbed = new EmbedBuilder()
                         .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
                         .setColor(colorYes)
-                        .setDescription(`${embedMsg.description}`)
+                        .setDescription(embedMsg.description)
                         .setFields([{ name: "Commentaire :", value: `>>> ${comment}` }])
                         .setTimestamp()
                         .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
                 } else {
-                    embed = new EmbedBuilder()
+                    acceptEmbed = new EmbedBuilder()
                         .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
                         .setColor(colorYes)
-                        .setDescription(`${embedMsg.description}`)
+                        .setDescription(embedMsg.description)
                         .setTimestamp()
                         .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
                 }
                 
-                await message.edit({ embeds: [embed] });
+                await message.edit({ embeds: [acceptEmbed] });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **acceptée**.`, ephemeral: true });
 
             /**
              * Refuse a suggestion
              */
             case "refuser":
-                const embed2 = new EmbedBuilder()
+                const refuseEmbed = new EmbedBuilder()
                     .setAuthor({ name: `${author.displayName} - ❌ Suggestion refusée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
                     .setColor(colorNo)
-                    .setDescription(`${embedMsg.description}`)
+                    .setDescription(embedMsg.description)
                     .setFields([{ name: "Raison :", value: `>>> ${comment}` }])
                     .setTimestamp()
                     .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
 
-                await message.edit({ embeds: [embed2] });
+                await message.edit({ embeds: [refuseEmbed] });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **refusée**.`, ephemeral: true });
 
+            /**
+             * Comment a suggestion
+             */
+            case "commenter":
+                const commentEmbed = new EmbedBuilder()
+                    .setAuthor(embedMsg.author)
+                    .setColor(embedMsg.color)
+                    .setDescription(embedMsg.description)
+                    .setFields([{ name: "Commentaire :", value: `>>> ${comment}` }])
+                    .setTimestamp()
+                    .setFooter(embedMsg.footer)
+
+                await message.edit({ embeds: [commentEmbed] });
+                return interaction.reply({ content: `La [suggestion](${message.url}) a été **commentée**.`, ephemeral: true });
+
+            /**
+             * DEFAULT
+             */
             default:
                 return interaction.reply({ content: "Cette action n'existe pas.", ephemeral: true });
         }

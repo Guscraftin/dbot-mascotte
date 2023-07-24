@@ -8,7 +8,7 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
         .addBooleanOption(option =>
-            option.setName('automatic_verified').setDescription('🔧 Activer la vérification automatique des membres').setRequired(true)
+            option.setName('automatic_verified').setDescription('Activer la vérification automatique des membres').setRequired(true)
         ),
     async execute(interaction) {
         const automatic_verified = interaction.options.getBoolean('automatic_verified');
