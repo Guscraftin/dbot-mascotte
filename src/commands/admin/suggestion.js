@@ -4,7 +4,7 @@ const { Members } = require('../../dbObjects');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("suggest")
+        .setName("suggestion")
         .setDescription("🔧 Permet de modifier l'état d'une suggestion.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
