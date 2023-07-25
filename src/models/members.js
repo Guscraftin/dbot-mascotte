@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             primaryKey: true,
         },
+        date_birthday: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
         mute_time: {
             type: DataTypes.DATE,
             allowNull: true,

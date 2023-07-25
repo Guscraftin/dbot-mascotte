@@ -24,15 +24,21 @@ module.exports = {
         if (user) {
             embed.setDescription(`Voici les informations de ce membre :`)
             
-            const fields = [
-                { name: "Date d'anniversaire", value: "23 mars 2023", inline: true },
-            ];
+            const fields = [];
+            if (user.date_birthday) {
+                const dateBirthday = new Date(user.date_birthday);
+                const actualYear = new Date().getFullYear();
+                let nextBirthday = new Date(actualYear, dateBirthday.getMonth(), dateBirthday.getDate());
+                if (nextBirthday < new Date()) nextBirthday.setFullYear(actualYear + 1);
+
+                fields.push({ name: "Anniversaire", value: `Date de naissance : <t:${parseInt(user.date_birthday / 1000)}:D> (\`${nextBirthday.getFullYear() - dateBirthday.getFullYear() - 1} ans\`)\nProchain anniversaire <t:${parseInt(nextBirthday / 1000)}:R>`, inline: true });
+            }
             if (user.mute_time) fields.push({ name: "Sanction: Exclusion", value: `Se termine <t:${parseInt(user.mute_time / 1000)}:R>`, inline: true });
             embed.setFields(fields)
 
         // If the user is not in the database (set description)
         } else {
-            embed.setDescription(`Ce membre n'est pas enregistré dans la base de données.`)
+            embed.setDescription(`Aucune information n'est disponible sur ce membre.`)
         }
 
         return interaction.reply({ embeds: [embed], ephemeral: true})
