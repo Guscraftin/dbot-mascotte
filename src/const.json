@@ -1,34 +1,35 @@
 {
-    "categoryVocals": "1127469395367702528",
+    "category_vocals": "1127469395367702528",
 
-    "channelSuggestions": "1130460103888339005",
-    "channelMuted": "1130460274533609482",
+    "channel_suggestions": "1130460103888339005",
+    "channel_muted": "1130460274533609482",
+    "channel_logs": "1127473631954485299",
 
-    "vocalGeneral": "1130460643846267031",
-    "vocalCourse": "1130460690654699590",
-    "vocalSleep": "1130460749668552714",
-    "vocalPanel": "1130460931940421734",
+    "vocal_general": "1130460643846267031",
+    "vocal_course": "1130460690654699590",
+    "vocal_sleep": "1130460749668552714",
+    "vocal_panel": "1130460931940421734",
 
-    "roleBirthday": "1127472183963303988",
-    "roleDelegates": "1127470460230180938",
-    "roleStudents": "1127470474385969174",
-    "roleVocal": "1127470796365889548",
-    "roleMute": "1127471156895686676",
+    "role_birthday": "1127472183963303988",
+    "role_delegates": "1127470460230180938",
+    "role_students": "1127470474385969174",
+    "role_vocal": "1127470796365889548",
+    "role_mute": "1127471156895686676",
 
-    "roleSeparator": "1127471366032085082",
-    "roleMail": "1127471501533270027",
-    "roleIdeaPoll": "1127471522043412510",
-    "roleAgenda": "1127471534848606248",
-    "roleAbsence": "1127471556596076555",
+    "role_separator": "1127471366032085082",
+    "role_mail": "1127471501533270027",
+    "role_idea_poll": "1127471522043412510",
+    "role_agenda": "1127471534848606248",
+    "role_absence": "1127471556596076555",
 
 
-    "emojiYes": "<:Check:1132618369284198471>",
-    "emojiNeutral": "<:Neutral:1132618367241551873>",
-    "emojiNo": "<:Red_cross:1132618364745961502>",
+    "emoji_yes": "<:Check:1132618369284198471>",
+    "emoji_neutral": "<:Neutral:1132618367241551873>",
+    "emoji_no": "<:Red_cross:1132618364745961502>",
 
-    "colorYes": "#43B581",
-    "colorNeutral": "#FAA61A",
-    "colorNo": "#F04747",
+    "color_yes": "#43B581",
+    "color_neutral": "#FAA61A",
+    "color_no": "#F04747",
 
-    "colorBasic": "#5865F2"
+    "color_basic": "#5865F2"
 }

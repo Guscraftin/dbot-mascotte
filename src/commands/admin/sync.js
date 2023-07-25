@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { channelMuted, roleMute } = require(process.env.CONSTANT);
+const { channel_muted, role_mute } = require(process.env.CONSTANT);
 const { removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 
 module.exports = {
@@ -32,8 +32,8 @@ module.exports = {
                 const channels = await guild.channels.fetch();
 
                 promises = channels.map(async (channel) => {
-                    if (channel.id === channelMuted) {
-                        await channel.permissionOverwrites.edit(roleMute, {
+                    if (channel.id === channel_muted) {
+                        await channel.permissionOverwrites.edit(role_mute, {
                             ViewChannel: true,
                             SendMessages: true,
                             SendMessagesInThreads: true,
@@ -42,7 +42,7 @@ module.exports = {
                             AddReactions: true,
                         });
                     } else {
-                        await channel.permissionOverwrites.edit(roleMute, {
+                        await channel.permissionOverwrites.edit(role_mute, {
                             SendMessages: false,
                             SendMessagesInThreads: false,
                             CreatePublicThreads: false,
@@ -54,7 +54,7 @@ module.exports = {
                 });
                 await Promise.all(promises);
 
-                return interaction.editReply({ content: `Les permissions du rôle <@&${roleMute}> ont bien été synchroniser dans tous les salons notamment dans <#${channelMuted}>.`, ephemeral: true });
+                return interaction.editReply({ content: `Les permissions du rôle <@&${role_mute}> ont bien été synchroniser dans tous les salons notamment dans <#${channel_muted}>.`, ephemeral: true });
 
 
             /**
@@ -67,7 +67,7 @@ module.exports = {
 
 
             /**
-             * Sync roles (roleSeparator and roleVocal)
+             * Sync roles (role_separator and role_vocal)
              */
             case "roles":
                 await syncRoles(guild);

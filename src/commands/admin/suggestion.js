@@ -1,5 +1,5 @@
 const { EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const { channelSuggestions, colorYes, colorNo } = require(process.env.CONSTANT);
+const { channel_suggestions, color_yes, color_no } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
         if (!onlyNumber.test(messageId)) return interaction.reply({ content: "L'id doit être l'identifiant du message de la suggestion.", ephemeral: true });
 
         // Get the message of the suggestion
-        const message = await interaction.guild.channels.fetch(channelSuggestions).then(channel =>
+        const message = await interaction.guild.channels.fetch(channel_suggestions).then(channel =>
             channel.messages.fetch(messageId).catch(() => null)
         );
         if (!message) return interaction.reply({ content: "Ce message n'existe pas.", ephemeral: true });
@@ -53,7 +53,7 @@ module.exports = {
                 if (comment) {
                     acceptEmbed = new EmbedBuilder()
                         .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
-                        .setColor(colorYes)
+                        .setColor(color_yes)
                         .setDescription(embedMsg.description)
                         .setFields([{ name: "Commentaire :", value: `>>> ${comment}` }])
                         .setTimestamp()
@@ -61,7 +61,7 @@ module.exports = {
                 } else {
                     acceptEmbed = new EmbedBuilder()
                         .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
-                        .setColor(colorYes)
+                        .setColor(color_yes)
                         .setDescription(embedMsg.description)
                         .setTimestamp()
                         .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
@@ -76,7 +76,7 @@ module.exports = {
             case "refuser":
                 const refuseEmbed = new EmbedBuilder()
                     .setAuthor({ name: `${author.displayName} - ❌ Suggestion refusée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
-                    .setColor(colorNo)
+                    .setColor(color_no)
                     .setDescription(embedMsg.description)
                     .setFields([{ name: "Raison :", value: `>>> ${comment}` }])
                     .setTimestamp()

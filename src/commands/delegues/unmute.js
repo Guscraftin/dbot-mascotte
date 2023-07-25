@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { roleDelegates, roleMute } = require(process.env.CONSTANT);
+const { role_delegates, role_mute } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects');
 
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
         const user = interaction.member;
 
         // Check if the user can use this command (if user is not a delegate or an admin)
-        if (!user.roles.cache.has(roleDelegates) && !user.permissions.has(PermissionFlagsBits.Administrator) ) return interaction.reply({ content: "Vous n'avez pas la permission d'utiliser cette commande.", ephemeral: true });
+        if (!user.roles.cache.has(role_delegates) && !user.permissions.has(PermissionFlagsBits.Administrator) ) return interaction.reply({ content: "Vous n'avez pas la permission d'utiliser cette commande.", ephemeral: true });
         
         // Get the member in the database
         const memberDB = await Members.findOne({ where: { id: member.id } });
@@ -30,7 +30,7 @@ module.exports = {
         await memberDB.update({ mute_time: null });
         
         // Remove the mute role
-        await member.roles.remove(roleMute, user.user.username + " - " + reason);
+        await member.roles.remove(role_mute, user.user.username + " - " + reason);
 
 
         return interaction.reply({ 

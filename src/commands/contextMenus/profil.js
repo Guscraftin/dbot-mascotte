@@ -1,5 +1,5 @@
 const { ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder } = require('discord.js');
-const { colorBasic } = require(process.env.CONSTANT);
+const { color_basic } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects');
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
         // Create the embed
         const embed = new EmbedBuilder()
             .setAuthor({ name: `${member.displayName} (${member.id})`, iconURL: member.user.displayAvatarURL() })
-            .setColor(colorBasic)
+            .setColor(color_basic)
             .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
             .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })

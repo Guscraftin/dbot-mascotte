@@ -1,5 +1,5 @@
 const { EmbedBuilder, Events } = require("discord.js");
-const { channelSuggestions, colorBasic } = require(process.env.CONSTANT);
+const { channel_suggestions, color_basic } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.MessageReactionAdd,
@@ -11,7 +11,7 @@ module.exports = {
         /**
          * Suggestions system
          */
-        if (channel.id === channelSuggestions && !messageReaction.message.embeds[0].author.name.includes(" - ")) {
+        if (channel.id === channel_suggestions && !messageReaction.message.embeds[0].author.name.includes(" - ")) {
             const authorSuggestion = messageReaction.message.embeds[0].author.name.split(" (");
             const authorName = authorSuggestion[0];
             const authorId = authorSuggestion[1].split(")")[0];
@@ -33,7 +33,7 @@ module.exports = {
                         const embed = new EmbedBuilder()
                             .setTitle("Impossible de supprimer la suggestion")
                             .setDescription(`Vous n'êtes pas l'auteur de cette [suggestion](${messageReaction.message.url}), vous ne pouvez donc pas la supprimer.`)
-                            .setColor(colorBasic)
+                            .setColor(color_basic)
                             .setTimestamp()
                             .setFooter({ text: messageReaction.message.guild.name, iconURL: messageReaction.message.guild.iconURL() });
 

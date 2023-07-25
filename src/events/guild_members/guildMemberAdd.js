@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { roleSeparator, roleStudents } = require(process.env.CONSTANT);
+const { role_separator, role_students } = require(process.env.CONSTANT);
 const { Guilds } = require('../../dbObjects.js');
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
         if (!guildDB) guildDB = await Guilds.create({ id: member.guild.id });
 
         // Add the role to the member
-        if (guildDB.automatic_verified) await member.roles.add(roleStudents);
-        await member.roles.add(roleSeparator);
+        if (guildDB.automatic_verified) await member.roles.add(role_students);
+        await member.roles.add(role_separator);
     },
 };

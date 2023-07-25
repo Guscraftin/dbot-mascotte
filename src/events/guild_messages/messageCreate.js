@@ -1,5 +1,5 @@
 const { EmbedBuilder, Events } = require('discord.js');
-const { channelSuggestions, colorNeutral, emojiYes, emojiNeutral, emojiNo } = require(process.env.CONSTANT);
+const { channel_suggestions, color_neutral, emoji_yes, emoji_neutral, emoji_no } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.MessageCreate,
@@ -7,7 +7,7 @@ module.exports = {
         /*
         * Suggestions system
         */
-        if (message.channel.id === channelSuggestions && !message.author.bot) {
+        if (message.channel.id === channel_suggestions && !message.author.bot) {
             const emojiRegex = /<:[a-zA-Z_\d]+:\d+>|\p{Extended_Pictographic}/gu;
             const emojiArray = message.content.match(emojiRegex) || [];
             const emojiArrayFiltered = emojiArray.filter(emoji => emoji !== '💬' && emoji !== '🗑️');
@@ -16,7 +16,7 @@ module.exports = {
                 // Poll message
                 const embedPoll = new EmbedBuilder()
                     .setAuthor({ name: `${message.member.displayName} (${message.author.id})`, iconURL: message.author.displayAvatarURL() })
-                    .setColor(colorNeutral)
+                    .setColor(color_neutral)
                     .setDescription(message.content)
                     .setTimestamp()
                     .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
@@ -41,7 +41,7 @@ module.exports = {
                 // Suggestions message
                 const embed = new EmbedBuilder()
                     .setAuthor({ name: `${message.member.displayName} (${message.author.id})`, iconURL: message.author.displayAvatarURL() })
-                    .setColor(colorNeutral)
+                    .setColor(color_neutral)
                     .setDescription(message.content)
                     .setTimestamp()
                     .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
@@ -49,9 +49,9 @@ module.exports = {
                 await message.delete();
     
                 const msg = await message.channel.send({ embeds: [embed] });
-                await msg.react(emojiYes);
-                await msg.react(emojiNeutral);
-                await msg.react(emojiNo);
+                await msg.react(emoji_yes);
+                await msg.react(emoji_neutral);
+                await msg.react(emoji_no);
                 await msg.react('💬');
                 await msg.react('🗑️');
             }

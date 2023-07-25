@@ -1,7 +1,7 @@
 const {
-    categoryVocals,
-    roleMute, roleSeparator, roleVocal,
-    vocalGeneral, vocalCourse, vocalSleep, vocalPanel
+    category_vocals,
+    role_mute, role_separator, role_vocal,
+    vocal_general, vocal_course, vocal_sleep, vocal_panel
 } = require(process.env.CONSTANT.replace("../.", ''));
 const { Members } = require('./dbObjects.js');
 const { Op } = require('sequelize');
@@ -24,7 +24,7 @@ async function muteTimeout(guild) {
             const user = await guild.members.fetch(member.id);
             if (!user) await member.destroy();
             else {
-                await user.roles.remove(roleMute, "Fin de l'exclusion");
+                await user.roles.remove(role_mute, "Fin de l'exclusion");
             }
         } else {
             setTimeout(async () => {
@@ -34,7 +34,7 @@ async function muteTimeout(guild) {
                 const user = await guild.members.fetch(member.id);
                 if (!user) await member.destroy();
                 else {
-                    await user.roles.remove(roleMute, "Fin de l'exclusion");
+                    await user.roles.remove(role_mute, "Fin de l'exclusion");
                 }
             }, timeRemaining);
         }
@@ -43,14 +43,14 @@ async function muteTimeout(guild) {
 
 
 /**
- * Remove the empty voice channel except the vocalGeneral, vocalCourse, vocalSleep and vocalPanel in the categoryVocals
+ * Remove the empty voice channel except the vocal_general, vocal_course, vocal_sleep and vocal_panel in the category_vocals
  * @param {import('discord.js').Guild} guild
  * @returns {void}
  */
 async function removeEmptyVoiceChannel(guild) {
-    const channelsNotDelete = [vocalGeneral, vocalCourse, vocalSleep, vocalPanel];
+    const channelsNotDelete = [vocal_general, vocal_course, vocal_sleep, vocal_panel];
 
-    const category = await guild.channels.fetch(categoryVocals);
+    const category = await guild.channels.fetch(category_vocals);
     if (!category) return console.error("functions.js - La catégorie n'existe pas !");
 
     const promises = await category.children.cache.map(async channel => {
@@ -63,19 +63,19 @@ async function removeEmptyVoiceChannel(guild) {
 
 
 /**
- * Sync roles (roleSeparator and roleVocal)
+ * Sync roles (role_separator and role_vocal)
  * @param {import('discord.js').Guild} guild
  * @returns {void}
  */
 async function syncRoles(guild) {
-    const role = await guild.roles.fetch(roleVocal);
+    const role = await guild.roles.fetch(role_vocal);
     if (!role) return console.error("functions.js - Le rôle n'existe pas !");
 
     const members = await guild.members.fetch();
     const promises = await members.map(async member => {
         if (member.user.bot) return;
 
-        await member.roles.add(roleSeparator);
+        await member.roles.add(role_separator);
         if (member.voice.channelId) await member.roles.add(role);
         else await member.roles.remove(role);
     });

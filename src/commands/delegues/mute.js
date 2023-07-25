@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { roleDelegates, roleMute } = require(process.env.CONSTANT);
+const { role_delegates, role_mute } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects');
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
         const newTimeMute = Date.now() + duration * 60000;
 
         // Check if the user can use this command (if user is not a delegate or an admin)
-        if (!user.roles.cache.has(roleDelegates) && !user.permissions.has(PermissionFlagsBits.Administrator)) return interaction.reply({ content: "Vous n'avez pas la permission d'utiliser cette commande.", ephemeral: true });
+        if (!user.roles.cache.has(role_delegates) && !user.permissions.has(PermissionFlagsBits.Administrator)) return interaction.reply({ content: "Vous n'avez pas la permission d'utiliser cette commande.", ephemeral: true });
         
         // Get the member in the database
         const memberDB = await Members.findOne({ where: { id: member.id } });
@@ -42,7 +42,7 @@ module.exports = {
         // Check if the member could be muted
         if (member.id === process.env.CLIENT_ID) return interaction.reply({ content: "Vous ne pouvez pas sanctionner la mascotte.", ephemeral: true });
         if (member.user.bot) return interaction.reply({ content: "Vous ne pouvez pas sanctionner un bot.", ephemeral: true });
-        if (member.roles.cache.has(roleDelegates)) return interaction.reply({ content: "Vous ne pouvez pas exclure un délégué.", ephemeral: true });
+        if (member.roles.cache.has(role_delegates)) return interaction.reply({ content: "Vous ne pouvez pas exclure un délégué.", ephemeral: true });
         if (member.permissions.has(PermissionFlagsBits.Administrator)) return interaction.reply({ content: "Vous ne pouvez pas exclure un administrateur.", ephemeral: true });
         
         
@@ -54,11 +54,11 @@ module.exports = {
             const memberDB = await Members.findOne({ where: { id: member.id } });
             if (memberDB.mute_time > Date.now()) return;
             await Members.update({ mute_time: null }, { where: { id: member.id } });
-            await member.roles.remove(roleMute, "Fin de l'exclusion");
+            await member.roles.remove(role_mute, "Fin de l'exclusion");
         }, duration * 60000);
 
         // Add the mute role
-        await member.roles.add(roleMute, user.user.username + " - " + reason);
+        await member.roles.add(role_mute, user.user.username + " - " + reason);
 
 
         return interaction.reply({ 
