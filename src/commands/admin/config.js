@@ -15,12 +15,8 @@ module.exports = {
         
         const guild = interaction.guild;
 
-        // Get information about the guild in the database
-        let guildDB = await Guilds.findOne({ where: { id: guild.id } });
-        if (!guildDB) guildDB = await Guilds.create({ id: guild.id });
-
-        // Update the database
-        await guildDB.update({ automatic_verified });
+        // Update information about the guild in the database
+        await Guilds.upsert({ id: guild.id, automatic_verified: automatic_verified }, { where: { id: guild.id } });
 
 
         return interaction.reply({ content: `La base de donnée du serveur a bien été mise à jour.`, ephemeral: true });
