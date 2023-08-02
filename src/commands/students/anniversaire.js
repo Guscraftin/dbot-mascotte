@@ -1,6 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const { channel_logs, color_basic } = require(process.env.CONSTANT);
 const { Members } = require("../../dbObjects");
+const { checkBirthdays } = require('../../functions.js');
 const { Op } = require('sequelize');
 
 module.exports = {
@@ -61,6 +62,8 @@ module.exports = {
                 await Members.upsert({ id: interaction.member.id, date_birthday: dateFormat }, { where: { id: interaction.member.id } });
 
                 await channelLog?.send({ content: `## 🎂 ${interaction.member} a ajouté sa date de naissance.\n> Date de naissance : <t:${parseInt(dateFormat / 1000)}:D> (\`${nextBirthday.getFullYear() - dateFormat.getFullYear() - 1} ans\`)` });
+
+                await checkBirthdays(interaction.guild);
 
                 return interaction.reply({ content: "Votre date de naissance a correctement été ajouté.\nMerci de votre investissement sur ce serveur discord.", ephemeral: true });
 
@@ -131,6 +134,8 @@ module.exports = {
                 if (oldNextBirthday < new Date()) oldNextBirthday.setFullYear(actualYear + 1);
                 await channelLog?.send({ content: `## 🎂 ${interaction.member} a modifié sa date de naissance.\n> Ancienne date de naissance : <t:${parseInt(oldDate / 1000)}:D> (\`${oldNextBirthday.getFullYear() - oldDate.getFullYear() - 1} ans\`)\n> Nouvelle date de naissance : <t:${parseInt(dateFormat / 1000)}:D> (\`${nextBirthday.getFullYear() - dateFormat.getFullYear() - 1} ans\`)` });
 
+                await checkBirthdays(interaction.guild);
+
                 return interaction.reply({ content: "Votre date de naissance a correctement été modifié.\nMerci de votre investissement sur ce serveur discord.", ephemeral: true });
 
             /**
@@ -141,6 +146,7 @@ module.exports = {
                 if (!member || !member.date_birthday) return interaction.reply({ content: "Vous n'avez pas ajouté votre date de naissance.", ephemeral: true });
                 if (!confirmation) return interaction.reply({ content: "Vous devez confirmer la suppression de votre date de naissance.", ephemeral: true });
                 await member.update({ date_birthday: null });
+                await checkBirthdays(interaction.guild);
 
                 oldNextBirthday = new Date(actualYear, oldDate.getMonth(), oldDate.getDate());
                 if (oldNextBirthday < new Date()) oldNextBirthday.setFullYear(actualYear + 1);

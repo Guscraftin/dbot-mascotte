@@ -1,6 +1,7 @@
 const { Events } = require('discord.js');
 const { Guilds, Members } = require('../../dbObjects.js');
-const { muteTimeout, removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
+const { checkBirthdays, muteTimeout, removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
+const cron = require("cron");
 
 module.exports = {
     name: Events.ClientReady,
@@ -19,9 +20,13 @@ module.exports = {
         if (!guild.available) return console.error("ready.js - Le serveur n'est pas disponible !");
 
         // Check if the bot is synchronized with the server
+        await checkBirthdays(guild);
         await muteTimeout(guild);
         await removeEmptyVoiceChannel(guild);
         await syncRoles(guild);
+
+        // Launch cron jobs
+        new cron.CronJob("0 */5 * * *", () => checkBirthdays(guild), null, true, "Europe/Paris");
 
         // Log the bot is ready
         return console.log(`${client.user.username} est prêt à être utilisé par ${usersCount} utilisateurs sur ${guildsCount.size} serveurs !`);

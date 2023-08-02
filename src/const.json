@@ -1,6 +1,7 @@
 {
     "category_vocals": "1127469395367702528",
 
+    "channel_announce": "1130459876104097792",
     "channel_suggestions": "1130460103888339005",
     "channel_muted": "1130460274533609482",
     "channel_logs": "1127473631954485299",
@@ -10,6 +11,7 @@
     "vocal_sleep": "1130460749668552714",
     "vocal_panel": "1130460931940421734",
 
+    "role_admins": "1127470437148921956",
     "role_birthday": "1127472183963303988",
     "role_delegates": "1127470460230180938",
     "role_students": "1127470474385969174",

@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true,
         },
+        channel_birthday: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         mute_time: {
             type: DataTypes.DATE,
             allowNull: true,

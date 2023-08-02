@@ -1,6 +1,6 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const { channel_muted, role_mute } = require(process.env.CONSTANT);
-const { removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
+const { checkBirthdays, removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,6 +15,8 @@ module.exports = {
                     { name: 'role_mute', value: 'role_mute' },
                     { name: 'vocals', value: 'vocals' },
                     { name: 'roles', value: 'roles' },
+                    { name: 'birthday', value: 'birthday' },
+                    { name: 'all', value: 'all' },
                 )
                 .setRequired(true)
         ),
@@ -23,14 +25,13 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true });
 
-        let promises;
+        let channels, promises;
         switch (interaction.options.getString("module")) {
             /**
              * Sync permissions of the mute role
              */
             case "role_mute":
-                const channels = await guild.channels.fetch();
-
+                channels = await guild.channels.fetch();
                 promises = channels.map(async (channel) => {
                     if (channel.id === channel_muted) {
                         await channel.permissionOverwrites.edit(role_mute, {
@@ -73,6 +74,49 @@ module.exports = {
                 await syncRoles(guild);
 
                 return interaction.editReply({ content: `Les rôles ont bien été synchroniser.`, ephemeral: true });
+
+            
+            /**
+             * Sync birthday (role, channel and message)
+             */
+            case "birthday":
+                await checkBirthdays(guild);
+
+                return interaction.editReply({ content: `Les anniversaires ont bien été synchroniser.`, ephemeral: true });
+
+
+            /**
+             * Sync all modules in this command
+             */
+            case "all":
+                channels = await guild.channels.fetch();
+                promises = channels.map(async (channel) => {
+                    if (channel.id === channel_muted) {
+                        await channel.permissionOverwrites.edit(role_mute, {
+                            ViewChannel: true,
+                            SendMessages: true,
+                            SendMessagesInThreads: true,
+                            CreatePublicThreads: true,
+                            CreatePrivateThreads: true,
+                            AddReactions: true,
+                        });
+                    } else {
+                        await channel.permissionOverwrites.edit(role_mute, {
+                            SendMessages: false,
+                            SendMessagesInThreads: false,
+                            CreatePublicThreads: false,
+                            CreatePrivateThreads: false,
+                            AddReactions: false,
+                            Speak: false,
+                        });
+                    }
+                });
+                await Promise.all(promises);
+                await syncRoles(guild);
+                await removeEmptyVoiceChannel(guild);
+                await checkBirthdays(guild);
+
+                return interaction.editReply({ content: `Tous les modules ont bien été synchroniser.`, ephemeral: true });
 
 
             /**
