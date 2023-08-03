@@ -12,8 +12,9 @@ const client = new Client({ intents: [
 ]});
 client.commands = new Collection();
 client.buttons = new Collection();
+client.selectMenus = new Collection();
 
-['commands', 'events', 'buttons'].forEach((handler) => {
+['buttons', 'commands', 'events', 'selectMenus'].forEach((handler) => {
     require(`./src/handlers/${handler}`)(client);
 });
 
