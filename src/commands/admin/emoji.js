@@ -3,7 +3,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("emoji")
-        .setDescription("🔧 Permet d'ajouter des emojis sous un message.")
+        .setDescription("🔧 Ajouter des emojis sous un message.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
         .addStringOption(option => option.setName('id').setDescription("L'id du message où ajouter les réactions.").setRequired(true))

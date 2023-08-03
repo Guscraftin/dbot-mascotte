@@ -17,7 +17,7 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("liste")
-                .setDescription("👤 Liste des prochains anniversaires."))
+                .setDescription("👤 Lister les prochains anniversaires."))
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("modifier")

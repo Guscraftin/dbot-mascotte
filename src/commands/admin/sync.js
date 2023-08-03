@@ -5,7 +5,7 @@ const { checkBirthdays, removeEmptyVoiceChannel, syncRoles } = require('../../fu
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("sync")
-        .setDescription("🔧 Permet de synchroniser certains modules.")
+        .setDescription("🔧 Synchroniser certains modules.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
         .addStringOption(option =>
