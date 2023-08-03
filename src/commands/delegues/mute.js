@@ -5,7 +5,7 @@ const { Members } = require('../../dbObjects');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("mute")
-        .setDescription("🚨 Exclure un membre (qu'il ne puisse plus parler).")
+        .setDescription("💼 Exclure un membre (qu'il ne puisse plus parler).")
         .setDMPermission(false)
         .addUserOption(option => option.setName("membre").setDescription("Membre à exclure").setRequired(true))
         .addIntegerOption(option => option.setName("durée").setDescription("Durée de l'exclusion (en minutes)").setMinValue(1).setRequired(true))

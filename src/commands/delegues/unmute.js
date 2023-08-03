@@ -5,7 +5,7 @@ const { Members } = require('../../dbObjects');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("unmute")
-        .setDescription("🚨 Annuler l'exclusion d'un membre (qu'il puisse à nouveau parler).")
+        .setDescription("💼 Annuler l'exclusion d'un membre (qu'il puisse à nouveau parler).")
         .setDMPermission(false)
         .addUserOption(option => option.setName("membre").setDescription("Membre à exclure").setRequired(true))
         .addStringOption(option => option.setName("raison").setDescription("Raison de l'exclusion").setRequired(true)),
