@@ -4,7 +4,7 @@ const { Guilds } = require('../../dbObjects.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('config')
-        .setDescription('🔧 Configurer la base de donnée du serveur')
+        .setDescription('🔧 Configurer la base de donnée du serveur.')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
         .addBooleanOption(option =>
