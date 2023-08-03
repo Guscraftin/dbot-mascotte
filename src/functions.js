@@ -191,7 +191,7 @@ Encore une fois **BON ANNIVERSAIRE !!!**
                     await channel.permissionOverwrites.cache.each(async overwrite => {
                         await overwrite.edit({ ViewChannel: false });
                     });
-                    await channel.send(`<@&${role_admins}>, son anniversaire est terminé, vous lui envoyer la transcription de ce salon et le supprimer !`)
+                    await channel.send(`<@&${role_admins}>, son anniversaire est terminé, vous lui envoyer la transcription de ce salon et le supprimer !`);
                 }
                 await user.update({ channel_birthday: null });
             }
