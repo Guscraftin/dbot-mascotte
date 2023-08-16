@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
-const { category_tickets, color_basic, role_admins, role_delegates } = require(process.env.CONSTANT);
+const { category_tickets, color_basic, role_admins, role_delegates, role_students } = require(process.env.CONSTANT);
 const { Tickets } = require('../../dbObjects');
 
 module.exports = {
@@ -43,6 +43,9 @@ module.exports = {
             case "ticket_delegues":
                 name = "délégués";
                 roleSupport = role_delegates;
+
+                // Check if the user is a student
+                if (!interaction.member.roles.cache.has(role_students)) return interaction.editReply({ content: "Vous n'avez pas la possibilité de contacter directement les délégués. Pour signaler le problème, veuillez ouvrir un ticket auprès des admins.", ephemeral: true});
 
                 ticket = await Tickets.findOne({ where: { user_id: interaction.user.id, category: name, status: "opened" } });
                 if (ticket) return interaction.editReply({ content: `Vous avez déjà un ticket d'ouvert dans <#${ticket.channel_id}> !`, ephemeral: true});
