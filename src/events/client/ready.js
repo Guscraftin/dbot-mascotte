@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { Guilds, Members } = require('../../dbObjects.js');
+const { Guilds, Members, Tickets } = require('../../dbObjects.js');
 const { checkBirthdays, muteTimeout, removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 const cron = require("cron");
 
@@ -13,6 +13,7 @@ module.exports = {
         // Sync the database
         await Guilds.sync({ alter: true });
         await Members.sync({ alter: true });
+        await Tickets.sync({ alter: true });
 
         // Relaunch the timeout of the mute
         const guild = await client.guilds.fetch(process.env.GUILD_ID);
