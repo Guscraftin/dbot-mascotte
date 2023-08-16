@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { category_tickets, color_basic, role_admins, role_delegates } = require(process.env.CONSTANT);
+const { Tickets } = require('../../dbObjects');
 
 module.exports = {
     data: {
@@ -15,8 +16,7 @@ module.exports = {
                 .setStyle(ButtonStyle.Danger)
             );
 
-        let channel, channelOpen, name, openEmbed, roleSupport;
-        // TODO: Rewrite the first message in the ticket channel because not beautiful
+        let channel, name, openEmbed, roleSupport, ticket;
         switch (interaction.values[0]) {
             /*
              * Ticket admins
@@ -25,14 +25,14 @@ module.exports = {
                 name = "admins";
                 roleSupport = role_admins;
 
-                channelOpen = await checkOpenTicket(interaction, name);
-                if (channelOpen) return interaction.editReply({ content: `Vous avez déjà un ticket d'ouvert dans ${channelOpen} !`, ephemeral: true});
+                ticket = await Tickets.findOne({ where: { user_id: interaction.user.id, category: name, status: "opened" } });
+                if (ticket) return interaction.editReply({ content: `Vous avez déjà un ticket d'ouvert dans <#${ticket.channel_id}> !`, ephemeral: true});
 
                 channel = await createTicket(interaction, name, roleSupport);
                 openEmbed = new EmbedBuilder()
                     .setDescription(`# Ticket aux ${name}\n`+
                         `Bonjour ${interaction.user},\n\n`+
-                        `Vous pouvez vous exprimer en toute liberté dans ce salon.\n\n`+
+                        `Vous êtes libre de vous exprimer en toute liberté dans ce salon.\n\n`+
                         `Un admin vous répondra dans les plus brefs délais.`)
                     .setColor(color_basic)
                 break;
@@ -44,14 +44,14 @@ module.exports = {
                 name = "délégués";
                 roleSupport = role_delegates;
 
-                channelOpen = await checkOpenTicket(interaction, name);
-                if (channelOpen) return interaction.editReply({ content: `Vous avez déjà un ticket d'ouvert dans ${channelOpen} !`, ephemeral: true});
+                ticket = await Tickets.findOne({ where: { user_id: interaction.user.id, category: name, status: "opened" } });
+                if (ticket) return interaction.editReply({ content: `Vous avez déjà un ticket d'ouvert dans <#${ticket.channel_id}> !`, ephemeral: true});
 
                 channel = await createTicket(interaction, name, roleSupport);
                 openEmbed = new EmbedBuilder()
                     .setDescription(`# Ticket aux ${name}\n`+
                         `Bonjour ${interaction.user},\n\n`+
-                        `Vous pouvez vous exprimer en toute liberté dans ce salon. En effet, les admins se sont engagés à ne pas lire le contenu des tickets ne les concernant pas.\n\n`+
+                        `Vous êtes libre de vous exprimer en toute liberté dans ce salon. Les admins ont pris l'engagement de ne pas lire le contenu des tickets, à moins qu'ils ne soient explicitement mentionnés à l'intérieur.\n\n`+
                         `Un délégué vous répondra dans les plus brefs délais.`)
                     .setColor(color_basic)
                 break;
@@ -85,7 +85,7 @@ module.exports = {
 };
 
 /**
- * Create the ticket channel
+ * Create the ticket channel and add it in the database
  * @param {*} interaction 
  * @param {String} ticketType
  * @param {String} roleSupport
@@ -125,27 +125,13 @@ async function createTicket(interaction, ticketType, roleSupport) {
         }
     );
 
-    return ticketChannel;
-}
-
-
-/**
- * Check if the user has already a ticket open
- * @param {*} interaction
- * @param {String} ticketType
- * @returns {Promise<Channel>}
- */
-async function checkOpenTicket(interaction, ticketType) {
-    const ticketCategory = await interaction.guild.channels.fetch(category_tickets);
-    if (!ticketCategory) return null;
-    const ticketChannels = ticketCategory?.children?.cache;
-    if (!ticketChannels) return null;
-
-    let findChannel = null;
-    const promises = ticketChannels.map(async channel => {
-        if (channel.topic?.includes(ticketType) && channel.topic.includes(interaction.user.id)) findChannel = channel;
+    // Add the ticket in the database
+    await Tickets.create({
+        user_id: interaction.user.id,
+        category: ticketType,
+        channel_id: ticketChannel.id,
+        status: "opened",
     });
-    await Promise.all(promises);
-    
-    return findChannel;
+
+    return ticketChannel;
 }
