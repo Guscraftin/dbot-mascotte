@@ -1,11 +1,13 @@
 {
     "category_vocals": "1127469395367702528",
     "category_tickets": "1136595038600699935",
+    "category_reserve": "1127469832221245510",
 
     "channel_announce": "1130459876104097792",
     "channel_suggestions": "1130460103888339005",
     "channel_muted": "1130460274533609482",
     "channel_logs": "1127473631954485299",
+    "channel_logs_tickets": "1141364874568552559",
 
     "vocal_general": "1130460643846267031",
     "vocal_course": "1130460690654699590",

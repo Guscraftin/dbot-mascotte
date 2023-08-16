@@ -19,6 +19,18 @@ client.selectMenus = new Collection();
 });
 
 
+/*
+ * Process to handle errors
+ */
+
+// Remove experimental warning - needed for transcription of a discord channel
+const originalEmit = process.emit;
+process.emit = function (name, data, ...args) {
+    if (data.name === `ExperimentalWarning`) return false;
+    return originalEmit.apply(process, arguments);
+};
+
+
 process.on('exit', code => { console.error(`=> Le processus s'est arrêté avec le code : ${code}`) });
 
 process.on('uncaughtException', (err, origin) => {
