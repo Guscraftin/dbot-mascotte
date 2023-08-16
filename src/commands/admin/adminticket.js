@@ -123,7 +123,7 @@ module.exports = {
             case "delete":
                 if (!confirm) return interaction.reply({ content: `Vous devez confirmer la suppression de l'élément désigné.`, ephemeral: true });
                 try {
-                    ticket = await Tickets.findOne({ where: { id: id } });
+                    const ticket = await Tickets.findOne({ where: { id: id } });
                     if (!ticket || ticket.length == 0) return interaction.reply({ content: `La retranscription avec l'id \`${id}\` n'existe pas.`, ephemeral: true });
                     if (ticket?.message_id) {
                         const logTickets = await interaction.guild.channels.fetch(channel_logs_tickets);
@@ -144,12 +144,12 @@ module.exports = {
                 if (!confirm) return interaction.reply({ content: `Vous devez confirmer la suppression des éléments sélectionnés.`, ephemeral: true });
                 try {
                     const logTickets = await interaction.guild.channels.fetch(channel_logs_tickets);
-                    if (member && category) ticket = await Tickets.findAll({ where: { user_id: member.id, category: category } });
-                    else if (member) ticket = await Tickets.findAll({ where: { user_id: member.id } });
-                    else if (category) ticket = await Tickets.findAll({ where: { category: category } });
-                    else ticket = await Tickets.findAll();
-                    if (!ticket || ticket.length == 0) return interaction.reply({ content: `Aucune retranscription de ticket n'a été trouvée.`, ephemeral: true });
-                    await Promise.all(ticket.map(async (ticketFound) => {
+                    if (member && category) tickets = await Tickets.findAll({ where: { user_id: member.id, category: category } });
+                    else if (member) tickets = await Tickets.findAll({ where: { user_id: member.id } });
+                    else if (category) tickets = await Tickets.findAll({ where: { category: category } });
+                    else tickets = await Tickets.findAll();
+                    if (!tickets || tickets.length == 0) return interaction.reply({ content: `Aucune retranscription de ticket n'a été trouvée.`, ephemeral: true });
+                    await Promise.all(tickets.map(async (ticketFound) => {
                         if (ticketFound.message_id) {
                             const msg = await logTickets.messages.fetch(ticketFound.message_id);
                             await msg.delete();
