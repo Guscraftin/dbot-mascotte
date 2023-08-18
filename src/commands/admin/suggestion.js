@@ -1,5 +1,5 @@
 const { EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const { channel_suggestions, color_yes, color_no } = require(process.env.CONSTANT);
+const { channel_idea_poll, color_yes, color_no } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
         if (!onlyNumber.test(messageId)) return interaction.reply({ content: "L'id doit être l'identifiant du message de la suggestion.", ephemeral: true });
 
         // Get the message of the suggestion
-        const message = await interaction.guild.channels.fetch(channel_suggestions).then(channel =>
+        const message = await interaction.guild.channels.fetch(channel_idea_poll).then(channel =>
             channel.messages.fetch(messageId).catch(() => null)
         );
         if (!message) return interaction.reply({ content: "Ce message n'existe pas.", ephemeral: true });

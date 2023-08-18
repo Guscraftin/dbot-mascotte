@@ -1,13 +1,13 @@
 const { EmbedBuilder, Events } = require('discord.js');
-const { channel_suggestions, color_neutral, emoji_yes, emoji_neutral, emoji_no } = require(process.env.CONSTANT);
+const { channel_idea_poll, color_neutral, emoji_yes, emoji_neutral, emoji_no } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.MessageCreate,
     async execute(message) {
         /*
-        * Suggestions system
+        * Suggestion system
         */
-        if (message.channel.id === channel_suggestions && !message.author.bot) {
+        if (message.channel.id === channel_idea_poll && !message.author.bot) {
             const emojiRegex = /<:[a-zA-Z_\d]+:\d+>|\p{Extended_Pictographic}/gu;
             const emojiArray = message.content.match(emojiRegex) || [];
             const emojiArrayFiltered = emojiArray.filter(emoji => emoji !== '💬' && emoji !== '🗑️');
@@ -38,7 +38,7 @@ module.exports = {
                 await msgPoll.react('🗑️');
                 
             } else {
-                // Suggestions message
+                // idea_poll message
                 const embed = new EmbedBuilder()
                     .setAuthor({ name: `${message.member.displayName} (${message.author.id})`, iconURL: message.author.displayAvatarURL() })
                     .setColor(color_neutral)

@@ -1,5 +1,5 @@
 const { EmbedBuilder, Events } = require("discord.js");
-const { channel_suggestions, color_basic } = require(process.env.CONSTANT);
+const { channel_idea_poll, color_basic } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.MessageReactionAdd,
@@ -9,9 +9,9 @@ module.exports = {
         const channel = messageReaction.message.channel;
 
         /**
-         * Suggestions system
+         * Suggestion system
          */
-        if (channel.id === channel_suggestions && !messageReaction.message.embeds[0].author.name.includes(" - ")) {
+        if (channel.id === channel_idea_poll && !messageReaction.message.embeds[0].author.name.includes(" - ")) {
             const authorSuggestion = messageReaction.message.embeds[0].author.name.split(" (");
             const authorName = authorSuggestion[0];
             const authorId = authorSuggestion[1].split(")")[0];
