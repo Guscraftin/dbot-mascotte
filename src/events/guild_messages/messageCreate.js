@@ -1,5 +1,9 @@
 const { EmbedBuilder, Events } = require('discord.js');
-const { channel_idea_poll, color_neutral, emoji_yes, emoji_neutral, emoji_no } = require(process.env.CONSTANT);
+const { 
+    channel_agenda, channel_absence, channel_idea_poll,
+    color_neutral, emoji_yes, emoji_neutral, emoji_no,
+    role_agenda, role_absence
+} = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.MessageCreate,
@@ -54,6 +58,20 @@ module.exports = {
                 await msg.react(emoji_no);
                 await msg.react('💬');
                 await msg.react('🗑️');
+            }
+
+        /*
+        * Mention system (agenda & absence)
+        */
+        } else if (message.content.startsWith('!') && message.content.length < 5) {
+            if (message.channel.id === channel_agenda) {
+                message.delete();
+                const msg = await message.channel.send({ content: `<@&${role_agenda}>` });
+                msg.delete();
+            } else if (message.channel.id === channel_absence) {
+                message.delete();
+                const msg = await message.channel.send({ content: `<@&${role_absence}>` });
+                msg.delete();
             }
         }
     },
