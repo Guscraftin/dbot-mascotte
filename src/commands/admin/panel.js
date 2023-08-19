@@ -1,7 +1,7 @@
 const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { 
     channel_announce, channel_idea_poll, channel_agenda, channel_absence, color_basic,
-    role_mail, role_idea_poll, role_agenda, role_absence
+    role_mail, role_idea_poll, role_agenda, role_absence, role_help
 } = require(process.env.CONSTANT);
 
 module.exports = {
@@ -105,13 +105,13 @@ Souhaitez-vous être notifié des messages que vous jugez importants, tels que l
                                 value: `${role_absence}`,
                             },
                             {
-                                label: "❌・ Retirer tous les rôles",
-                                description: "Retirer tous les rôles notifications.",
-                                value: "role_reaction_remove_all",
+                                label: "🚨・ Helper",
+                                description: "Recevoir une notification lorsqu'une personne demande de l'aide.",
+                                value: `${role_help}`,
                             },
                         )
-                        .setMinValues(1)
-			            .setMaxValues(4),
+                        .setMinValues(0)
+			            .setMaxValues(5),
                 );
         }
 

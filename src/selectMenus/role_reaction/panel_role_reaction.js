@@ -1,4 +1,4 @@
-const { role_mail, role_idea_poll, role_agenda, role_absence } = require(process.env.CONSTANT);
+const { role_mail, role_idea_poll, role_agenda, role_absence, role_help } = require(process.env.CONSTANT);
 
 module.exports = {
     data: {
@@ -7,21 +7,19 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
 
-        console.log(interaction.values);
         const roleSelected = interaction.values;
-        const testRoles = [role_mail, role_idea_poll, role_agenda, role_absence];
+        const testRoles = [role_mail, role_idea_poll, role_agenda, role_absence, role_help];
         const listRemovedRoles = [];
         const listAddedRoles = [];
-        const isRemoveAll = roleSelected.includes("role_reaction_remove_all");
 
         async function updateRole(member, role, listAddedRoles, listRemovedRoles) {
             const hasRole = member.roles.cache.has(role);
             const isSelected = roleSelected.includes(role);
 
-            if (!isRemoveAll && isSelected && !hasRole) {
+            if (isSelected && !hasRole) {
                 await member.roles.add(role);
                 listAddedRoles.push(role);
-            } else if ((!isSelected || isRemoveAll) && hasRole) {
+            } else if (!isSelected && hasRole) {
                 await member.roles.remove(role);
                 listRemovedRoles.push(role);
             }
