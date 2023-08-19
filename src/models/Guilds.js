@@ -14,5 +14,18 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false,
         },
+        blacklist_mention_idea_poll: {
+            type: DataTypes.TEXT,
+            defaultValue: '[]',
+            allowNull: false,
+            get() {
+                const data = this.getDataValue('blacklist_mention_idea_poll');
+                return data ? JSON.parse(data) : [];
+            },
+            set(value) {
+                const data = value ? JSON.stringify(value) : '[]';
+                this.setDataValue('blacklist_mention_idea_poll', data);
+            },
+        },
     });
 };

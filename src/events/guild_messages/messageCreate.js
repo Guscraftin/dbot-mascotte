@@ -2,8 +2,9 @@ const { EmbedBuilder, Events } = require('discord.js');
 const { 
     channel_agenda, channel_absence, channel_idea_poll,
     color_neutral, emoji_yes, emoji_neutral, emoji_no,
-    role_agenda, role_absence
+    role_agenda, role_absence, role_idea_poll
 } = require(process.env.CONSTANT);
+const { Guilds } = require('../../dbObjects.js');
 
 module.exports = {
     name: Events.MessageCreate,
@@ -58,6 +59,15 @@ module.exports = {
                 await msg.react(emoji_no);
                 await msg.react('💬');
                 await msg.react('🗑️');
+            }
+
+            // Mention the notification role
+            const guild = await Guilds.findOne({ where: { id: message.guild.id } });
+            if (guild) {
+                if (guild.automatic_mention_idea_poll && !guild.blacklist_mention_idea_poll.includes(message.author.id)) {
+                    const notificationMsg = await message.channel.send({ content: `<@&${role_idea_poll}>` });
+                    await notificationMsg.delete();
+                }
             }
 
         /*
