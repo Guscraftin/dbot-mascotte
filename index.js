@@ -3,10 +3,23 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const client = new Client({ intents: [
-    GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.AutoModerationConfiguration, // For the future
+    GatewayIntentBits.AutoModerationExecution, // For the future
+    GatewayIntentBits.DirectMessageReactions, // For the future
+    GatewayIntentBits.DirectMessageTyping, // For the future
+    GatewayIntentBits.DirectMessages, // For the future
+    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildIntegrations,
+    GatewayIntentBits.GuildInvites,
     GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMessageTyping, // For the future
+    GatewayIntentBits.GuildMessages, 
+    GatewayIntentBits.GuildModeration,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildScheduledEvents,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildWebhooks,
     GatewayIntentBits.Guilds,
     GatewayIntentBits.MessageContent,
 ]});
