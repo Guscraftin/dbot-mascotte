@@ -11,7 +11,6 @@ module.exports = {
          * TODO: Add the reason of leave (kick, ban, ...)
          */
         const logChannel = await member.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `${member.user.tag} (${member.id})`, iconURL: member.user.displayAvatarURL() })
@@ -24,6 +23,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: "L'utilisateur a quitté !" })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

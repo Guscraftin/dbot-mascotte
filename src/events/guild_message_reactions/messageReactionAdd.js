@@ -48,7 +48,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await messageReaction.message.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         const emojiName = messageReaction.emoji.name;
 
         const embed = new EmbedBuilder()
@@ -59,7 +58,7 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: messageReaction.message.guild.name, iconURL: messageReaction.message.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
 
         function isDefaultEmoji() {
             let testEmojiName = emojiName.match(/[0-9a-z_]/gi);

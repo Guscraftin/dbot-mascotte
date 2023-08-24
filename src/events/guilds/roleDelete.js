@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await role.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         const permissions = role.permissions;
 
         const embed = new EmbedBuilder()
@@ -33,7 +32,7 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: role.guild.name, iconURL: role.guild.iconURL() })
     
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
 
         
         function setGeneralsPermissions() {

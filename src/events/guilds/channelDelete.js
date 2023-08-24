@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await channel.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         if (channel.type === 4) {
             const embedCategorie = new EmbedBuilder()
@@ -22,7 +21,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: channel.guild.name, iconURL: channel.guild.iconURL() })
         
-            logChannel.send({ embeds: [embedCategorie] });
+            logChannel?.send({ embeds: [embedCategorie] });
         } else {
             const embed = new EmbedBuilder()
                 .setTitle(`Suppression d'un salon`)
@@ -35,7 +34,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: channel.guild.name, iconURL: channel.guild.iconURL() })
         
-            logChannel.send({ embeds: [embed] });
+            logChannel?.send({ embeds: [embed] });
         }
 
         function channelType() {

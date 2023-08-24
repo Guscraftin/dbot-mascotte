@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await message.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         
         const embed = new EmbedBuilder()
             .setAuthor({ name: reactions.first().client.user.tag, iconURL: reactions.first().client.user.displayAvatarURL() })
@@ -20,7 +19,7 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
 
 
         function getNameEmojis() {

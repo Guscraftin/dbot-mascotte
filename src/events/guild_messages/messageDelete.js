@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await message.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         if (message.author === null) {
             const embedBot = new EmbedBuilder()
@@ -21,7 +20,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedBot] });
+            logChannel?.send({ embeds: [embedBot] });
         } else {
             const embed = new EmbedBuilder()
                 .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
@@ -32,7 +31,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
 
-            logChannel.send({ embeds: [embed] });
+            logChannel?.send({ embeds: [embed] });
         }  
     }
 };

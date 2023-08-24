@@ -21,7 +21,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await member.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setAuthor({ name: `${member.user.tag} (${member.id})`, iconURL: member.user.displayAvatarURL() })
@@ -33,6 +32,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: "L'utilisateur a rejoint !" })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     },
 };

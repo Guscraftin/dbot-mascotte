@@ -69,7 +69,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newState.guild.name, iconURL: newState.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedJoin] });
+            logChannel?.send({ embeds: [embedJoin] });
 
         } else if (newState.channel === null) {
             const embedLeave = new EmbedBuilder()
@@ -80,7 +80,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: oldState.guild.name, iconURL: oldState.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedLeave] });
+            logChannel?.send({ embeds: [embedLeave] });
         
         } else if (oldState.channelId != newState.channelId) {
             const embedMove = new EmbedBuilder()
@@ -92,7 +92,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: oldState.guild.name, iconURL: oldState.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedMove] });
+            logChannel?.send({ embeds: [embedMove] });
 
         } else {
             const embedDeaf = new EmbedBuilder()
@@ -104,7 +104,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: oldState.guild.name, iconURL: oldState.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedDeaf] });
+            logChannel?.send({ embeds: [embedDeaf] });
         }}
 
     }

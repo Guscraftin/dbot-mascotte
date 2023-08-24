@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newRole.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         if (oldRole.rawPosition != newRole.rawPosition) return;
         const oldPermissions = oldRole.permissions;
         const newPermissions = newRole.permissions;
@@ -27,7 +26,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newRole.guild.name, iconURL: newRole.guild.iconURL() })
         
-            logChannel.send({ embeds: [noIconEmbed] });
+            logChannel?.send({ embeds: [noIconEmbed] });
         } else {
             const iconEmbed = new EmbedBuilder()
                 .setTitle(`Modification d'un rôle`)
@@ -41,7 +40,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newRole.guild.name, iconURL: newRole.guild.iconURL() })
         
-            logChannel.send({ embeds: [iconEmbed] });
+            logChannel?.send({ embeds: [iconEmbed] });
         }
 
 

@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newChannel.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         const oldPermissions = oldChannel.permissions;
         const newPermissions = newChannel.permissions;
         
@@ -26,7 +25,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
                 
-            logChannel.send({ embeds: [embedTextuel] });
+            logChannel?.send({ embeds: [embedTextuel] });
         } else if (newChannel.type === 2) {
             const embedVoice = new EmbedBuilder()
                 .setTitle(`Modification d'un salon vocal`)
@@ -37,7 +36,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedVoice] });
+            logChannel?.send({ embeds: [embedVoice] });
         } else if (newChannel.type === 4) {
             const embedCategorie = new EmbedBuilder()
                 .setTitle(`Modification d'une catégorie`)
@@ -48,7 +47,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedCategorie] });
+            logChannel?.send({ embeds: [embedCategorie] });
         } else if (newChannel.type === 5) {
             const embedNews = new EmbedBuilder()
                 .setTitle(`Modification du salon annonce`)
@@ -59,7 +58,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedNews] });
+            logChannel?.send({ embeds: [embedNews] });
         } else if (newChannel.type === 13) {
             const embedStage = new EmbedBuilder()
                 .setTitle(`Modification du salon stage`)
@@ -70,7 +69,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: newChannel.guild.name, iconURL: newChannel.guild.iconURL() })
 
-            logChannel.send({ embeds: [embedStage] });
+            logChannel?.send({ embeds: [embedStage] });
         }
     } 
 };

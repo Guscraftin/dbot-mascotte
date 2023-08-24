@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await sticker.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Création d'un autocollant`)
@@ -23,6 +22,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: sticker.guild.name, iconURL: sticker.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

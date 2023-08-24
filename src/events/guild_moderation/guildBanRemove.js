@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await ban.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Débanissement`)
@@ -24,6 +23,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: ban.guild.name, iconURL: ban.guild.iconURL() })
         
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

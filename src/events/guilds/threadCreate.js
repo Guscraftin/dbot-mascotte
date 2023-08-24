@@ -9,7 +9,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await thread.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         const ownerThread = await thread.members.fetch(thread.ownerId);
 
         if (thread.type === ChannelType.PublicThread || thread.type === ChannelType.PrivateThread) {
@@ -22,7 +21,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({ text: thread.guild.name, iconURL: thread.guild.iconURL() })
 
-            logChannel.send({ embeds: [embed] });
+            logChannel?.send({ embeds: [embed] });
         }
     }
 };

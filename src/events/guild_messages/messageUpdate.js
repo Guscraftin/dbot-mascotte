@@ -10,13 +10,12 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newMessage.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const oldContentMessage = oldMessage.content;
         const newContentMessage = newMessage.content;
 
         // If the message is a return message, or the message is sent in the log channel, we return
-        if (newMessage.type === 19 || oldMessage.channelId === logChannel.id) return;
+        if (newMessage.type === 19 || oldMessage.channelId === logChannel?.id) return;
 
         let embed = new EmbedBuilder()
             .setAuthor({ name: newMessage.author.tag, iconURL: newMessage.author.displayAvatarURL() })
@@ -42,6 +41,6 @@ module.exports = {
 
         } else { return; }
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

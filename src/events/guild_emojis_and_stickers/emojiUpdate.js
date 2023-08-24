@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newEmoji.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Modification d'un émoji`)
@@ -22,6 +21,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: newEmoji.guild.name, iconURL: newEmoji.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

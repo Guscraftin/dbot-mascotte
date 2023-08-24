@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await invite.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle('Invitation : Suppression')
@@ -22,6 +21,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: invite.guild.name, iconURL: invite.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

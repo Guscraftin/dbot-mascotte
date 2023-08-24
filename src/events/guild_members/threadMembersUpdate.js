@@ -9,7 +9,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await thread.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         // Create the code for the embed
         let addedCode = "";
@@ -30,6 +29,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: thread.guild.name, iconURL: thread.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

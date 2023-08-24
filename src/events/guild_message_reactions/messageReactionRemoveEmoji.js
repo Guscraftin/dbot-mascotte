@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await reaction.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
         
         const embed = new EmbedBuilder()
             .setAuthor({ name: reaction.client.user.tag, iconURL: reaction.client.user.displayAvatarURL() })
@@ -20,6 +19,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: reaction.message.guild.name, iconURL: reaction.message.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

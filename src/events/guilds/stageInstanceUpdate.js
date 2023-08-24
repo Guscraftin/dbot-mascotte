@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newStageInstance.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Modification d'une conférence`)
@@ -21,6 +20,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: newStageInstance.guild.name, iconURL: newStageInstance.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

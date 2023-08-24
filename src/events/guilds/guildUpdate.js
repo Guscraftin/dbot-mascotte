@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newGuild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Modification du serveur`)
@@ -21,6 +20,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: newGuild.name, iconURL: newGuild.iconURL() })
     
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

@@ -9,7 +9,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await newThread.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embedModif = new EmbedBuilder()
             .setTitle(`Modification d'un thread`)
@@ -39,12 +38,12 @@ module.exports = {
             .setFooter({ text: newThread.guild.name, iconURL: newThread.guild.iconURL() })
 
 
-        if (!oldThread.archived && newThread.archived) logChannel.send({ embeds: [embedArchiv] });
+        if (!oldThread.archived && newThread.archived) logChannel?.send({ embeds: [embedArchiv] });
         else if (oldThread.archived && !newThread.archived) {
             newThread.join()
-            logChannel.send({ embeds: [embedDeArchiv] });
+            logChannel?.send({ embeds: [embedDeArchiv] });
         } else {
-            logChannel.send({ embeds: [embedModif] });
+            logChannel?.send({ embeds: [embedModif] });
         }
 
 

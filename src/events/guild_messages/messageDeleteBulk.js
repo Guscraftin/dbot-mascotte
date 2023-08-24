@@ -10,7 +10,6 @@ module.exports = {
          * TODO: Add all messages supressed by a bot
          */
         const logChannel = await channel.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle('💥 - Suppression en masse de message')
@@ -20,6 +19,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: channel.guild.name, iconURL: channel.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

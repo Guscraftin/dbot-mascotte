@@ -33,7 +33,7 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: newMember.guild.name, iconURL: newMember.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
 
 
         function listAddRole() {

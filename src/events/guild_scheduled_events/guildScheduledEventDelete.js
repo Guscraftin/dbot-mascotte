@@ -10,7 +10,7 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await guildScheduledEvent.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
+        
         const user = guildScheduledEvent.creator;
 
         const embed = new EmbedBuilder()
@@ -21,6 +21,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: guildScheduledEvent.guild.name, iconURL: guildScheduledEvent.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

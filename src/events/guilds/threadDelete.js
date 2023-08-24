@@ -9,7 +9,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await thread.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Suppression d'un thread ${thread.type === ChannelType.PublicThread ? 'public' : 'privé'}`)
@@ -18,6 +17,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: thread.guild.name, iconURL: thread.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };

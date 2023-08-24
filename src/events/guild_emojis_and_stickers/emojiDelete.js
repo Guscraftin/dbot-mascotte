@@ -10,7 +10,6 @@ module.exports = {
          * Logs the event
          */
         const logChannel = await emoji.guild.channels.fetch(channel_logs);
-        if (!logChannel) return;
 
         const embed = new EmbedBuilder()
             .setTitle(`Suppression d'un emoji`)
@@ -24,6 +23,6 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: emoji.guild.name, iconURL: emoji.guild.iconURL() })
 
-        logChannel.send({ embeds: [embed] });
+        logChannel?.send({ embeds: [embed] });
     }
 };
