@@ -1,5 +1,5 @@
-const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { role_delegates, role_mute } = require(process.env.CONSTANT);
+const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
+const { channel_logs, color_basic, role_delegates, role_mute } = require(process.env.CONSTANT);
 const { Members } = require('../../dbObjects');
 
 module.exports = {
@@ -14,6 +14,7 @@ module.exports = {
         const reason = interaction.options.getString("raison");
 
         const user = interaction.member;
+        const logChannel = await interaction.guild.channels.fetch(channel_logs);
 
         // Check if the user can use this command (if user is not a delegate or an admin)
         if (!user.roles.cache.has(role_delegates) && !user.permissions.has(PermissionFlagsBits.Administrator) ) return interaction.reply({ content: "Vous n'avez pas la permission d'utiliser cette commande.", ephemeral: true });
@@ -31,6 +32,20 @@ module.exports = {
         
         // Remove the mute role
         await member.roles.remove(role_mute, user.user.username + " - " + reason);
+
+        // Logs the event
+        const embedLog = new EmbedBuilder()
+            .setTitle(`Unmute`)
+            .setColor(color_basic)
+            .setDescription(`**${member} a été unmute.**
+            > **Id :** \`${member.id}\` (\`${member.user.username}\`)
+            > **Raison :** \`${reason === null ? `Aucune raison fourni` : `${reason}`}\`
+            `)
+            .setThumbnail(member.displayAvatarURL())
+            .setTimestamp()
+            .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+
+        await logChannel?.send({ embeds: [embedLog] });
 
 
         return interaction.reply({ 

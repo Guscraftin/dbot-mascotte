@@ -1,4 +1,5 @@
-const { role_mute } = require(process.env.CONSTANT);
+const { EmbedBuilder } = require("discord.js");
+const { channel_logs, color_basic, role_mute } = require(process.env.CONSTANT);
 const { Members } = require("../../dbObjects");
 
 module.exports = {
@@ -10,6 +11,7 @@ module.exports = {
         const message = interaction.message;
         const member = message.mentions.members.first();
         const duration = message.content.split("<t:")[2].split(":R>")[0];
+        const logChannel = await interaction.guild.channels.fetch(channel_logs);
 
         // Get the member in the database
         const memberDB = await Members.findOne({ where: { id: member.id } });
@@ -25,6 +27,21 @@ module.exports = {
             await Members.update({ mute_time: null }, { where: { id: member.id } });
             await member.roles.remove(role_mute, "Fin de l'exclusion");
         }, duration*1000 - Date.now());
+
+        // Logs the event
+        const embed = new EmbedBuilder()
+            .setTitle(`Update the mute`)
+            .setColor(color_basic)
+            .setDescription(`**Modification du mute de ${member}.**
+            > **Id :** \`${member.id}\` (\`${member.user.username}\`)
+            > **Nouvelle durée :** \`${parseInt((duration - parseInt(Date.now() / 1000)) / 60) + 1} minutes\`
+            > **Fin de l'exclusion :** <t:${duration}:R>
+            `)
+            .setThumbnail(member.displayAvatarURL())
+            .setTimestamp()
+            .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+
+        logChannel?.send({ embeds: [embed] })
 
         // Return the message
         return interaction.reply({
