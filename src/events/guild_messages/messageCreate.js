@@ -28,7 +28,13 @@ module.exports = {
                 
                 await message.delete();
                 
-                const msgPoll = await message.channel.send({ embeds: [embedPoll] });
+                let msgPoll;
+                if (message.attachments.size > 0) {
+                    await message.channel.send({ embeds: [embedPoll] });
+                    msgPoll = await message.channel.send({ files: message.attachments.map(attachment => attachment.url) });
+                } else {
+                    msgPoll = await message.channel.send({ embeds: [embedPoll] });
+                }
                 let index = 0; // Limit of 20 reactions under a message
                 let maxReactions = emojiArrayFiltered.length;
                 if (emojiArrayFiltered.length > 18) {
@@ -48,12 +54,16 @@ module.exports = {
                     .setAuthor({ name: `${message.member.displayName} (${message.author.id})`, iconURL: message.author.displayAvatarURL() })
                     .setColor(color_neutral)
                     .setDescription(message.content)
-                    .setTimestamp()
-                    .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
     
                 await message.delete();
     
-                const msg = await message.channel.send({ embeds: [embed] });
+                let msg;
+                if (message.attachments.size > 0) {
+                    await message.channel.send({ embeds: [embed] });
+                    msg = await message.channel.send({ files: message.attachments.map(attachment => attachment.url) });
+                } else {
+                    msg = await message.channel.send({ embeds: [embed] });
+                }
                 await msg.react(emoji_yes);
                 await msg.react(emoji_neutral);
                 await msg.react(emoji_no);
