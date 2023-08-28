@@ -56,15 +56,11 @@ module.exports = {
                         .setColor(color_yes)
                         .setDescription(embedMsg.description)
                         .setFields([{ name: "Commentaire :", value: `>>> ${comment}` }])
-                        .setTimestamp()
-                        .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
                 } else {
                     acceptEmbed = new EmbedBuilder()
                         .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
                         .setColor(color_yes)
                         .setDescription(embedMsg.description)
-                        .setTimestamp()
-                        .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
                 }
                 
                 await message.edit({ embeds: [acceptEmbed] });
@@ -79,8 +75,6 @@ module.exports = {
                     .setColor(color_no)
                     .setDescription(embedMsg.description)
                     .setFields([{ name: "Raison :", value: `>>> ${comment}` }])
-                    .setTimestamp()
-                    .setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() })
 
                 await message.edit({ embeds: [refuseEmbed] });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **refusée**.`, ephemeral: true });
@@ -94,8 +88,6 @@ module.exports = {
                     .setColor(embedMsg.color)
                     .setDescription(embedMsg.description)
                     .setFields([{ name: "Commentaire :", value: `>>> ${comment}` }])
-                    .setTimestamp()
-                    .setFooter(embedMsg.footer)
 
                 await message.edit({ embeds: [commentEmbed] });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **commentée**.`, ephemeral: true });
