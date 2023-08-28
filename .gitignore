@@ -1,5 +1,6 @@
 # Environment Variables
 .env
+constDev.json
 
 # OS Files
 package-lock.json
