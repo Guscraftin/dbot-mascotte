@@ -1,10 +1,10 @@
 const { EmbedBuilder, Events } = require('discord.js');
-const { 
+const {
     channel_agenda, channel_absence, channel_idea_poll,
     color_neutral, emoji_yes, emoji_neutral, emoji_no,
     role_agenda, role_absence, role_idea_poll
 } = require(process.env.CONSTANT);
-const { Guilds } = require('../../dbObjects.js');
+const { Guilds, Suggestions } = require('../../dbObjects.js');
 
 module.exports = {
     name: Events.MessageCreate,
@@ -17,6 +17,7 @@ module.exports = {
             const emojiArray = message.content.match(emojiRegex) || [];
             const emojiArrayFiltered = emojiArray.filter(emoji => emoji !== '💬' && emoji !== '🗑️');
 
+            let newMessage;
             if (emojiArrayFiltered.length > 0) {
                 // Poll message
                 const embedPoll = new EmbedBuilder()
@@ -25,16 +26,10 @@ module.exports = {
                     .setDescription(message.content)
                     .setTimestamp()
                     .setFooter({ text: message.guild.name, iconURL: message.guild.iconURL() })
-                
+
                 await message.delete();
-                
-                let msgPoll;
-                if (message.attachments.size > 0) {
-                    await message.channel.send({ embeds: [embedPoll] });
-                    msgPoll = await message.channel.send({ files: message.attachments.map(attachment => attachment.url) });
-                } else {
-                    msgPoll = await message.channel.send({ embeds: [embedPoll] });
-                }
+
+                newMessage = await message.channel.send({ embeds: [embedPoll], files: message.attachments.map(attachment => attachment.url) });
                 let index = 0; // Limit of 20 reactions under a message
                 let maxReactions = emojiArrayFiltered.length;
                 if (emojiArrayFiltered.length > 18) {
@@ -42,34 +37,34 @@ module.exports = {
                     await message.author.send({ content: `⚠️ **Le nombre de réactions est limité à 18 par sondage dans <#${message.channel.id}>.** Les \`${emojiArrayFiltered.length - 18}\` dernières réactions de ton message n'ont pas pu être ajoutées.\nSi le message ne te convient pas, tu peux le supprimer en cliquant sur l'emoji \`🗑️\` situé en dessous.` });
                 }
                 while (index < maxReactions) {
-                    await msgPoll.react(emojiArrayFiltered[index]);
+                    await newMessage.react(emojiArrayFiltered[index]);
                     index++;
                 }
-                await msgPoll.react('💬');
-                await msgPoll.react('🗑️');
-                
+                await newMessage.react('💬');
+                await newMessage.react('🗑️');
+
             } else {
-                // idea_poll message
-                const embed = new EmbedBuilder()
-                    .setAuthor({ name: `${message.member.displayName} (${message.author.id})`, iconURL: message.author.displayAvatarURL() })
+                // Idea message
+                const embedIdea = new EmbedBuilder()
+                    .setAuthor({ name: `${message.member.displayName}`, iconURL: message.author.displayAvatarURL() })
                     .setColor(color_neutral)
                     .setDescription(message.content)
-    
+
                 await message.delete();
-    
-                let msg;
-                if (message.attachments.size > 0) {
-                    await message.channel.send({ embeds: [embed] });
-                    msg = await message.channel.send({ files: message.attachments.map(attachment => attachment.url) });
-                } else {
-                    msg = await message.channel.send({ embeds: [embed] });
-                }
-                await msg.react(emoji_yes);
-                await msg.react(emoji_neutral);
-                await msg.react(emoji_no);
-                await msg.react('💬');
-                await msg.react('🗑️');
+
+                newMessage = await message.channel.send({ embeds: [embedIdea], files: message.attachments.map(attachment => attachment.url) });
+                await newMessage.react(emoji_yes);
+                await newMessage.react(emoji_neutral);
+                await newMessage.react(emoji_no);
+                await newMessage.react('💬');
+                await newMessage.react('🗑️');
             }
+
+            // Add the suggestion in the database
+            await Suggestions.create({
+                author_id: message.author.id,
+                message_id: newMessage.id,
+            })
 
             // Mention the notification role
             const guild = await Guilds.findOne({ where: { id: message.guild.id } });
@@ -80,9 +75,9 @@ module.exports = {
                 }
             }
 
-        /*
-        * Mention system (agenda & absence)
-        */
+            /*
+            * Mention system (agenda & absence)
+            */
         } else if (message.content.startsWith('!') && message.content.length < 5) {
             if (message.channel.id === channel_agenda) {
                 message.delete();

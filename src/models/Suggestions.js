@@ -1,16 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("suggestions", {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-        },
-        embed_id: {
+        author_id: {
             type: DataTypes.STRING,
             defaultValue: "",
             allowNull: false,
         },
-        files_id: {
+        message_id: {
             type: DataTypes.STRING,
+            defaultValue: "",
+            allowNull: false,
         },
         is_answered: {
             type: DataTypes.BOOLEAN,

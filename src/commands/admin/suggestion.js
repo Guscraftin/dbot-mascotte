@@ -1,6 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { channel_idea_poll, color_yes, color_no } = require(process.env.CONSTANT);
-const { Members } = require('../../dbObjects');
+const { Suggestions } = require('../../dbObjects');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,18 +25,17 @@ module.exports = {
         const onlyNumber = /^\d+$/;
         if (!onlyNumber.test(messageId)) return interaction.reply({ content: "L'id doit être l'identifiant du message de la suggestion.", ephemeral: true });
 
+        // Get the suggestion in the database
+        const suggestion = await Suggestions.findOne({ where: { message_id: messageId }});
+        if (suggestion === null) return interaction.reply({ content: "Cette suggestion n'existe pas dans la base de donnée. Veuillez contacter un admin.", ephemeral: true });
+        
         // Get the message of the suggestion
         const message = await interaction.guild.channels.fetch(channel_idea_poll).then(channel =>
-            channel.messages.fetch(messageId).catch(() => null)
+            channel.messages.fetch(suggestion.message_id).catch(() => null)
         );
         if (!message) return interaction.reply({ content: "Ce message n'existe pas.", ephemeral: true });
+        if (suggestion.is_answered) return interaction.reply({ content: `Cette [suggestion](${message.url}) a déjà été traitée.`, ephemeral: true });
         const embedMsg = message.embeds[0];
-
-        // Get the author of the suggestion
-        const authorName = embedMsg.author.name;
-        if (authorName.includes(" - ")) return interaction.reply({ content: `Cette [suggestion](${message.url}) a déjà été traitée.`, ephemeral: true });
-        const authorId = authorName.split(" (")[1].split(")")[0];
-        const author = await interaction.guild.members.fetch(authorId);
 
         // Remove the specials emojis
         const deleteEmojis = ["💬", "🗑️"];
@@ -49,21 +48,22 @@ module.exports = {
              * Accept a suggestion
              */
             case "accepter":
-                let acceptEmbed;    
+                let acceptEmbed;
                 if (comment) {
                     acceptEmbed = new EmbedBuilder()
-                        .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
+                        .setAuthor({ name: `${embedMsg.author.name} - ✅ Suggestion acceptée par ${interaction.member.displayName}` })
                         .setColor(color_yes)
                         .setDescription(embedMsg.description)
                         .setFields([{ name: "Commentaire :", value: `>>> ${comment}` }])
                 } else {
                     acceptEmbed = new EmbedBuilder()
-                        .setAuthor({ name: `${author.displayName} - ✅ Suggestion acceptée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
+                        .setAuthor({ name: `${embedMsg.author.name} - ✅ Suggestion acceptée par ${interaction.member.displayName}` })
                         .setColor(color_yes)
                         .setDescription(embedMsg.description)
                 }
-                
+
                 await message.edit({ embeds: [acceptEmbed] });
+                await suggestion.update({ is_answered: true });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **acceptée**.`, ephemeral: true });
 
             /**
@@ -71,12 +71,13 @@ module.exports = {
              */
             case "refuser":
                 const refuseEmbed = new EmbedBuilder()
-                    .setAuthor({ name: `${author.displayName} - ❌ Suggestion refusée par ${interaction.member.displayName}`, iconURL: author.displayAvatarURL() })
+                    .setAuthor({ name: `${embedMsg.author.name} - ❌ Suggestion refusée par ${interaction.member.displayName}` })
                     .setColor(color_no)
                     .setDescription(embedMsg.description)
                     .setFields([{ name: "Raison :", value: `>>> ${comment}` }])
 
                 await message.edit({ embeds: [refuseEmbed] });
+                await suggestion.update({ is_answered: true });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **refusée**.`, ephemeral: true });
 
             /**
