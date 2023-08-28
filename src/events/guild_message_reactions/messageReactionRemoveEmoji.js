@@ -9,7 +9,7 @@ module.exports = {
         /**
          * Logs the event
          */
-        const logChannel = await reaction.guild.channels.fetch(channel_logs);
+        const logChannel = await reaction.message.guild.channels.fetch(channel_logs);
         
         const embed = new EmbedBuilder()
             .setAuthor({ name: reaction.client.user.tag, iconURL: reaction.client.user.displayAvatarURL() })
