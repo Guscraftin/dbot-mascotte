@@ -12,6 +12,7 @@ module.exports = {
         const amountToDelete = interaction.options.getInteger('message');
         const member = interaction.options.getUser('membre');
 
+        await interaction.deferReply({ ephemeral: true });
         const messagesToDelete = await interaction.channel.messages.fetch();
 
         if (member) {
@@ -24,11 +25,11 @@ module.exports = {
             });
 
             await interaction.channel.bulkDelete(filteredMemberMessages, true).then(messages => {
-                interaction.reply({ content: `J'ai supprimé ${messages.size} messages de l'utilisateur ${member} !`, ephemeral: true });
+                interaction.editReply({ content: `J'ai supprimé ${messages.size} messages de l'utilisateur ${member} !`, ephemeral: true });
             })
         } else {
             await interaction.channel.bulkDelete(amountToDelete, true).then(messages => {
-                interaction.reply({ content: `J'ai supprimé ${messages.size} messages dans ce salon !`, ephemeral: true });
+                interaction.editReply({ content: `J'ai supprimé ${messages.size} messages dans ce salon !`, ephemeral: true });
             });
         }
     }
