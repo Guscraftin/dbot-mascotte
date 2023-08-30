@@ -1,7 +1,7 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const { channel_logs, color_basic } = require(process.env.CONSTANT);
 
-
+// TODO: Update with more information
 module.exports = {
     name: Events.ChannelUpdate,
     async execute(oldChannel, newChannel){
