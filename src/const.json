@@ -4,7 +4,12 @@
     "category_reserve": "1127469832221245510",
 
     "channel_announce": "1130459876104097792",
+    "channel_rules": "1130459918479134780",
+    "channel_information": "1130459961315577926",
+    "channel_tickets": "1130460060095627295",
     "channel_idea_poll": "1130460103888339005",
+    "channel_general": "1130460154341621810",
+    "channel_command": "1130460221899288617",
     "channel_muted": "1130460274533609482",
     "channel_agenda": "1130460414552055870",
     "channel_absence": "1130460449150861483",
