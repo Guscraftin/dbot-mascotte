@@ -149,9 +149,6 @@ Voici des liens officiels de l'école pour notre scolarité ainsi que des liens 
 > -> Absence : https://absences.epita.net/
 > -> International : https://epitafr.sharepoint.com/sites/EPITAStudyAbroad
 > -> EPITA Relations Entreprises : https://epita.net/
-> -> EPITA Signalement : https://epita.signalement.net/
-> -> RocketChat : https://rocketchat.cri.epita.fr/
-> -> LRE : https://www.lre.epita.fr/
 
 **__Liens utiles :__**
 > -> Office : https://office.com/
@@ -183,10 +180,12 @@ __Invite discord :__
 > -> Serveur Principal de la promo
 > **EPITA 2026** : https://discord.gg/wJn9Ku98zp
 > -> Les associations + Organisation des événements
-> **BDE Neytiki** :  https://discord.gg/3EhCsJgG5X et https://bde-epita.com/
+> **BDE Neytiki** :  https://discord.gg/3EhCsJgG5X 
 > **Vie Associatif Paris :** https://discord.gg/j9t4PdbRpg 
 > -> Pour les voyages à l'international
-> **EPITA International** : https://discord.gg/ZDUxpED`)
+> **EPITA International** : https://discord.gg/ZDUxpED
+> -> Pour s'amuser
+> **EpiFun** : https://discord.gg/fVgAVja`)
     .setColor('#880185');
 
 const infoSelectMenu = new ActionRowBuilder().addComponents(
