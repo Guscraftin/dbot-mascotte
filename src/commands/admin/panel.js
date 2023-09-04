@@ -130,7 +130,12 @@ __Les commandes des bots :__
 
 const infoEighthEmbed = new EmbedBuilder()
     .setDescription(`# Le planning de l'année
-*Inconnu jusqu'à présent.*`)
+Voici __notre planning scolaire__ avec nos vacances et nos projets au cours de cette année scolaire en ING1.`)
+    .setImage('https://cdn.discordapp.com/attachments/1148354069082161182/1148354081014960179/image.png')
+    .setColor('#4833fe');
+
+const infoEighthEmbed2 = new EmbedBuilder()
+    .setImage('https://cdn.discordapp.com/attachments/1148354069082161182/1148354188951179375/image.png')
     .setColor('#4833fe');
 
 const infoNinthEmbed = new EmbedBuilder()
@@ -396,7 +401,7 @@ Exemples : \`Mascotte\`, \`Mascotte | Petit chatounet\``, inline: false },
                 const infoEmbeds = [
                     infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed,
                     infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed,
-                    infoNinthEmbed
+                    infoEighthEmbed2, infoNinthEmbed
                 ];
                 
                 async function sendMessagesWithDelay() {
@@ -439,7 +444,7 @@ Exemples : \`Mascotte\`, \`Mascotte | Petit chatounet\``, inline: false },
 
         return interaction.editReply({ content: `Le panel nommé \`${name}\` a bien été déployé dans ce salon.`, ephemeral: true });
     },
-    infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed, infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed, infoNinthEmbed, infoSelectMenu
+    infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed, infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed, infoEighthEmbed2, infoNinthEmbed, infoSelectMenu
 };
 
 

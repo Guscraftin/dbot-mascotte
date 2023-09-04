@@ -1,4 +1,4 @@
-const { infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed, infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed, infoNinthEmbed, infoSelectMenu } = require('../../commands/admin/panel.js');
+const { infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed, infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed, infoEighthEmbed2, infoNinthEmbed, infoSelectMenu } = require('../../commands/admin/panel.js');
 
 module.exports = {
     data: {
@@ -29,7 +29,7 @@ module.exports = {
                 return interaction.reply({ embeds: [infoSeventhEmbed], components: [infoSelectMenu], ephemeral: true });
 
             case "info8":
-                return interaction.reply({ embeds: [infoEighthEmbed], components: [infoSelectMenu], ephemeral: true });
+                return interaction.reply({ embeds: [infoEighthEmbed, infoEighthEmbed2], components: [infoSelectMenu], ephemeral: true });
 
             case "info9":
                 return interaction.reply({ embeds: [infoNinthEmbed], components: [infoSelectMenu], ephemeral: true });
