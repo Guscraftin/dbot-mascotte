@@ -409,7 +409,7 @@ Exemples : \`Mascotte\`, \`Mascotte | Petit chatounet\``, inline: false },
                         await new Promise(resolve => {
                             setTimeout(async () => {
                                 const msg = await interaction.channel.send({ embeds: [infoEmbed] });
-                                infoListMessage.push(msg.url);
+                                if (infoEmbed !== infoEighthEmbed2) infoListMessage.push(msg.url);
                                 resolve();
                             }, 500);
                         });
