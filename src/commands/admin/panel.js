@@ -138,9 +138,12 @@ const infoNinthEmbed = new EmbedBuilder()
 Voici des liens officiels de l'école pour notre scolarité ainsi que des liens plus annexes pas forcément utiles.
 
 **__Liens officiels :__**
-> -> Tous les raccourcis : https://epita.it/
+> -> La plupart des raccourcis : https://epita.it/
 > -> Site officiel EPITA : https://epita.fr/
+> -> Site de la scolarité : https://epitafr.sharepoint.com/sites/EPITAscolarites
 > -> CRI : https://cri.epita.fr/
+> -> Moodle : https://moodle.cri.epita.fr/
+> -> Moodle Exam : https://moodle-exam.cri.epita.fr/
 > -> Zeus (Emploi du temps) :  https://zeus.ionis-it.com/
 > -> IONISX (MIMOS) : https://ionisx.com/
 > -> Intracom : https://intracom.epita.fr/
@@ -159,10 +162,12 @@ Voici des liens officiels de l'école pour notre scolarité ainsi que des liens 
 > -> Rosetta Stone : https://login.rosettastone.com/#/launchpad
 > -> Epinotes : https://epinotes.fr
 > -> Plan des campus : https://epimap.fr/
+> -> Plan des salles machines : https://fleet.pie.cri.epita.fr/
 > -> Intranet des assistants : https://intra.assistants.epita.fr
 > -> Gitlab CRI : https://gitlab.cri.epita.fr/
 > -> Doc du CRI : https://doc.cri.epita.fr/
 > -> Statut des services du CRI : https://devou.ps/
+> -> Documentation de la Forge : https://docs.forge.epita.fr/
 > -> Alumni : https://epita-alumni.org/fr/
 
 > -> __Annales :__ 
