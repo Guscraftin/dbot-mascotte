@@ -4,6 +4,7 @@
     "category_reserve": "1127469832221245510",
 
     "channel_announce": "1130459876104097792",
+    "channel_mails": "1163507639901229129",
     "channel_rules": "1130459918479134780",
     "channel_information": "1130459961315577926",
     "channel_tickets": "1130460060095627295",
@@ -30,7 +31,10 @@
     "role_organizer_event": "1143163513196531813",
 
     "role_separator": "1127471366032085082",
-    "role_mail": "1127471501533270027",
+    "role_discord": "1167133647346876526",
+    "role_mail_moodle": "1167012978495868938",
+    "role_mail_news": "1167012181540343848",
+    "role_mail_other": "1127471501533270027",
     "role_idea_poll": "1127471522043412510",
     "role_agenda": "1127471534848606248",
     "role_absence": "1127471556596076555",

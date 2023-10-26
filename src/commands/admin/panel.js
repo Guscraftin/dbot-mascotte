@@ -1,11 +1,11 @@
 const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { 
-    channel_announce, channel_rules, channel_information, channel_tickets, channel_idea_poll,
+    channel_announce, channel_mails, channel_rules, channel_information, channel_tickets, channel_idea_poll,
     channel_general, channel_command, channel_muted, channel_agenda, channel_absence,
     vocal_general, vocal_course, vocal_sleep, vocal_panel,
     color_basic, emoji_yes,
     role_admins, role_delegates, role_students,
-    role_mail, role_idea_poll, role_agenda, role_absence, role_help
+    role_discord, role_mail_moodle, role_mail_news, role_mail_other, role_idea_poll, role_agenda, role_absence, role_help,
 } = require(process.env.CONSTANT);
 
 const infoFirstEmbed = new EmbedBuilder()
@@ -326,7 +326,10 @@ PS : Pour plus d'informations, consultez <#${channel_information}>.`)
                     .setDescription(`# \`🔰\` - Rôle réaction
 Souhaitez-vous être notifié des messages que vous jugez importants, tels que les annonces, les idées et les sondages, l'agenda ou encore le contenu des cours passés ? Grâce à ce panneau de contrôle, vous avez la possibilité de sélectionner les notifications que vous désirez recevoir. 
 ### Alors, quelles notifications aimeriez-vous recevoir ?
-> 📩 : Mail *[<#${channel_announce}>]*
+> 🤖 : Discord *[<#${channel_announce}>]*
+> 📑 : Mail Moodle *[<#${channel_mails}>]*
+> 📰 : Mail News *[<#${channel_mails}>]*
+> 📩 : Mail Autre *[<#${channel_mails}>]*
 > 📊 : Idées et Sondages *[<#${channel_idea_poll}>]*
 > 📅 : Agenda *[<#${channel_agenda}>]*
 > 🤒 : Contenu des cours passsés *[<#${channel_absence}>]*
@@ -339,9 +342,24 @@ Souhaitez-vous être notifié des messages que vous jugez importants, tels que l
                         .setPlaceholder('Sélectionnez un rôle ou plusieurs rôles...')
                         .addOptions(
                             {
-                                label: "📩・ Mail",
-                                description: "Recevoir des notifications pour les nouveaux mails.",
-                                value: `${role_mail}`,
+                                label: "🤖・ Discord",
+                                description: "Recevoir une notification lors d'une annonce discord / bot.",
+                                value: `${role_discord}`,
+                            },
+                            {
+                                label: "📑・ Mail Moodle",
+                                description: "Recevoir des notifications pour les messages Moodle.",
+                                value: `${role_mail_moodle}`,
+                            },
+                            {
+                                label: "📰・ Mail News",
+                                description: "Recevoir des notifications pour les messages News.",
+                                value: `${role_mail_news}`,
+                            },
+                            {
+                                label: "📩・ Mail Autre",
+                                description: "Recevoir des notifications pour les autres mails.",
+                                value: `${role_mail_other}`,
                             },
                             {
                                 label: "📊・ Idées et Sondages",
@@ -365,7 +383,7 @@ Souhaitez-vous être notifié des messages que vous jugez importants, tels que l
                             },
                         )
                         .setMinValues(0)
-			            .setMaxValues(5),
+			            .setMaxValues(8),
                 );
                 break;
 

@@ -1,4 +1,6 @@
-const { role_mail, role_idea_poll, role_agenda, role_absence, role_help } = require(process.env.CONSTANT);
+const {
+    role_mail_moodle, role_mail_news, role_mail_other, role_idea_poll, role_agenda, role_absence, role_help, role_discord
+} = require(process.env.CONSTANT);
 
 module.exports = {
     data: {
@@ -8,7 +10,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         const roleSelected = interaction.values;
-        const testRoles = [role_mail, role_idea_poll, role_agenda, role_absence, role_help];
+        const testRoles = [role_mail_moodle, role_mail_news, role_mail_other, role_idea_poll, role_agenda, role_absence, role_help, role_discord];
         const listRemovedRoles = [];
         const listAddedRoles = [];
 
