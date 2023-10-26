@@ -24,8 +24,9 @@ const infoSecondEmbed = new EmbedBuilder()
 En arrivant sur le serveur, vous avez votre pseudo de base de votre compte discord. **Je vous invite à le changer avec __votre prénom__** (comme indiqué dans le <#${channel_rules}>) pour que l'on sache qui vous êtes. 
 Si vous ne savez pas comment procéder, vous n'avez qu'à suivre les instructions ci dessous.
 *NB : Vous pouvez à n'importe quel moment changer votre pseudo.*
-
-**Comment se renommer ?**
+### Comment se renommer ?
+> Vous pouvez **utiliser la commande \`/nick\`** dans <#${channel_command}> ou bien **changer votre pseudo manuellement** via les étapes ci-dessous.
+*Attention, il est possible que les étapes ci-dessous ne soit plus d'actualités en fonction des récentes mises à jour de la plateforme.*
 
 __Si vous êtes sur ordinateur :__
 > -> Faite un clique droit sur votre pseudo à droite
