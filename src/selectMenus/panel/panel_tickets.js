@@ -47,9 +47,15 @@ module.exports = {
                 // Check if the user is a student
                 if (!interaction.member.roles.cache.has(role_students)) return interaction.editReply({ content: "Vous n'avez pas la possibilité de contacter directement les délégués. Pour signaler le problème, veuillez ouvrir un ticket auprès des admins.", ephemeral: true});
 
+                // Check if there are at least one delegate
+                const delegates = await interaction.guild.roles.fetch(role_delegates).then(role => role.members);
+                if (delegates.size === 0) return interaction.editReply({ content: "Il n'y a pas de délégués pour le moment. Veuillez contacter un admin.", ephemeral: true});
+
+                // Check if the user has already a ticket opened
                 ticket = await Tickets.findOne({ where: { user_id: interaction.user.id, category: name, status: "opened" } });
                 if (ticket) return interaction.editReply({ content: `Vous avez déjà un ticket d'ouvert dans <#${ticket.channel_id}> !`, ephemeral: true});
 
+                // Create the ticket channel
                 channel = await createTicket(interaction, name, roleSupport);
                 openEmbed = new EmbedBuilder()
                     .setDescription(`# Ticket aux ${name}\n`+
