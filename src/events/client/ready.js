@@ -30,6 +30,9 @@ module.exports = {
         // Launch cron jobs
         new cron.CronJob("0 */5 * * *", () => checkBirthdays(guild), null, true, "Europe/Paris");
 
+        // Set the client user's activity
+        await client.user.setPresence({ activities: [{ name: "vous câliner !", type: 0 }], status: "online" });
+
         // Log the bot is ready
         return console.log(`${client.user.username} est prêt à être utilisé par ${usersCount} utilisateurs sur ${guildsCount.size} serveurs !`);
     },
