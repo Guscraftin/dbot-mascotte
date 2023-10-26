@@ -37,10 +37,9 @@ module.exports = {
         if (suggestion.is_answered) return interaction.reply({ content: `Cette [suggestion](${message.url}) a déjà été traitée.`, ephemeral: true });
         const embedMsg = message.embeds[0];
 
-        // Remove the specials emojis
+        // Const to delete the specials emojis
         const deleteEmojis = ["💬", "🗑️"];
         const reactions = await message.reactions.cache.filter(reactionEmoji => deleteEmojis.includes(reactionEmoji.emoji.name));
-        await reactions.each(reaction => reaction.remove());
 
         // Update the suggestion
         switch (action) {
@@ -62,6 +61,10 @@ module.exports = {
                         .setDescription(embedMsg.description)
                 }
 
+                // Remove the specials emojis
+                await reactions.each(reaction => reaction.remove());
+
+                // Edit the message and reply
                 await message.edit({ embeds: [acceptEmbed] });
                 await suggestion.update({ is_answered: true });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **acceptée**.`, ephemeral: true });
@@ -76,6 +79,10 @@ module.exports = {
                     .setDescription(embedMsg.description)
                     .setFields([{ name: "Raison :", value: `>>> ${comment}` }])
 
+                // Remove the specials emojis
+                await reactions.each(reaction => reaction.remove());
+
+                // Edit the message and reply
                 await message.edit({ embeds: [refuseEmbed] });
                 await suggestion.update({ is_answered: true });
                 return interaction.reply({ content: `La [suggestion](${message.url}) a été **refusée**.`, ephemeral: true });
