@@ -166,6 +166,7 @@ Voici des liens officiels de l'école pour notre scolarité ainsi que des liens 
 > -> Projet Voltaire [TE] : https://projet-voltaire.fr
 > -> Rosetta Stone : https://login.rosettastone.com/#/launchpad
 > -> Epinotes : https://epinotes.fr
+> -> Epiquote : https://epiquote.fr
 > -> Plan des campus : https://epimap.fr/
 > -> Plan des salles machines : https://fleet.pie.cri.epita.fr/
 > -> Intranet des assistants : https://intra.assistants.epita.fr
