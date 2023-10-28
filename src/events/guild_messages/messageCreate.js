@@ -5,6 +5,7 @@ const {
     role_agenda, role_absence, role_idea_poll
 } = require(process.env.CONSTANT);
 const { Guilds, Suggestions } = require('../../dbObjects.js');
+const { emojiRegex } = require('../../functions.js');
 
 module.exports = {
     name: Events.MessageCreate,
@@ -13,8 +14,8 @@ module.exports = {
         * Suggestion system
         */
         if (message.channel.id === channel_idea_poll && !message.author.bot) {
-            const emojiRegex = /<:[a-zA-Z_\d]+:\d+>|\p{Extended_Pictographic}/gu;
-            const emojiArray = message.content.match(emojiRegex) || [];
+            const msgEmojiRegex = new RegExp("(<:[A-Za-z0-9_]+:[0-9]+>)|(" + emojiRegex() + ")", "gu");
+            const emojiArray = message.content.match(msgEmojiRegex) || [];
             const emojiArrayFiltered = emojiArray.filter(emoji => emoji !== '💬' && emoji !== '🗑️');
 
             let newMessage;
