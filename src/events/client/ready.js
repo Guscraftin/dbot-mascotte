@@ -10,6 +10,8 @@ module.exports = {
         let guildsCount = await client.guilds.fetch();
         let usersCount = client.guilds.cache.reduce((a, g) => a + g.memberCount, 0);
 
+        await client.user.setPresence({ activities: [{ name: "se réveiller !", type: 0 }], status: "online" });
+
         // Sync the database
         await Guilds.sync({ alter: true });
         await Members.sync({ alter: true });
