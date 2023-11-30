@@ -25,9 +25,13 @@ module.exports = {
 
         // Check if the bot is synchronized with the server
         await checkBirthdays(guild);
+        console.log("2/5 : Birthdays checked !");
         await muteTimeout(guild);
+        console.log("3/5 : Timeout checked !");
         await removeEmptyVoiceChannel(guild);
+        console.log("4/5 : Empty voice channel removed !");
         await syncRoles(guild);
+        console.log("5/5 : Roles synchronized !");
 
         // Launch cron jobs
         new cron.CronJob("0 */5 * * *", () => checkBirthdays(guild), null, true, "Europe/Paris");
