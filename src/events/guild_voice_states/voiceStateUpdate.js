@@ -64,7 +64,7 @@ module.exports = {
             const embedJoin = new EmbedBuilder()
                 .setAuthor({ name: newState.member.user.tag, iconURL: newState.member.displayAvatarURL() })
                 .setColor(color_basic)
-                .setDescription(`<@${newState.member.id}> **a rejoint le salon vocal ${newState.channel} ||(\`${newState.channel.name}\`)||.**
+                .setDescription(`<@${newState.member.id}> **a rejoint le salon vocal ${newState.channel} ||(\`${newState?.channel?.name}\`)||.**
                 `)
                 .setTimestamp()
                 .setFooter({ text: newState.guild.name, iconURL: newState.guild.iconURL() })
