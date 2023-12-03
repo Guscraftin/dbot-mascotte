@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { Guilds, Members, Suggestions, Tickets } = require('../../dbObjects.js');
+const { Guilds, Mails, Members, Suggestions, Tickets } = require('../../dbObjects.js');
 const { checkBirthdays, muteTimeout, removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 const cron = require("cron");
 
@@ -14,6 +14,7 @@ module.exports = {
 
         // Sync the database
         await Guilds.sync({ alter: true });
+        await Mails.sync({ alter: true });
         await Members.sync({ alter: true });
         await Suggestions.sync({ alter: true });
         await Tickets.sync({ alter: true });
