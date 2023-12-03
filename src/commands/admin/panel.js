@@ -406,8 +406,8 @@ Souhaitez-vous être notifié des messages que vous jugez importants, tels que l
 \`\`\`fix
 Si vous ne respectez pas ces règles, des sanctions pourront être appliquées par l'équipe de Modération.
 \`\`\`\n_ _`, inline: false },
-                        { name: `__Norme des pseudos :__`, value: `>>> -> Pour tous les membres : **Prénom** [Votre pseudo doit impérativement débuter par votre prénom. Ensuite, vous avez toute liberté pour y ajouter ce que vous désirez.]
-Exemples : \`Mascotte\`, \`Mascotte | Petit chatounet\``, inline: false },
+                        { name: `__Norme des pseudos :__`, value: `>>> -> Votre pseudo doit impérativement débuter par votre **prénom.nom**. Ensuite, vous avez toute liberté pour y ajouter ce que vous désirez.
+Exemples : \`mascotte.chat\`, \`mascotte.chat | Petit chatounet\``, inline: false },
                     )
                     .setColor(color_basic);
 
