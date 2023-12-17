@@ -39,6 +39,8 @@ async function getUserAsync() {
         throw new Error('Graph has not been initialized for user auth');
     }
 
+    await renewTokenIfNeeded();
+
     return _userClient.api('/me')
         // Only request specific properties
         .select(['displayName', 'mail', 'userPrincipalName'])
@@ -47,6 +49,58 @@ async function getUserAsync() {
 module.exports.getUserAsync = getUserAsync;
 
 
+async function renewTokenIfNeeded() {
+    // Handle case where token is undefined
+    if (!_deviceCodeCredential) {
+        throw new Error('Graph has not been initialized for user auth');
+    }
+
+    if (!_settings?.graphUserScopes) {
+        throw new Error('Setting "scopes" cannot be undefined');
+    }
+
+    // Define expiration time buffer in milliseconds and get token
+    const expirationBufferInMs = 300000; // 5 minutes before expiry for renewal
+    const token = await _deviceCodeCredential.getToken(_settings?.graphUserScopes);
+
+    const now = Date.now();
+    const expiresOn = token.expiresOnTimestamp - expirationBufferInMs;
+
+    if (expiresOn <= now) {
+        await _deviceCodeCredential.getToken(_settings?.graphUserScopes);
+
+        const authProvider = new authProviders.TokenCredentialAuthenticationProvider(
+            _deviceCodeCredential, {
+            scopes: _settings.graphUserScopes
+        });
+
+        _userClient = graph.Client.initWithMiddleware({
+            authProvider: authProvider
+        });
+
+        // FIXME: Delete when it's not necessary
+        console.log('Token renewed');
+    }
+}
+
+async function getLastMail() {
+    if (!_userClient) {
+        throw new Error('Graph has not been initialized for user auth');
+    }
+
+    await renewTokenIfNeeded();
+
+    return _userClient.api('/me/mailFolders/inbox/messages')
+        .select(['from', 'isRead', 'receivedDateTime', 'subject', 'body', 'hasAttachments'])
+        .top(100)
+        .orderby('receivedDateTime DESC')
+        .get();
+}
+module.exports.getLastMail = getLastMail;
+
+
+
+// FIXME: Useless for now
 async function getUserTokenAsync() {
     // Ensure credential isn't undefined
     if (!_deviceCodeCredential) {
@@ -107,16 +161,3 @@ async function sendMailAsync(subject, body, recipient) {
         });
 }
 module.exports.sendMailAsync = sendMailAsync;
-
-async function getLastMail() {
-    if (!_userClient) {
-        throw new Error('Graph has not been initialized for user auth');
-    }
-
-    return _userClient.api('/me/mailFolders/inbox/messages')
-        .select(['from', 'isRead', 'receivedDateTime', 'subject', 'body', 'hasAttachments'])
-        .top(100)
-        .orderby('receivedDateTime DESC')
-        .get();
-}
-module.exports.getLastMail = getLastMail;
