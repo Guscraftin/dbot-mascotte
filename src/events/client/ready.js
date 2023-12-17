@@ -46,7 +46,9 @@ module.exports = {
 
         // Launch cron jobs
         new cron.CronJob("0 */5 * * *", () => checkBirthdays(guild), null, true, "Europe/Paris"); // Check 5 time a day
-        new cron.CronJob("* * * * *", () => { checkNewMail(guild) }, null, true, "Europe/Paris"); // Check every minutes
+        
+        // Launch setInterval (js function)
+        setInterval(() => checkNewMail(guild), 10000); // Check every 10 seconds
 
         // Set the client user's activity
         await client.user.setPresence({ activities: [{ name: "vous câliner !", type: 0 }], status: "online" });
