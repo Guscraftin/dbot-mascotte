@@ -44,15 +44,15 @@ async function checkNewMail(guild) {
             const channelMails = await guild.channels.fetch(channel_test_mail);
             if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr")
             {
-                await channelMails?.send({ content: `Nouveau mail reçu Moodle !`});
+                await channelMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !`});
             }
             else if (message.from.emailAddress.address === "discourse@forge.epita.fr")
             {
-                await channelMails?.send({ content: `Nouveau mail reçu News !`});
+                await channelMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !`});
             }
             else
             {
-                await channelMails?.send({ content: `Nouveau mail reçu !`});
+                await channelMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !`});
             }
 
             await Mails.create({ id: message.id });
