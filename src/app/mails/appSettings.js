@@ -3,8 +3,7 @@ const settings = {
     'tenantId': process.env.TENANT_ID,
     'graphUserScopes': [
         'user.read',
-        'mail.read',
-        'mail.send'
+        'mail.read'
     ]
 };
 
