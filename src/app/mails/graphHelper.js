@@ -9,7 +9,6 @@ let _deviceCodeCredential = undefined;
 let _userClient = undefined;
 
 function initializeGraphForUserAuth(settings, deviceCodePrompt) {
-    // Ensure settings isn't null
     if (!settings) {
         throw new Error('Settings cannot be undefined');
     }
@@ -34,7 +33,6 @@ function initializeGraphForUserAuth(settings, deviceCodePrompt) {
 module.exports.initializeGraphForUserAuth = initializeGraphForUserAuth;
 
 async function getUserAsync() {
-    // Ensure client isn't undefined
     if (!_userClient) {
         throw new Error('Graph has not been initialized for user auth');
     }
@@ -50,7 +48,6 @@ module.exports.getUserAsync = getUserAsync;
 
 
 async function renewTokenIfNeeded() {
-    // Handle case where token is undefined
     if (!_deviceCodeCredential) {
         throw new Error('Graph has not been initialized for user auth');
     }
@@ -59,7 +56,6 @@ async function renewTokenIfNeeded() {
         throw new Error('Setting "scopes" cannot be undefined');
     }
 
-    // Define expiration time buffer in milliseconds and get token
     const expirationBufferInMs = 300000; // 5 minutes before expiry for renewal
     const token = await _deviceCodeCredential.getToken(_settings?.graphUserScopes);
 
@@ -97,67 +93,3 @@ async function getLastMail() {
         .get();
 }
 module.exports.getLastMail = getLastMail;
-
-
-
-// FIXME: Useless for now
-async function getUserTokenAsync() {
-    // Ensure credential isn't undefined
-    if (!_deviceCodeCredential) {
-        throw new Error('Graph has not been initialized for user auth');
-    }
-
-    // Ensure scopes isn't undefined
-    if (!_settings?.graphUserScopes) {
-        throw new Error('Setting "scopes" cannot be undefined');
-    }
-
-    // Request token with given scopes
-    const response = await _deviceCodeCredential.getToken(_settings?.graphUserScopes);
-    return response.token;
-}
-module.exports.getUserTokenAsync = getUserTokenAsync;
-
-async function getInboxAsync() {
-    // Ensure client isn't undefined
-    if (!_userClient) {
-        throw new Error('Graph has not been initialized for user auth');
-    }
-
-    return _userClient.api('/me/mailFolders/inbox/messages')
-        .select(['from', 'isRead', 'receivedDateTime', 'subject'])
-        .top(25)
-        .orderby('receivedDateTime DESC')
-        .get();
-}
-module.exports.getInboxAsync = getInboxAsync;
-
-async function sendMailAsync(subject, body, recipient) {
-    // Ensure client isn't undefined
-    if (!_userClient) {
-        throw new Error('Graph has not been initialized for user auth');
-    }
-
-    // Create a new message
-    const message = {
-        subject: subject,
-        body: {
-            content: body,
-            contentType: 'text'
-        },
-        toRecipients: [
-            {
-                emailAddress: {
-                    address: recipient
-                }
-            }
-        ]
-    };
-
-    // Send the message
-    return _userClient.api('me/sendMail')
-        .post({
-            message: message
-        });
-}
-module.exports.sendMailAsync = sendMailAsync;
