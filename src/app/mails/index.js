@@ -3,7 +3,6 @@ const graphHelper = require('./graphHelper');
 const { Mails } = require('../../dbObjects');
 const { channel_test_mail } = require(process.env.CONSTANT);
 
-// FIXME : Check if the authentication has no expiration date else, refresh the token
 // TODO : When it's done, remove one by one permission in https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/CallAnAPI/appId/402e020c-df86-41ee-b7fe-1644cd12ec14/isMSAApp~/false, to keep only the necessary ones
 // TODO : Continue to read the documentation of Microsoft Graph API (mainly the part about security) => https://learn.microsoft.com/en-us/graph/
 
@@ -66,41 +65,6 @@ async function checkNewMail(guild) {
     } catch (err) {
         console.log(`Error getting user's inbox: ${err}`);
     }
-
-    /*
-    const choices = [
-        'Display access token',
-        'List my inbox',
-        'Send mail',
-        'Get last mail'
-    ];
-
-    while (choice != -1) {
-        switch (choice) {
-            case -1:
-                // Exit
-                console.log('Goodbye...');
-                break;
-            case 0:
-                // Display access token
-                await displayAccessTokenAsync();
-                break;
-            case 1:
-                // List emails from user's inbox
-                await listInboxAsync();
-                break;
-            case 2:
-                // Send an email message
-                await sendMailAsync();
-                break;
-            case 3:
-                // Run any Graph code
-                await getLastMail();
-                break;
-            default:
-                console.log('Invalid choice! Please try again.');
-        }
-    }*/
 }
 module.exports.initApp = initApp;
 module.exports.initCheckMail = initCheckMail;
@@ -121,54 +85,3 @@ async function greetUserAsync() {
         console.log(`Error getting user: ${err}`);
     }
 }
-/*
-async function displayAccessTokenAsync() {
-    try {
-        const userToken = await graphHelper.getUserTokenAsync();
-        console.log(`User token: ${userToken}`);
-    } catch (err) {
-        console.log(`Error getting user access token: ${err}`);
-    }
-}
-
-async function listInboxAsync() {
-    try {
-        const messagePage = await graphHelper.getInboxAsync();
-        const messages = messagePage.value;
-
-        // Output each message's details
-        for (const message of messages) {
-            console.log(`Message: ${message.subject ?? 'NO SUBJECT'}`);
-            console.log(`  From: ${message.from?.emailAddress?.name ?? 'UNKNOWN'}`);
-            console.log(`  Status: ${message.isRead ? 'Read' : 'Unread'}`);
-            console.log(`  Received: ${message.receivedDateTime}`);
-        }
-
-        // If @odata.nextLink is not undefined, there are more messages
-        // available on the server
-        const moreAvailable = messagePage['@odata.nextLink'] != undefined;
-        console.log(`\nMore messages available? ${moreAvailable}`);
-    } catch (err) {
-        console.log(`Error getting user's inbox: ${err}`);
-    }
-}
-
-async function sendMailAsync() {
-    try {
-        // Send mail to the signed-in user
-        // Get the user for their email address
-        const user = await graphHelper.getUserAsync();
-        const userEmail = user?.mail ?? user?.userPrincipalName;
-
-        if (!userEmail) {
-            console.log('Couldn\'t get your email address, canceling...');
-            return;
-        }
-
-        await graphHelper.sendMailAsync('Testing Microsoft Graph',
-            'Hello world!', userEmail);
-        console.log('Mail sent.');
-    } catch (err) {
-        console.log(`Error sending mail: ${err}`);
-    }
-}*/
