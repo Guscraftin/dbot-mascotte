@@ -36,22 +36,20 @@ async function checkNewMail(guild) {
 
         // Output each message's details
         for (const message of messages) {
-            // FIXME : Check only the 100 (see function in graphHelper.js) last mail (rate limit of graph api ?)
+            // TODO : Check only the 100 (see function in graphHelper.js) last mail (rate limit of graph api ?)
+            // Use endpoints with server to get a notifications systems with the graph api (to get the last mail in real-time)
             const mail = await Mails.findOne({ where: { id: message.id } });
             if (mail) return;
 
             const channelMails = await guild.channels.fetch(channel_test_mail);
-            if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr")
-            {
-                await channelMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !`});
+            if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr") {
+                await channelMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !` });
             }
-            else if (message.from.emailAddress.address === "discourse@forge.epita.fr")
-            {
-                await channelMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !`});
+            else if (message.from.emailAddress.address === "discourse@forge.epita.fr") {
+                await channelMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !` });
             }
-            else
-            {
-                await channelMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !`});
+            else {
+                await channelMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !` });
             }
 
             await Mails.create({ id: message.id });
@@ -63,7 +61,11 @@ async function checkNewMail(guild) {
             // console.log(`  Body: ${message.body.content}`);
         }
     } catch (err) {
-        console.log(`Error getting user's inbox: ${err}`);
+        if (err.statusCode === 429) {
+            console.error('Rate limit exceeded. To many requests for last mails.');
+        } else {
+            console.log(`Error getting user's inbox: ${err}`);
+        }
     }
 }
 module.exports.initApp = initApp;
