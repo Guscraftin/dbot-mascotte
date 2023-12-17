@@ -30,19 +30,14 @@ module.exports = {
         console.log(`1/6 : ${userConnect} is correctly connect to the app !`);
         console.log(`2/6 : Start initialize mails...`);
         await initCheckMail(guild);
-        console.log(`2/6 : Initialize mails checked !`);
         console.log("3/6 : Start check birthdays...");
         await checkBirthdays(guild);
-        console.log("3/6 : Birthdays checked !");
         console.log("4/6 : Start check user timeout...");
         await muteTimeout(guild);
-        console.log("4/6 : Timeout checked !");
         console.log("5/6 : Start remove empty voice channel...");
         await removeEmptyVoiceChannel(guild);
-        console.log("5/6 : Empty voice channel removed !");
         console.log("6/6 : Start synchronize roles...");
         await syncRoles(guild);
-        console.log("6/6 : Roles synchronized !");
 
         // Launch cron jobs
         new cron.CronJob("0 */5 * * *", () => checkBirthdays(guild), null, true, "Europe/Paris"); // Check 5 time a day
