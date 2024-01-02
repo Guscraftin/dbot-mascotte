@@ -2,7 +2,7 @@ const settings = require('./appSettings');
 const graphHelper = require('./graphHelper');
 const TurndownService = require('turndown');
 const { Mails } = require('../../dbObjects');
-const { channel_mails, channel_test_mail, role_mail_news } = require(process.env.CONSTANT);
+const { channel_mails, channel_test_mail, role_mail_moodle, role_mail_news } = require(process.env.CONSTANT);
 
 // TODO : When it's done, remove one by one permission in https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/CallAnAPI/appId/402e020c-df86-41ee-b7fe-1644cd12ec14/isMSAApp~/false, to keep only the necessary ones
 // TODO : Continue to read the documentation of Microsoft Graph API (mainly the part about security) => https://learn.microsoft.com/en-us/graph/
@@ -48,7 +48,32 @@ async function checkNewMail(guild) {
              * Mail from Moodle
              */
             if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr") {
-                await channelTestMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !` });
+                const patternGetTbody = /<tbody>([\s\S]*?)<\/tbody>/i;
+                const tbodyMsg = message.body.content.match(patternGetTbody);
+                if (!tbodyMsg || tbodyMsg.length < 2) {
+                    console.log("Error parsing the mail from Moodle: tbody not found");
+                    continue;
+                }
+
+                const motif = 'dir="ltr" style="text-align:left">';
+                const indexMotif = tbodyMsg[1].indexOf(motif);
+                if (indexMotif === -1) {
+                    console.log("Error parsing the mail from Moodle: motif not found");
+                    continue;
+                }
+                const msgContent = tbodyMsg[1].substring(indexMotif + motif.length);
+
+                let markdown = turndownService.turndown(msgContent);
+                const initMsgMaxLength = 2000 - `||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n`.length;
+                const initPart = markdown.substring(0, initMsgMaxLength);
+                markdown = markdown.substring(initMsgMaxLength);
+                await channelTestMails?.send(`||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n${initPart}`);
+                while (markdown.length > 0) {
+                    const msgMaxLength = 2000;
+                    const part = markdown.substring(0, msgMaxLength);
+                    markdown = markdown.substring(msgMaxLength);
+                    await channelTestMails?.send(`${part}`);
+                }
             }
             /**
              * Mail from News
