@@ -121,7 +121,17 @@ async function checkNewMail(guild) {
              * Other Mail
              */
             else {
-                await channelTestMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !` });
+                let markdown = turndownService.turndown(message.body.content);
+                const initMsgMaxLength = 2000 - `||<@&${role_mail_other}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n`.length;
+                const initPart = markdown.substring(0, initMsgMaxLength);
+                markdown = markdown.substring(initMsgMaxLength);
+                await channelTestMails?.send({ content: `||<@&${role_mail_other}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n${initPart}`, components: [actionRowPublish]});
+                while (markdown.length > 0) {
+                    const msgMaxLength = 2000;
+                    const part = markdown.substring(0, msgMaxLength);
+                    markdown = markdown.substring(msgMaxLength);
+                    await channelTestMails?.send({ content: `${part}`, components: [actionRowPublish]});
+                }
             }
 
             await Mails.create({ id: message.id });
