@@ -46,7 +46,9 @@ async function checkNewMail(guild) {
                 await channelMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !` });
             }
             else if (message.from.emailAddress.address === "discourse@forge.epita.fr") {
-                if (message?.subject?.includes("Annonces") || message?.subject?.includes("Délégués")) {
+                // Check if it is a announce or a delegate news
+                const categoryOfNews = message?.subject?.match(/\[([^\[\]]+)]/g).map(element => element.slice(1, -1));
+                if (categoryOfNews[1]?.includes("Annonces") || categoryOfNews[1]?.includes("Délégués")) {
                     // Remove the useless part of the initial message (profile + footer)
                     const patternFirstPart = /<tbody[\s\S]*?<\/tbody>/i;
                     const mailWithoutFirstPart = message.body.content.replace(patternFirstPart, '');
