@@ -2,7 +2,7 @@ const settings = require('./appSettings');
 const graphHelper = require('./graphHelper');
 const TurndownService = require('turndown');
 const { Mails } = require('../../dbObjects');
-const { channel_test_mail, role_mail_news } = require(process.env.CONSTANT);
+const { channel_mails, channel_test_mail, role_mail_news } = require(process.env.CONSTANT);
 
 // TODO : When it's done, remove one by one permission in https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/CallAnAPI/appId/402e020c-df86-41ee-b7fe-1644cd12ec14/isMSAApp~/false, to keep only the necessary ones
 // TODO : Continue to read the documentation of Microsoft Graph API (mainly the part about security) => https://learn.microsoft.com/en-us/graph/
@@ -41,10 +41,18 @@ async function checkNewMail(guild) {
             if (mail) return;
 
             const turndownService = new TurndownService();
-            const channelMails = await guild.channels.fetch(channel_test_mail);
+            const channelMails = await guild.channels.fetch(channel_mails);
+            const channelTestMails = await guild.channels.fetch(channel_test_mail);
+
+            /**
+             * Mail from Moodle
+             */
             if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr") {
-                await channelMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !` });
+                await channelTestMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !` });
             }
+            /**
+             * Mail from News
+             */
             else if (message.from.emailAddress.address === "discourse@forge.epita.fr") {
                 // Check if it is a announce or a delegate news
                 const categoryOfNews = message?.subject?.match(/\[([^\[\]]+)]/g).map(element => element.slice(1, -1));
@@ -68,11 +76,14 @@ async function checkNewMail(guild) {
                         await channelMails?.send(`${part}`);
                     }
                 } else {
-                    await channelMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !` });
+                    await channelTestMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !` });
                 }
             }
+            /**
+             * Other Mail
+             */
             else {
-                await channelMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !` });
+                await channelTestMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !` });
             }
 
             await Mails.create({ id: message.id });
