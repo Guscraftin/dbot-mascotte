@@ -14,8 +14,7 @@ async function initApp() {
 async function initCheckMail() {
     // Get all actual mails
     try {
-        const messagePage = await graphHelper.getLastMail();
-        const messages = messagePage.value;
+        const messages = await graphHelper.getLastMail();
 
         for (const message of messages) {
             const mail = await Mails.findOne({ where: { id: message.id } });
