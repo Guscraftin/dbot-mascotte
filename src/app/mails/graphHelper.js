@@ -84,12 +84,33 @@ async function getLastMail() {
         throw new Error('Graph has not been initialized for user auth');
     }
 
-    await renewTokenIfNeeded();
+    let allMessages = [];
+    let nextPage = '/me/mailFolders/inbox/messages';
 
-    return _userClient.api('/me/mailFolders/inbox/messages')
-        .select(['from', 'isRead', 'receivedDateTime', 'subject', 'body', 'hasAttachments'])
-        .top(100)
-        .orderby('receivedDateTime DESC')
-        .get();
+    while (nextPage) {
+        await renewTokenIfNeeded();
+
+        const result = await _userClient.api(nextPage)
+            .select(['from', 'isRead', 'receivedDateTime', 'subject', 'body', 'hasAttachments'])
+            .top(100)
+            .orderby('receivedDateTime DESC')
+            .get();
+
+        if (Array.isArray(result.value)) {
+            allMessages = allMessages.concat(result.value);
+        } else {
+            console.error("Les données reçues ne sont pas sous forme de tableau :", result.value);
+            break; 
+        }
+
+        nextPage = result['@odata.nextLink'];
+
+        // If there is no next page, break the loop
+        if (!nextPage) {
+            break;
+        }
+    }
+
+    return allMessages;
 }
 module.exports.getLastMail = getLastMail;

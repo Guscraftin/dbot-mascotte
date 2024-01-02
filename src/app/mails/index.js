@@ -31,8 +31,7 @@ async function initCheckMail() {
 async function checkNewMail(guild) {
     // Get the last mail
     try {
-        const messagePage = await graphHelper.getLastMail();
-        const messages = messagePage.value;
+        const messages = await graphHelper.getLastMail();
 
         // Output each message's details
         for (const message of messages) {
