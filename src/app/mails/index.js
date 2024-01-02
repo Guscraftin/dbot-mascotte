@@ -32,6 +32,19 @@ async function checkNewMail(guild) {
     // Get the last mail
     try {
         const messages = await graphHelper.getLastMail();
+        const actionRowPublish = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId("mail_publish")
+                .setLabel("Publier le message")
+                .setEmoji("📢")
+                .setStyle(ButtonStyle.Primary),
+            new ButtonBuilder()
+                .setCustomId("mail_delete")
+                .setLabel("Supprimer le message")
+                .setEmoji("🚨")
+                .setStyle(ButtonStyle.Danger)
+        );
 
         // Output each message's details
         for (const message of messages) {
@@ -67,12 +80,12 @@ async function checkNewMail(guild) {
                 const initMsgMaxLength = 2000 - `||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n`.length;
                 const initPart = markdown.substring(0, initMsgMaxLength);
                 markdown = markdown.substring(initMsgMaxLength);
-                await channelTestMails?.send(`||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n${initPart}`);
+                await channelTestMails?.send({ content: `||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n${initPart}`, components: [actionRowPublish]});
                 while (markdown.length > 0) {
                     const msgMaxLength = 2000;
                     const part = markdown.substring(0, msgMaxLength);
                     markdown = markdown.substring(msgMaxLength);
-                    await channelTestMails?.send(`${part}`);
+                    await channelTestMails?.send({ content: `${part}`, components: [actionRowPublish]});
                 }
             }
             /**
