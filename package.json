@@ -27,6 +27,7 @@
     "isomorphic-fetch": "^3.0.0",
     "node-fetch": "^3.3.2",
     "sequelize": "^6.32.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "turndown": "^7.1.2"
   }
 }

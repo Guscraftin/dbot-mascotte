@@ -1,7 +1,8 @@
 const settings = require('./appSettings');
 const graphHelper = require('./graphHelper');
+const TurndownService = require('turndown');
 const { Mails } = require('../../dbObjects');
-const { channel_test_mail } = require(process.env.CONSTANT);
+const { channel_test_mail, role_mail_news } = require(process.env.CONSTANT);
 
 // TODO : When it's done, remove one by one permission in https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/CallAnAPI/appId/402e020c-df86-41ee-b7fe-1644cd12ec14/isMSAApp~/false, to keep only the necessary ones
 // TODO : Continue to read the documentation of Microsoft Graph API (mainly the part about security) => https://learn.microsoft.com/en-us/graph/
@@ -39,12 +40,34 @@ async function checkNewMail(guild) {
             const mail = await Mails.findOne({ where: { id: message.id } });
             if (mail) return;
 
+            const turndownService = new TurndownService();
             const channelMails = await guild.channels.fetch(channel_test_mail);
             if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr") {
                 await channelMails?.send({ content: `Nouveau mail reçu __Moodle__ : **\`${message?.subject}\`** !` });
             }
             else if (message.from.emailAddress.address === "discourse@forge.epita.fr") {
-                await channelMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !` });
+                if (message?.subject?.includes("Annonces") || message?.subject?.includes("Délégués")) {
+                    // Remove the useless part of the initial message (profile + footer)
+                    const patternFirstPart = /<tbody[\s\S]*?<\/tbody>/i;
+                    const mailWithoutFirstPart = message.body.content.replace(patternFirstPart, '');
+                    const patternLastPart = /<div style="color:#666"><hr style="background-color:#ddd; height:1px; border:1px; background-color:#ddd; height:1px; border:1px">[\s\S]*/i;
+                    const mailOnlyContent = mailWithoutFirstPart.replace(patternLastPart, '');
+
+                    // Convert the html to markdown + Send the message
+                    let markdown = turndownService.turndown(mailOnlyContent);
+                    const initMsgMaxLength = 2000 - `||<@&${role_mail_news}>||\n`.length;
+                    const initPart = markdown.substring(0, initMsgMaxLength);
+                    markdown = markdown.substring(initMsgMaxLength);
+                    await channelMails?.send(`||<@&${role_mail_news}>||\n${initPart}`);
+                    while (markdown.length > 0) {
+                        const msgMaxLength = 2000;
+                        const part = markdown.substring(0, msgMaxLength);
+                        markdown = markdown.substring(msgMaxLength);
+                        await channelMails?.send(`${part}`);
+                    }
+                } else {
+                    await channelMails?.send({ content: `Nouveau mail reçu __News__ : **\`${message?.subject}\`** !` });
+                }
             }
             else {
                 await channelMails?.send({ content: `Nouveau mail reçu : **\`${message?.subject}\`** !` });
