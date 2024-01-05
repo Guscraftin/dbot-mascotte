@@ -73,9 +73,6 @@ async function renewTokenIfNeeded() {
         _userClient = graph.Client.initWithMiddleware({
             authProvider: authProvider
         });
-
-        // FIXME: Delete when it's not necessary
-        console.log('Token renewed');
     }
 }
 
