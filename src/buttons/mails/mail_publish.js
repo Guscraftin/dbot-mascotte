@@ -5,6 +5,7 @@ module.exports = {
         name: "mail_publish",
     },
     async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
         const channelMails = await interaction.guild.channels.fetch(channel_mails);
 
         await channelMails?.send({
@@ -14,6 +15,6 @@ module.exports = {
         });
 
         await interaction.message.delete();
-        return interaction.reply({ content: `Le mail a bien été publié.`, ephemeral: true });
+        return interaction.editReply({ content: `Le mail a bien été publié.`, ephemeral: true });
     }
 }
