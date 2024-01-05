@@ -29,6 +29,7 @@ async function initCheckMail() {
     }
 }
 
+// FIXME: Remove repetition code in function
 async function checkNewMail(guild) {
     // Get the last mail
     try {
@@ -64,18 +65,20 @@ async function checkNewMail(guild) {
             if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr") {
                 const patternGetTbody = /<tbody>([\s\S]*?)<\/tbody>/i;
                 const tbodyMsg = message.body.content.match(patternGetTbody);
-                if (!tbodyMsg || tbodyMsg.length < 2) {
+                const patternComment = /<!--[\s\S]*?-->/g;
+                const tbodyNoCommentMsg = tbodyMsg.replace(patternComment, '');
+                if (!tbodyNoCommentMsg || tbodyNoCommentMsg.length < 2) {
                     console.log("Error parsing the mail from Moodle: tbody not found");
                     continue;
                 }
 
                 const motif = 'dir="ltr" style="text-align:left">';
-                const indexMotif = tbodyMsg[1].indexOf(motif);
+                const indexMotif = tbodyNoCommentMsg[1].indexOf(motif);
                 if (indexMotif === -1) {
                     console.log("Error parsing the mail from Moodle: motif not found");
                     continue;
                 }
-                const msgContent = tbodyMsg[1].substring(indexMotif + motif.length);
+                const msgContent = tbodyNoCommentMsg[1].substring(indexMotif + motif.length);
 
                 let markdown = turndownService.turndown(msgContent);
                 const initMsgMaxLength = 2000 - `||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n`.length;
@@ -98,12 +101,14 @@ async function checkNewMail(guild) {
                 const mailWithoutFirstPart = message.body.content.replace(patternFirstPart, '');
                 const patternLastPart = /<div style="color:#666"><hr style="background-color:#ddd; height:1px; border:1px; background-color:#ddd; height:1px; border:1px">[\s\S]*/i;
                 const mailOnlyContent = mailWithoutFirstPart.replace(patternLastPart, '');
+                const patternComment = /<!--[\s\S]*?-->/g;
+                const mailNoComment = mailOnlyContent.replace(patternComment, '');
 
                 // Check if it is a announce or a delegate news
                 const categoryOfNews = message?.subject?.match(/\[([^\[\]]+)]/g).map(element => element.slice(1, -1));
                 if (categoryOfNews[1]?.includes("Annonces") || categoryOfNews[1]?.includes("Délégués")) {
                     // Convert the html to markdown + Send the message
-                    let markdown = turndownService.turndown(mailOnlyContent);
+                    let markdown = turndownService.turndown(mailNoComment);
                     const initMsgMaxLength = 2000 - `||<@&${role_mail_news}>||\n`.length;
                     const initPart = markdown.substring(0, initMsgMaxLength);
                     markdown = markdown.substring(initMsgMaxLength);
@@ -116,7 +121,7 @@ async function checkNewMail(guild) {
                     }
                 } else {
                     // Convert the html to markdown + Send the message
-                    let markdown = turndownService.turndown(mailOnlyContent);
+                    let markdown = turndownService.turndown(mailNoComment);
                     const initMsgMaxLength = 2000 - `||<@&${role_mail_news}>||\n`.length;
                     const initPart = markdown.substring(0, initMsgMaxLength);
                     markdown = markdown.substring(initMsgMaxLength);
@@ -133,7 +138,9 @@ async function checkNewMail(guild) {
              * Other Mail
              */
             else {
-                let markdown = turndownService.turndown(message.body.content);
+                const patternComment = /<!--[\s\S]*?-->/g;
+                const mailNoComment = message.body.content.replace(patternComment, '');
+                let markdown = turndownService.turndown(mailNoComment);
                 const initMsgMaxLength = 2000 - `||<@&${role_mail_other}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n`.length;
                 const initPart = markdown.substring(0, initMsgMaxLength);
                 markdown = markdown.substring(initMsgMaxLength);
