@@ -1,5 +1,5 @@
 const { EmbedBuilder, Events } = require('discord.js');
-const { channel_logs, color_basic, role_organizer_event, role_students } = require(process.env.CONSTANT);
+const { channel_logs, color_basic, role_organizer_event, role_class } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.GuildMemberUpdate,
@@ -9,9 +9,9 @@ module.exports = {
         /**
          * Add or remove the role organizer_event if the user has or not the role students
          */
-        if (!oldMember.roles.cache.has(role_students) && newMember.roles.cache.has(role_students)) {
+        if (!oldMember.roles.cache.has(role_class) && newMember.roles.cache.has(role_class)) {
             await newMember.roles.add(role_organizer_event);
-        } else if (oldMember.roles.cache.has(role_students) && !newMember.roles.cache.has(role_students)) {
+        } else if (oldMember.roles.cache.has(role_class) && !newMember.roles.cache.has(role_class)) {
             await newMember.roles.remove(role_organizer_event);
         }
 
