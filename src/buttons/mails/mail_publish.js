@@ -8,13 +8,13 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
         const channelMails = await interaction.guild.channels.fetch(channel_mails);
 
-        await channelMails?.send({
+        const newMail = await channelMails?.send({
             content: interaction.message.content,
             embeds: interaction.message.embeds,
             files: interaction.message.attachments.map(attachment => attachment.url)
         });
 
         await interaction.message.delete();
-        return interaction.editReply({ content: `Le mail a bien été publié.`, ephemeral: true });
+        return interaction.editReply({ content: `Le mail a bien été publié : ${newMail.url}`, ephemeral: true });
     }
 }
