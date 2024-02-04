@@ -1,5 +1,5 @@
 const { EmbedBuilder, Events } = require('discord.js');
-const { channel_logs, color_basic, role_mute, role_students, role_vocal, vocal_general, vocal_course, vocal_sleep, vocal_panel } = require(process.env.CONSTANT);
+const { category_vocals, channel_logs, color_basic, role_mute, role_students, role_vocal, vocal_general, vocal_course, vocal_sleep, vocal_panel } = require(process.env.CONSTANT);
 
 module.exports = {
     name: Events.VoiceStateUpdate,
@@ -38,9 +38,8 @@ module.exports = {
             await newState.setChannel(voiceChannel);
         }
 
-        
-        // Delete the voice channel if it's empty
-        if (oldChannel?.members?.size === 0 && !channelsNotDelete.includes(oldState.channelId)) {
+        // Delete the voice channel from custom vocal if it's empty
+        if (oldChannel?.parentId === category_vocals && oldChannel?.members?.size === 0 && !channelsNotDelete.includes(oldState.channelId)) {
             await oldState.channel.delete();
         }
 
