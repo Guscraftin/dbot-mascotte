@@ -178,6 +178,7 @@ Voici des liens officiels de l'école pour notre scolarité ainsi que des liens 
 > -> Alumni : https://epita-alumni.org/fr/
 
 > -> __Annales :__ 
+> - Epinotes : https://epinotes.fr/
 > - EpiDocs (Past-Exams) : https://past-exams.epidocs.eu/ 
 > - Mastercorp : http://mastercorp.epita.eu/
 > - HyperAnnales : https://annales.hyperion.tf/
