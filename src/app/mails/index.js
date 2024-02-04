@@ -50,6 +50,7 @@ async function checkNewMail(guild) {
 
         // Output each message's details
         for (const message of messages) {
+            // TODO: Slit in multiple function for each treatment of string
             // TODO : Check only the 100 (see function in graphHelper.js) last mail (rate limit of graph api ?)
             // Use endpoints with server to get a notifications systems with the graph api (to get the last mail in real-time)
             const mail = await Mails.findOne({ where: { id: message.id } });
@@ -63,22 +64,33 @@ async function checkNewMail(guild) {
              * Mail from Moodle
              */
             if (message?.from?.emailAddress?.address === "noreply-moodle@forge.epita.fr") {
-                const patternGetTbody = /<tbody>([\s\S]*?)<\/tbody>/i;
-                const tbodyMsg = message.body.content.match(patternGetTbody);
-                const patternComment = /<!--[\s\S]*?-->/g;
-                const tbodyNoCommentMsg = tbodyMsg.replace(patternComment, '');
-                if (!tbodyNoCommentMsg || tbodyNoCommentMsg.length < 2) {
-                    console.log("Error parsing the mail from Moodle: tbody not found");
-                    continue;
-                }
+                const patternGetTbody = /<tbody>([\s\S]*?)<\/tbody>/gi;
+                let tbodyMsg = message.body.content.match(patternGetTbody);
 
-                const motif = 'dir="ltr" style="text-align:left">';
-                const indexMotif = tbodyNoCommentMsg[1].indexOf(motif);
-                if (indexMotif === -1) {
-                    console.log("Error parsing the mail from Moodle: motif not found");
-                    continue;
+                // If the mail is a notification of an update in a moodle
+                let msgContent = message.body.content;
+                const patternComment = /<!--[\s\S]*?-->/g;
+                if (tbodyMsg == null) {
+                    msgContent = msgContent.replace(patternComment, '');
+                    if (!msgContent || msgContent.length < 2) {
+                        console.log("Error parsing the mail from Moodle: comment not found in not tbody mail");
+                        continue;
+                    }
+                } else {
+                    const tbodyNoCommentMsg = tbodyMsg[0].replace(patternComment, '');
+                    if (!tbodyNoCommentMsg || tbodyNoCommentMsg.length < 2) {
+                        console.log("Error parsing the mail from Moodle: tbody not found");
+                        continue;
+                    }
+
+                    const motif = '<td class="content">';
+                    const indexMotif = tbodyNoCommentMsg.indexOf(motif);
+                    if (indexMotif === -1) {
+                        console.log("Error parsing the mail from Moodle: motif not found");
+                        continue;
+                    }
+                    msgContent = tbodyNoCommentMsg.substring(indexMotif + motif.length);
                 }
-                const msgContent = tbodyNoCommentMsg[1].substring(indexMotif + motif.length);
 
                 let markdown = turndownService.turndown(msgContent);
                 const initMsgMaxLength = 2000 - `||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n`.length;
