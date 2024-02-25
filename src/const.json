@@ -3,6 +3,7 @@
     "category_tickets": "1136595038600699935",
     "category_reserve": "1127469832221245510",
 
+    "channel_welcome": "1173235913074163732",
     "channel_announce": "1130459876104097792",
     "channel_mails": "1163507639901229129",
     "channel_rules": "1130459918479134780",
@@ -28,6 +29,7 @@
     "role_delegates": "1127470460230180938",
     "role_class": "1163511583717208085",
     "role_students": "1127470474385969174",
+    "role_verified": "1179921699580428408",
     "role_vocal": "1127470796365889548",
     "role_mute": "1127471156895686676",
     "role_organizer_event": "1143163513196531813",

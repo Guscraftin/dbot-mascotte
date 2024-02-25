@@ -2,6 +2,7 @@ const { Events } = require('discord.js');
 const { Guilds, Mails, Members, Suggestions, Tickets } = require('../../dbObjects.js');
 const { checkBirthdays, muteTimeout, removeEmptyVoiceChannel, syncRoles } = require('../../functions.js');
 const { initApp, initCheckMail, checkNewMail } = require('../../app/mails/index.js');
+const { channel_welcome, channel_tickets, role_verified } = require(process.env.CONSTANT);
 const cron = require("cron");
 
 module.exports = {
@@ -49,6 +50,42 @@ module.exports = {
         await client.user.setPresence({ activities: [{ name: "vous câliner !", type: 0 }], status: "online" });
 
         // Log the bot is ready
-        return console.log(`${client.user.username} est prêt à être utilisé par ${usersCount} utilisateurs sur ${guildsCount.size} serveurs !`);
+        console.log(`${client.user.username} est prêt à être utilisé par ${usersCount} utilisateurs sur ${guildsCount.size} serveurs !`);
+
+        // FIXME: Clean this thing with a better solution #CleanCode
+        // Call the sendDM function one time after 4 hours
+        setTimeout(sendDM, 4 * 60 * 60 * 1000, client);
+        // Call the sendDM function every 6 days
+        setInterval(sendDM, 6 * 24 * 60 * 60 * 1000, client);
     },
 };
+
+
+/**
+ * Send a DM to all the members who has not the verified role
+ * @param {import(Discord.js).client} client
+ * @returns void
+ */
+async function sendDM(client) {
+    const blacklistMP = [];
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
+
+    await guild.members.fetch().then(async function(members) {
+        await members.each(async function(member) {
+            if (!member.roles.cache.find(role => role.id === role_verified
+                && blacklistMP.find(userId => userId === member.id) === undefined)) {
+                // Send MP to the member
+                try {
+                    await member.send(`Bonjour ${member.displayName} :wave:\n\n` +
+                    `Je suis la ${client.user.username}, un bot du serveur \`${guild.name}\`.\n\n` +
+                    `Je t'envoie ce message pour te rappeler que tu n'as pas encore le rôle 'Verified' sur le serveur. Pour obtenir ce rôle, **tu dois te rendre dans le salon <#${channel_welcome}> et suivre les instructions**.\n` +
+                    `*Ce rôle est nécessaire pour accéder à l'ensemble des salons du serveur.*\n\n` +
+                    `Si tu as des questions, n'hésite pas à ouvrir un ticket aux admins via ce salon <#${channel_tickets}>.\n\n` +
+                    `À bientôt ! :wink:`);
+                } catch (error) {
+                    // console.log(`Impossible d'envoyer un message à ${member.displayName}`);
+                }
+            }
+        });
+    });
+}
