@@ -158,6 +158,7 @@ Voici des liens officiels de l'école pour notre scolarité ainsi que des liens 
 > -> Absence : https://absences.epita.net/
 > -> International : https://epitafr.sharepoint.com/sites/EPITAStudyAbroad
 > -> EPITA Relations Entreprises : https://epita.net/
+> -> EPITA jobteaser : https://epita.jobteaser.com/
 > -> EPITA Signalement : https://epita.signalement.net/
 > -> RocketChat : https://rocketchat.cri.epita.fr/
 > -> LRE : https://www.lre.epita.fr/
