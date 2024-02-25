@@ -60,7 +60,7 @@ module.exports = {
                 openEmbed = new EmbedBuilder()
                     .setDescription(`# Ticket aux ${name}\n`+
                         `Bonjour ${interaction.user},\n\n`+
-                        `Vous êtes libre de vous exprimer en toute liberté dans ce salon. Les admins ont pris l'engagement de ne pas lire le contenu des tickets, à moins qu'ils ne soient explicitement mentionnés à l'intérieur.\n\n`+
+                        `Vous êtes libre de vous exprimer en toute liberté dans ce salon. Les admins, qui ne sont pas délégué, ont pris l'engagement de ne pas lire le contenu des tickets, à moins qu'ils ne soient explicitement mentionnés à l'intérieur.\n\n`+
                         `Un délégué vous répondra dans les plus brefs délais.`)
                     .setColor(color_basic)
                 break;
