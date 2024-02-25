@@ -177,6 +177,7 @@ Voici des liens officiels de l'école pour notre scolarité ainsi que des liens 
 > -> Statut des services du CRI : https://devou.ps/
 > -> Documentation de la Forge : https://docs.forge.epita.fr/
 > -> Alumni : https://epita-alumni.org/fr/
+> -> Petite vérif de la netiquette : https://github.com/Lyro1/Netiquette-Mail-Corrector
 
 > -> __Annales :__ 
 > - Epinotes : https://epinotes.fr/
