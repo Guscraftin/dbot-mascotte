@@ -100,7 +100,8 @@ async function getLastMail() {
             break; 
         }
 
-        nextPage = result['@odata.nextLink'];
+        // nextPage = result['@odata.nextLink'];
+        nextPage = undefined; // TODO => FIXME: Remove this line to enable pagination
 
         // If there is no next page, break the loop
         if (!nextPage) {
