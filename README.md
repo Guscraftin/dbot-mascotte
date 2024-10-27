@@ -3,20 +3,20 @@
 Voici comment installer et lancer le bot.
 Ce bot est spécialement conçu pour faciliter la gestion de serveur discord classe.
 
-
 ## Installation du bot
 
 1. Cloner ce répertoire avec la commande `git clone https://github.com/Guscraftin/bot-mascotte.git`.  
-*Vous devez avoir installé git sur votre machine. Si votre machine ne reconnait la commande **git**, installez la via ce lien : https://git-scm.com/download/. Une fois git installé, ouvrez **Git Bash** pour exécuter les commandes git.*
+   _Vous devez avoir installé git sur votre machine. Si votre machine ne reconnait la commande **git**, installez la via ce lien : https://git-scm.com/download/. Une fois git installé, ouvrez **Git Bash** pour exécuter les commandes git._
 
 2. Allez à la racine du répertoire que vous venez de télécharger (avec la commande `cd bot-mascotte`) et tapez la commande : `npm i`.  
-*Vous devez avoir installé nodejs sur votre machine. Si votre machine ne reconnait la commande **npm**, installez la via ce lien : https://nodejs.org/fr/download/*.
+   _Vous devez avoir installé nodejs sur votre machine. Si votre machine ne reconnait la commande **npm**, installez la via ce lien : https://nodejs.org/fr/download/_.
 
 3. Renommer le fichier `.env.example` en `.env`.
 
 4. Ouvrez le fichier `.env` et remplacez les `...` par vos propres valeurs.
 
 5. Pour obtenir ces valeurs, suivez ces étapes :
+
    1. Rendez-vous sur https://discord.com/developers/applications et créez une nouvelle application en cliquant sur le bouton en haut à droite. Entrez le nom de votre bot et acceptez les conditions d'utilisation, puis cliquez sur "Create".
    2. Dans la section "Bot", cliquez sur "Reset Token", puis sur le bouton "Copier" pour copier le token du bot qui s'affiche. Remplacez les `...` par ce token dans la variable `TOKEN=` du fichier `.env`.
    3. Dans la section "OAuth2", cliquez sur "Copier" sous l'identifiant client. Remplacez les `...` par cet identifiant dans la variable `CLIENT_ID=` du fichier `.env`.

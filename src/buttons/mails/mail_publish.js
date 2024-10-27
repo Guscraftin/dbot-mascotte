@@ -1,20 +1,25 @@
 const { channel_mails } = require(process.env.CONSTANT);
 
 module.exports = {
-    data: {
-        name: "mail_publish",
-    },
-    async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
-        const channelMails = await interaction.guild.channels.fetch(channel_mails);
+  data: {
+    name: "mail_publish",
+  },
+  async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
+    const channelMails = await interaction.guild.channels.fetch(channel_mails);
 
-        const newMail = await channelMails?.send({
-            content: interaction.message.content,
-            embeds: interaction.message.embeds,
-            files: interaction.message.attachments.map(attachment => attachment.url)
-        });
+    const newMail = await channelMails?.send({
+      content: interaction.message.content,
+      embeds: interaction.message.embeds,
+      files: interaction.message.attachments.map(
+        (attachment) => attachment.url
+      ),
+    });
 
-        await interaction.message.delete();
-        return interaction.editReply({ content: `Le mail a bien été publié : ${newMail.url}`, ephemeral: true });
-    }
-}
+    await interaction.message.delete();
+    return interaction.editReply({
+      content: `Le mail a bien été publié : ${newMail.url}`,
+      ephemeral: true,
+    });
+  },
+};

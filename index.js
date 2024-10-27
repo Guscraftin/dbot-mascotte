@@ -1,8 +1,9 @@
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const dotenv = require('dotenv');
+const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const dotenv = require("dotenv");
 dotenv.config();
 
-const client = new Client({ intents: [
+const client = new Client({
+  intents: [
     GatewayIntentBits.AutoModerationConfiguration, // For the future
     GatewayIntentBits.AutoModerationExecution, // For the future
     GatewayIntentBits.DirectMessageReactions, // For the future
@@ -14,7 +15,7 @@ const client = new Client({ intents: [
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildMessageTyping, // For the future
-    GatewayIntentBits.GuildMessages, 
+    GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildModeration,
     GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildScheduledEvents,
@@ -22,15 +23,15 @@ const client = new Client({ intents: [
     GatewayIntentBits.GuildWebhooks,
     GatewayIntentBits.Guilds,
     GatewayIntentBits.MessageContent,
-]});
+  ],
+});
 client.commands = new Collection();
 client.buttons = new Collection();
 client.selectMenus = new Collection();
 
-['buttons', 'commands', 'events', 'selectMenus'].forEach((handler) => {
-    require(`./src/handlers/${handler}`)(client);
+["buttons", "commands", "events", "selectMenus"].forEach((handler) => {
+  require(`./src/handlers/${handler}`)(client);
 });
-
 
 /*
  * Process to handle errors
@@ -39,24 +40,26 @@ client.selectMenus = new Collection();
 // Remove experimental warning - needed for transcription of a discord channel
 const originalEmit = process.emit;
 process.emit = function (name, data, ...args) {
-    if (data.name === `ExperimentalWarning`) return false;
-    return originalEmit.apply(process, arguments);
+  if (data.name === `ExperimentalWarning`) return false;
+  return originalEmit.apply(process, arguments);
 };
 
-
-process.on('exit', code => { console.error(`=> Le processus s'est arrêté avec le code : ${code}`) });
-
-process.on('uncaughtException', (err, origin) => {
-    console.error(`=> UNCAUGHT_EXCEPTION : ${err}`)
-    console.error(`Origine : ${origin}`)
+process.on("exit", (code) => {
+  console.error(`=> Le processus s'est arrêté avec le code : ${code}`);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.error(`=> UNHANDLE_REJECTION : ${{reason}}`)
-    console.error(promise);
+process.on("uncaughtException", (err, origin) => {
+  console.error(`=> UNCAUGHT_EXCEPTION : ${err}`);
+  console.error(`Origine : ${origin}`);
 });
 
-process.on('warning', (...args) => { console.error(...args) });
+process.on("unhandledRejection", (reason, promise) => {
+  console.error(`=> UNHANDLE_REJECTION : ${{ reason }}`);
+  console.error(promise);
+});
 
+process.on("warning", (...args) => {
+  console.error(...args);
+});
 
 client.login(process.env.TOKEN);

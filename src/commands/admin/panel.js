@@ -1,26 +1,57 @@
-const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, StringSelectMenuBuilder } = require('discord.js');
-const { 
-    channel_announce, channel_mails, channel_rules, channel_information, channel_tickets, channel_idea_poll,
-    channel_general, channel_command, channel_muted, channel_agenda, channel_absence,
-    vocal_general, vocal_course, vocal_sleep, vocal_panel,
-    color_basic, emoji_yes,
-    role_admins, role_delegates, role_students,
-    role_discord, role_mail_moodle, role_mail_news, role_mail_other, role_idea_poll, role_agenda, role_absence, role_help,
+const {
+  ActionRowBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  StringSelectMenuBuilder,
+} = require("discord.js");
+const {
+  channel_announce,
+  channel_mails,
+  channel_rules,
+  channel_information,
+  channel_tickets,
+  channel_idea_poll,
+  channel_general,
+  channel_command,
+  channel_muted,
+  channel_agenda,
+  channel_absence,
+  vocal_general,
+  vocal_course,
+  vocal_sleep,
+  vocal_panel,
+  color_basic,
+  emoji_yes,
+  role_admins,
+  role_delegates,
+  role_students,
+  role_discord,
+  role_mail_moodle,
+  role_mail_news,
+  role_mail_other,
+  role_idea_poll,
+  role_agenda,
+  role_absence,
+  role_help,
 } = require(process.env.CONSTANT);
 
 const infoFirstEmbed = new EmbedBuilder()
-    .setDescription(`# Présentation générale du serveur discord
+  .setDescription(
+    `# Présentation générale du serveur discord
 En arrivant sur ce serveur, **vous avez accès à de nombreuses fonctionnalités**, telles que les tickets, l'agenda, le contenu des cours passés, des discussions de tout genre et bien plus encore.
 
 Pour __plus d'informations__ sur un salon, veuillez **vous référer à sa description**. Toutes les informations à savoir y sont inscrites.
 
 Si toutefois __vous avez encore des questions__ après la lecture de ce salon, vous pouvez **ouvrir un ticket** dans <#${channel_tickets}> et poser votre question ou effectuer une demande (détaillée plus bas).
 
-__PS :__ Vous pouvez **inviter les personnes manquantes de la classe** sur ce discord via le salon <#${channel_general}>.`)
-    .setColor('#ff0000');
+__PS :__ Vous pouvez **inviter les personnes manquantes de la classe** sur ce discord via le salon <#${channel_general}>.`
+  )
+  .setColor("#ff0000");
 
 const infoSecondEmbed = new EmbedBuilder()
-    .setDescription(`# Changer son pseudo sur ce serveur discord
+  .setDescription(
+    `# Changer son pseudo sur ce serveur discord
 En arrivant sur le serveur, vous avez votre pseudo de base de votre compte discord. **Je vous invite à le changer avec __votre prénom__** (comme indiqué dans le <#${channel_rules}>) pour que l'on sache qui vous êtes. 
 Si vous ne savez pas comment procéder, vous n'avez qu'à suivre les instructions ci dessous.
 *NB : Vous pouvez à n'importe quel moment changer votre pseudo.*
@@ -38,11 +69,13 @@ __Si vous êtes sur téléphone :__
 > -> Balayez votre écran de la droite vers la gauche OU cliquez sur le nom du salon (en fonction du design de l'application sur votre téléphone)
 > -> Cliquez sur votre pseudo
 > -> Cliquez sur "Modifier le profil du serveur"
-> -> Et entrez votre Prénom dans le champs "Pseudo du serveur"`)
-    .setColor('#fe3333');
+> -> Et entrez votre Prénom dans le champs "Pseudo du serveur"`
+  )
+  .setColor("#fe3333");
 
 const infoThirdEmbed = new EmbedBuilder()
-    .setDescription(`# Le système des salons vocaux
+  .setDescription(
+    `# Le système des salons vocaux
 Tous les salons vocaux officiels du serveur sont dans la catégorie \`・🔊 - Les p'tites discus\`.
 Je vais vous expliquer leurs utilités.
 
@@ -57,11 +90,13 @@ Je vais vous expliquer leurs utilités.
 
 > <#${vocal_panel}> : Ce salon vocal est très particulier. Il vous permet lors de votre connexion à celui ci, de vous **créer votre propre salon vocal** où vous pourrez modifier le nom, les permissions ainsi que d'autres paramètres. Cela vous permettra de le mettre accessible qu'à certaines personnes.
 > Par défaut, le salon a une limite d'utilisateur qui correspond au nombre d'étudiant dans la classe.
-> Ce salon sera cependant __automatiquement supprimé__ une fois que tous ces membres l'auront quittés.`)
-    .setColor('#fe7878');
+> Ce salon sera cependant __automatiquement supprimé__ une fois que tous ces membres l'auront quittés.`
+  )
+  .setColor("#fe7878");
 
 const infoFourthEmbed = new EmbedBuilder()
-    .setDescription(`# Le système des anniversaires
+  .setDescription(
+    `# Le système des anniversaires
 Un système automatique pour les anniversaires a été mis en place sur le serveur.
 
 Avant d'en voir les avantages, il faut que __vous donniez votre date d'anniversaire__ au bot. 
@@ -73,11 +108,13 @@ __Voyons maintenant les avantages à avoir son anniversaire renseigné :__
 > -> Un rôle spécifique pour que vous soyez bien visible en ce jour si spécial.
 > -> L'accès à un salon 100% personnalisable où vous pourrez faire ce que vous voulez pendant environ 24h. De plus, vous pourrez récupérer une retranscription de tous les messages envoyés dans ce salon.
 
-Pour voir les prochains anniversaires, aller dans <#${channel_command}> et taper ce message : \`/anniversaire list\`. Vous verrez les prochains anniversaires renseignés dans le bot.`)
-    .setColor('#fdb0b0');
+Pour voir les prochains anniversaires, aller dans <#${channel_command}> et taper ce message : \`/anniversaire list\`. Vous verrez les prochains anniversaires renseignés dans le bot.`
+  )
+  .setColor("#fdb0b0");
 
 const infoFifthEmbed = new EmbedBuilder()
-    .setDescription(`# La modération
+  .setDescription(
+    `# La modération
 La modération est le fait d'être sanctionné par un <@&${role_admins}>, un <@&${role_delegates}> ou un **BOT** pour ne pas avoir respecté le <#${channel_rules}>.
 
 **Un système d'anti-spam est mis en place sur ce serveur.**
@@ -93,11 +130,13 @@ __Voici quelques exemples de situations :__
 > Vous faites des bruits désagréables pour les autres personnes en vocal avec vous.
 -> Vous pouvez vous faire exclure du vocal voire être mute.
 > Si vous envoyez un message dans un mauvais salon.
--> Votre message sera déplacé dans le bon salon ou dans le bon fil de discussion. Puis vous recevrez un avertissement voire un mute.`)
-    .setColor('#fafafa');
+-> Votre message sera déplacé dans le bon salon ou dans le bon fil de discussion. Puis vous recevrez un avertissement voire un mute.`
+  )
+  .setColor("#fafafa");
 
 const infoSixthEmbed = new EmbedBuilder()
-    .setDescription(`# Les demandes possibles
+  .setDescription(
+    `# Les demandes possibles
 __Vous pouvez demander les choses suivantes en ouvrant un ticket aux <@&${role_admins}> dans <#${channel_tickets}> :__
 > -> Un rôle personnalisé (couleur et nom)
 > -> Un salon personnalisé
@@ -110,11 +149,13 @@ __Vous pouvez demander les choses suivantes en ouvrant un ticket aux <@&${role_a
 __Ou vous pouvez ouvrir un ticket aux <@&${role_delegates}> dans <#${channel_tickets}> :__
 > -> Des problèmes rencontrés (comme une surcharge de travail ou des problèmes avec des profs)
 > -> Afin de contacter ou de reporter toutes améliorations possible à l'administration.
-`)
-    .setColor('#bbb3fe');
+`
+  )
+  .setColor("#bbb3fe");
 
 const infoSeventhEmbed = new EmbedBuilder()
-    .setDescription(`# Les bots / robots du serveur
+  .setDescription(
+    `# Les bots / robots du serveur
 Comme vous pouvez le constater, plusieurs bots sont présents sur le serveur et on chacun __leurs propres fonctionnalités__.
 *Pour savoir si vous avez à faire à un bot c'est très simple, les bots ont un badge nommé BOT à côté de leur nom.*
 
@@ -126,21 +167,29 @@ __Les commandes des bots :__
 
 ⚠️ Si **le bot est hors ligne** (c'est-à-dire déconnecté), le message "L'application ne répond plus" vous sera présenté.
 
-*Si un problème survient ou vous n'arrivez pas à connaitre les commandes, vous pouvez mentionner un <@&${role_admins}>*`)
-    .setColor('#8476fd');
+*Si un problème survient ou vous n'arrivez pas à connaitre les commandes, vous pouvez mentionner un <@&${role_admins}>*`
+  )
+  .setColor("#8476fd");
 
 const infoEighthEmbed = new EmbedBuilder()
-    .setDescription(`# Le planning de l'année
-Voici __notre planning scolaire__ avec nos vacances et nos projets au cours de cette année scolaire en ING1.`)
-    .setImage('https://cdn.discordapp.com/attachments/1148354069082161182/1148354081014960179/image.png')
-    .setColor('#4833fe');
+  .setDescription(
+    `# Le planning de l'année
+Voici __notre planning scolaire__ avec nos vacances et nos projets au cours de cette année scolaire en ING1.`
+  )
+  .setImage(
+    "https://cdn.discordapp.com/attachments/1148354069082161182/1148354081014960179/image.png"
+  )
+  .setColor("#4833fe");
 
 const infoEighthEmbed2 = new EmbedBuilder()
-    .setImage('https://cdn.discordapp.com/attachments/1148354069082161182/1148354188951179375/image.png')
-    .setColor('#4833fe');
+  .setImage(
+    "https://cdn.discordapp.com/attachments/1148354069082161182/1148354188951179375/image.png"
+  )
+  .setColor("#4833fe");
 
 const infoNinthEmbed = new EmbedBuilder()
-    .setDescription(`# Les liens utiles
+  .setDescription(
+    `# Les liens utiles
 Voici des liens officiels de l'école pour notre scolarité ainsi que des liens plus annexes pas forcément utiles.
 
 **__Liens officiels :__**
@@ -201,90 +250,96 @@ __Invite discord :__
 > **BDE Neytiki** :  https://discord.gg/3EhCsJgG5X et https://bde-epita.com/
 > **Vie Associatif Paris :** https://discord.gg/j9t4PdbRpg 
 > -> Pour les voyages à l'international
-> **EPITA International** : https://discord.gg/ZDUxpED`)
-    .setColor('#880185');
+> **EPITA International** : https://discord.gg/ZDUxpED`
+  )
+  .setColor("#880185");
 
 const infoSelectMenu = new ActionRowBuilder().addComponents(
-    new StringSelectMenuBuilder()
-        .setCustomId('panel_information')
-        .setPlaceholder('Sélectionnez une partie...')
-        .addOptions(
-            {
-                label: "Présentation générale du serveur discord",
-                description: "Qu'est ce que ce serveur discord ?",
-                value: `info1`,
-            },
-            {
-                label: "Changer son pseudo sur ce serveur discord",
-                description: "Comment changer son pseudo sur discord ?",
-                value: `info2`,
-            },
-            {
-                label: "Le système des salons vocaux",
-                description: "Comment fonctionne les vocaux ici ?",
-                value: `info3`,
-            },
-            {
-                label: "Le système des anniversaires",
-                description: "Qu'est ce que le système des anniversaires ?",
-                value: `info4`,
-            },
-            {
-                label: "La modération",
-                description: "Comment fonctionne la modération ?",
-                value: `info5`,
-            },
-            {
-                label: "Les demandes possibles",
-                description: "Que peut-on demander en ticket ?",
-                value: `info6`,
-            },
-            {
-                label: "Les bots / robots du serveur",
-                description: "Comment fonctionnent les bots ?",
-                value: `info7`,
-            },
-            {
-                label: "Le planning de l'année",
-                description: "Quel est le planning de l'année ?",
-                value: `info8`,
-            },
-            {
-                label: "Les liens utiles",
-                description: "Quels sont les liens utiles ?",
-                value: `info9`,
-            },
-        ),
+  new StringSelectMenuBuilder()
+    .setCustomId("panel_information")
+    .setPlaceholder("Sélectionnez une partie...")
+    .addOptions(
+      {
+        label: "Présentation générale du serveur discord",
+        description: "Qu'est ce que ce serveur discord ?",
+        value: `info1`,
+      },
+      {
+        label: "Changer son pseudo sur ce serveur discord",
+        description: "Comment changer son pseudo sur discord ?",
+        value: `info2`,
+      },
+      {
+        label: "Le système des salons vocaux",
+        description: "Comment fonctionne les vocaux ici ?",
+        value: `info3`,
+      },
+      {
+        label: "Le système des anniversaires",
+        description: "Qu'est ce que le système des anniversaires ?",
+        value: `info4`,
+      },
+      {
+        label: "La modération",
+        description: "Comment fonctionne la modération ?",
+        value: `info5`,
+      },
+      {
+        label: "Les demandes possibles",
+        description: "Que peut-on demander en ticket ?",
+        value: `info6`,
+      },
+      {
+        label: "Les bots / robots du serveur",
+        description: "Comment fonctionnent les bots ?",
+        value: `info7`,
+      },
+      {
+        label: "Le planning de l'année",
+        description: "Quel est le planning de l'année ?",
+        value: `info8`,
+      },
+      {
+        label: "Les liens utiles",
+        description: "Quels sont les liens utiles ?",
+        value: `info9`,
+      }
+    )
 );
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('panel')
-        .setDescription('🔧 Deployer un panel.')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .setDMPermission(false)
-        .addStringOption(option =>
-            option.setName('name').setDescription('🔧 Deployer un panel.').addChoices(
-                { name: 'Tickets', value: 'tickets' },
-                { name: 'Rôle réaction', value: 'role_reaction' },
-                { name: 'Règlement', value: 'rules' },
-                { name: 'Informations', value: 'information' },
-            ).setRequired(true)),
-    async execute(interaction) {
-        const name = interaction.options.getString('name');
+  data: new SlashCommandBuilder()
+    .setName("panel")
+    .setDescription("🔧 Deployer un panel.")
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+    .setDMPermission(false)
+    .addStringOption((option) =>
+      option
+        .setName("name")
+        .setDescription("🔧 Deployer un panel.")
+        .addChoices(
+          { name: "Tickets", value: "tickets" },
+          { name: "Rôle réaction", value: "role_reaction" },
+          { name: "Règlement", value: "rules" },
+          { name: "Informations", value: "information" }
+        )
+        .setRequired(true)
+    ),
+  async execute(interaction) {
+    const name = interaction.options.getString("name");
 
-        await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: true });
 
-        let infoListMessage = [];
-        let embed, selectRow;
-        switch (name) {
-
-            /**
-             * Create embed and select menu for the ticket panel
-             */
-            case 'tickets':
-                embed = new EmbedBuilder()
-                    .setDescription(`# \`📩\` - Ouvrir un ticket
+    let infoListMessage = [];
+    let embed, selectRow;
+    switch (name) {
+      /**
+       * Create embed and select menu for the ticket panel
+       */
+      case "tickets":
+        embed = new EmbedBuilder()
+          .setDescription(
+            `# \`📩\` - Ouvrir un ticket
 Grâce à ce panel, vous pouvez **ouvrir un ticket destiné aux admins ou aux délégués**. Pour cela, il vous suffit de cliquer sur l'option correspondante. Une fois cela fait, un nouveau salon sera créé où vous pourrez discuter avec les admins ou les délégués.
 ### Voici une liste non exhaustive des raisons pour lesquelles vous pouvez ouvrir un ticket aux admins (\`🔧\`) :
 - Demander des permissions supplémentaires afin d'organiser un événement.
@@ -293,40 +348,41 @@ Grâce à ce panel, vous pouvez **ouvrir un ticket destiné aux admins ou aux d�
 - Discuter d'un problème rencontré, comme une surcharge de travail ou un problème avec un professeur.
 - Proposer des améliorations auprès de l'administration.
 
-PS : Pour plus d'informations, consultez <#${channel_information}>.`)
-                    .setColor(color_basic);
+PS : Pour plus d'informations, consultez <#${channel_information}>.`
+          )
+          .setColor(color_basic);
 
-                selectRow = new ActionRowBuilder().addComponents(
-                    new StringSelectMenuBuilder()
-                        .setCustomId('panel_tickets')
-                        .setPlaceholder('Ouvrir un ticket aux...')
-                        .addOptions(
-                            {
-                                label: "🔧・ Admins",
-                                description: "Ouvrir un ticket destiné aux admins.",
-                                value: "ticket_admins",
-                            },
-                            {
-                                label: "💼・ Délégués",
-                                description: "Ouvrir un ticket destiné aux délégués.",
-                                value: "ticket_delegues",
-                            },
-                            {
-                                label: "❌・ Annuler",
-                                description: "Annuler la sélection.",
-                                value: "ticket_exit",
-                            },
-                        ),
-                );
-                break;
+        selectRow = new ActionRowBuilder().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId("panel_tickets")
+            .setPlaceholder("Ouvrir un ticket aux...")
+            .addOptions(
+              {
+                label: "🔧・ Admins",
+                description: "Ouvrir un ticket destiné aux admins.",
+                value: "ticket_admins",
+              },
+              {
+                label: "💼・ Délégués",
+                description: "Ouvrir un ticket destiné aux délégués.",
+                value: "ticket_delegues",
+              },
+              {
+                label: "❌・ Annuler",
+                description: "Annuler la sélection.",
+                value: "ticket_exit",
+              }
+            )
+        );
+        break;
 
-
-            /**
-             * Create embed and select menu for the role reaction panel
-             */
-            case 'role_reaction':
-                embed = new EmbedBuilder()
-                    .setDescription(`# \`🔰\` - Rôle réaction
+      /**
+       * Create embed and select menu for the role reaction panel
+       */
+      case "role_reaction":
+        embed = new EmbedBuilder()
+          .setDescription(
+            `# \`🔰\` - Rôle réaction
 Souhaitez-vous être notifié des messages que vous jugez importants, tels que les annonces, les idées et les sondages, l'agenda ou encore le contenu des cours passés ? Grâce à ce panneau de contrôle, vous avez la possibilité de sélectionner les notifications que vous désirez recevoir. 
 ### Alors, quelles notifications aimeriez-vous recevoir ?
 > 🤖 : Discord *[<#${channel_announce}>]*
@@ -336,118 +392,168 @@ Souhaitez-vous être notifié des messages que vous jugez importants, tels que l
 > 📊 : Idées et Sondages *[<#${channel_idea_poll}>]*
 > 📅 : Agenda *[<#${channel_agenda}>]*
 > 🤒 : Contenu des cours passsés *[<#${channel_absence}>]*
-> 🚨 : Helper (Aide les personnes) *[Dans la catégorie cours]*`)
-                    .setColor(color_basic);
+> 🚨 : Helper (Aide les personnes) *[Dans la catégorie cours]*`
+          )
+          .setColor(color_basic);
 
-                selectRow = new ActionRowBuilder().addComponents(
-                    new StringSelectMenuBuilder()
-                        .setCustomId('panel_role_reaction')
-                        .setPlaceholder('Sélectionnez un rôle ou plusieurs rôles...')
-                        .addOptions(
-                            {
-                                label: "🤖・ Discord",
-                                description: "Recevoir une notification lors d'une annonce discord / bot.",
-                                value: `${role_discord}`,
-                            },
-                            {
-                                label: "📑・ Mail Moodle",
-                                description: "Recevoir des notifications pour les messages Moodle.",
-                                value: `${role_mail_moodle}`,
-                            },
-                            {
-                                label: "📰・ Mail News",
-                                description: "Recevoir des notifications pour les messages News.",
-                                value: `${role_mail_news}`,
-                            },
-                            {
-                                label: "📩・ Mail Autre",
-                                description: "Recevoir des notifications pour les autres mails.",
-                                value: `${role_mail_other}`,
-                            },
-                            {
-                                label: "📊・ Idées et Sondages",
-                                description: "Recevoir des notifications pour les idées et les sondages.",
-                                value: `${role_idea_poll}`,
-                            },
-                            {
-                                label: "📅・ Agenda",
-                                description: "Recevoir une notification en cas de mise à jour de l'agenda.",
-                                value: `${role_agenda}`,
-                            },
-                            {
-                                label: "🤒・ Contenu des cours passsés",
-                                description: "Recevoir une notification lors de l'ajout de cours passés.",
-                                value: `${role_absence}`,
-                            },
-                            {
-                                label: "🚨・ Helper",
-                                description: "Recevoir une notification lorsqu'une personne demande de l'aide.",
-                                value: `${role_help}`,
-                            },
-                        )
-                        .setMinValues(0)
-			            .setMaxValues(8),
-                );
-                break;
+        selectRow = new ActionRowBuilder().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId("panel_role_reaction")
+            .setPlaceholder("Sélectionnez un rôle ou plusieurs rôles...")
+            .addOptions(
+              {
+                label: "🤖・ Discord",
+                description:
+                  "Recevoir une notification lors d'une annonce discord / bot.",
+                value: `${role_discord}`,
+              },
+              {
+                label: "📑・ Mail Moodle",
+                description:
+                  "Recevoir des notifications pour les messages Moodle.",
+                value: `${role_mail_moodle}`,
+              },
+              {
+                label: "📰・ Mail News",
+                description:
+                  "Recevoir des notifications pour les messages News.",
+                value: `${role_mail_news}`,
+              },
+              {
+                label: "📩・ Mail Autre",
+                description:
+                  "Recevoir des notifications pour les autres mails.",
+                value: `${role_mail_other}`,
+              },
+              {
+                label: "📊・ Idées et Sondages",
+                description:
+                  "Recevoir des notifications pour les idées et les sondages.",
+                value: `${role_idea_poll}`,
+              },
+              {
+                label: "📅・ Agenda",
+                description:
+                  "Recevoir une notification en cas de mise à jour de l'agenda.",
+                value: `${role_agenda}`,
+              },
+              {
+                label: "🤒・ Contenu des cours passsés",
+                description:
+                  "Recevoir une notification lors de l'ajout de cours passés.",
+                value: `${role_absence}`,
+              },
+              {
+                label: "🚨・ Helper",
+                description:
+                  "Recevoir une notification lorsqu'une personne demande de l'aide.",
+                value: `${role_help}`,
+              }
+            )
+            .setMinValues(0)
+            .setMaxValues(8)
+        );
+        break;
 
-
-            /**
-             * Create an embed for the rules
-             */
-            case 'rules':
-                embed = new EmbedBuilder()
-                    .setDescription(`# \`📜\` - Règlement`)
-                    .setFields(
-                        { name: 'ℹ️ 》__Articles 1 :__', value: `En utilisant ce serveur Discord, vous vous conformez aux [Conditions d’utilisation de Discord](https://discord.com/terms).`, inline: false },
-                        { name: '👫 》__Articles 2 :__', value: `Restez poli et respectez les autres membres du serveur.`, inline: false },
-                        { name: '🏓 》__Articles 3 :__', value: `Certaines mentions sont activées (comme les rôles :  <@&${role_admins}>, <@&${role_delegates}>, <@&${role_students}>), vous êtes priés de ne pas en abuser.`, inline: false },
-                        { name: '💭 》__Articles 4 :__', value: `Pas de spam, surtout dans les channels dédiés aux cours.`, inline: false },
-                        { name: '🧾 》__Articles 5 :__', value: `Merci de respecter le sujet des salons. Plus d'informations concernant un salon dans sa description.`, inline: false },
-                        { name: `🎙️ 》__Articles 6 :__`, value: `Dans les salon vocaux, merci de respecter la parole des autres. Vous pourrez être mute si vous êtes trop bruyant.`, inline: false },
-                        { name: `🔧 》__Articles 7 :__`, value: `Les admins ont l'obligation de respecter la vie privée dans les tickets et les salons personnalisés des membres si cela ne les concerne pas et qu'ils ne sont pas mentionnés à l'intérieur.
+      /**
+       * Create an embed for the rules
+       */
+      case "rules":
+        embed = new EmbedBuilder()
+          .setDescription(`# \`📜\` - Règlement`)
+          .setFields(
+            {
+              name: "ℹ️ 》__Articles 1 :__",
+              value: `En utilisant ce serveur Discord, vous vous conformez aux [Conditions d’utilisation de Discord](https://discord.com/terms).`,
+              inline: false,
+            },
+            {
+              name: "👫 》__Articles 2 :__",
+              value: `Restez poli et respectez les autres membres du serveur.`,
+              inline: false,
+            },
+            {
+              name: "🏓 》__Articles 3 :__",
+              value: `Certaines mentions sont activées (comme les rôles :  <@&${role_admins}>, <@&${role_delegates}>, <@&${role_students}>), vous êtes priés de ne pas en abuser.`,
+              inline: false,
+            },
+            {
+              name: "💭 》__Articles 4 :__",
+              value: `Pas de spam, surtout dans les channels dédiés aux cours.`,
+              inline: false,
+            },
+            {
+              name: "🧾 》__Articles 5 :__",
+              value: `Merci de respecter le sujet des salons. Plus d'informations concernant un salon dans sa description.`,
+              inline: false,
+            },
+            {
+              name: `🎙️ 》__Articles 6 :__`,
+              value: `Dans les salon vocaux, merci de respecter la parole des autres. Vous pourrez être mute si vous êtes trop bruyant.`,
+              inline: false,
+            },
+            {
+              name: `🔧 》__Articles 7 :__`,
+              value: `Les admins ont l'obligation de respecter la vie privée dans les tickets et les salons personnalisés des membres si cela ne les concerne pas et qu'ils ne sont pas mentionnés à l'intérieur.
                         
 \`\`\`fix
 Si vous ne respectez pas ces règles, des sanctions pourront être appliquées par l'équipe de Modération.
-\`\`\`\n_ _`, inline: false },
-                        { name: `__Norme des pseudos :__`, value: `>>> -> Votre pseudo doit impérativement débuter par votre **prénom.nom**. Ensuite, vous avez toute liberté pour y ajouter ce que vous désirez.
-Exemples : \`mascotte.chat\`, \`mascotte.chat | Petit chatounet\``, inline: false },
-                    )
-                    .setColor(color_basic);
+\`\`\`\n_ _`,
+              inline: false,
+            },
+            {
+              name: `__Norme des pseudos :__`,
+              value: `>>> -> Votre pseudo doit impérativement débuter par votre **prénom.nom**. Ensuite, vous avez toute liberté pour y ajouter ce que vous désirez.
+Exemples : \`mascotte.chat\`, \`mascotte.chat | Petit chatounet\``,
+              inline: false,
+            }
+          )
+          .setColor(color_basic);
 
-                break;
+        break;
 
-            
-            /**
-             * Create embeds for the information
-             */
-            case 'information':
-                const infoEmbeds = [
-                    infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed,
-                    infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed,
-                    infoEighthEmbed2, infoNinthEmbed
-                ];
-                
-                async function sendMessagesWithDelay() {
-                    for (const infoEmbed of infoEmbeds) {
-                        await new Promise(resolve => {
-                            setTimeout(async () => {
-                                const msg = await interaction.channel.send({ embeds: [infoEmbed] });
-                                if (infoEmbed !== infoEighthEmbed2) infoListMessage.push(msg.url);
-                                resolve();
-                            }, 500);
-                        });
-                    }
-                }
-                
-                await sendMessagesWithDelay();                
-                break;
+      /**
+       * Create embeds for the information
+       */
+      case "information":
+        const infoEmbeds = [
+          infoFirstEmbed,
+          infoSecondEmbed,
+          infoThirdEmbed,
+          infoFourthEmbed,
+          infoFifthEmbed,
+          infoSixthEmbed,
+          infoSeventhEmbed,
+          infoEighthEmbed,
+          infoEighthEmbed2,
+          infoNinthEmbed,
+        ];
+
+        async function sendMessagesWithDelay() {
+          for (const infoEmbed of infoEmbeds) {
+            await new Promise((resolve) => {
+              setTimeout(async () => {
+                const msg = await interaction.channel.send({
+                  embeds: [infoEmbed],
+                });
+                if (infoEmbed !== infoEighthEmbed2)
+                  infoListMessage.push(msg.url);
+                resolve();
+              }, 500);
+            });
+          }
         }
 
-        // Send embed and select menu
-        let msg;
-        if (name === 'information') {
-            const infoTenthEmbed = new EmbedBuilder()
-                .setDescription(`# Sommaire
+        await sendMessagesWithDelay();
+        break;
+    }
+
+    // Send embed and select menu
+    let msg;
+    if (name === "information") {
+      const infoTenthEmbed = new EmbedBuilder()
+        .setDescription(
+          `# Sommaire
 -> [Présentation générale du serveur discord](${infoListMessage[0]})
 -> [Changer son pseudo sur ce serveur discord](${infoListMessage[1]})
 -> [Le système des salons vocaux](${infoListMessage[2]})
@@ -456,18 +562,37 @@ Exemples : \`mascotte.chat\`, \`mascotte.chat | Petit chatounet\``, inline: fals
 -> [Les demandes possibles](${infoListMessage[5]})
 -> [Les bots / robots du serveur](${infoListMessage[6]})
 -> [Le planning de l'année](${infoListMessage[7]})
--> [Les liens utiles](${infoListMessage[8]})`)
-                .setColor('#fe3333');
-            msg = await interaction.channel.send({ embeds: [infoTenthEmbed], components: [infoSelectMenu] });
-        } else if (selectRow) msg = await interaction.channel.send({ embeds: [embed], components: [selectRow] });
-        else msg = await interaction.channel.send({ embeds: [embed] });
-        await msg.pin();
-        if (name === 'rules') await msg.react(emoji_yes);
-        await interaction.channel.lastMessage.delete();
+-> [Les liens utiles](${infoListMessage[8]})`
+        )
+        .setColor("#fe3333");
+      msg = await interaction.channel.send({
+        embeds: [infoTenthEmbed],
+        components: [infoSelectMenu],
+      });
+    } else if (selectRow)
+      msg = await interaction.channel.send({
+        embeds: [embed],
+        components: [selectRow],
+      });
+    else msg = await interaction.channel.send({ embeds: [embed] });
+    await msg.pin();
+    if (name === "rules") await msg.react(emoji_yes);
+    await interaction.channel.lastMessage.delete();
 
-        return interaction.editReply({ content: `Le panel nommé \`${name}\` a bien été déployé dans ce salon.`, ephemeral: true });
-    },
-    infoFirstEmbed, infoSecondEmbed, infoThirdEmbed, infoFourthEmbed, infoFifthEmbed, infoSixthEmbed, infoSeventhEmbed, infoEighthEmbed, infoEighthEmbed2, infoNinthEmbed, infoSelectMenu
+    return interaction.editReply({
+      content: `Le panel nommé \`${name}\` a bien été déployé dans ce salon.`,
+      ephemeral: true,
+    });
+  },
+  infoFirstEmbed,
+  infoSecondEmbed,
+  infoThirdEmbed,
+  infoFourthEmbed,
+  infoFifthEmbed,
+  infoSixthEmbed,
+  infoSeventhEmbed,
+  infoEighthEmbed,
+  infoEighthEmbed2,
+  infoNinthEmbed,
+  infoSelectMenu,
 };
-
-
