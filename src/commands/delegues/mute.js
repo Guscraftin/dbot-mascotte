@@ -3,6 +3,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
+  InteractionContextType,
   PermissionFlagsBits,
   SlashCommandBuilder,
 } = require("discord.js");
@@ -14,7 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("mute")
     .setDescription("💼 Exclure un membre (qu'il ne puisse plus parler).")
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
       option
         .setName("membre")

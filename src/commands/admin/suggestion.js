@@ -1,5 +1,6 @@
 const {
   EmbedBuilder,
+  InteractionContextType,
   SlashCommandBuilder,
   PermissionFlagsBits,
 } = require("discord.js");
@@ -12,7 +13,7 @@ module.exports = {
     .setName("suggestion")
     .setDescription("🔧 Modifier l'état d'une suggestion.")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName("action")

@@ -1,10 +1,18 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  InteractionContextType,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("info")
     .setDescription("👤 Afficher les informations du bot.")
-    .setDMPermission(true),
+    .setContexts(
+      InteractionContextType.BotDM,
+      InteractionContextType.Guild,
+      InteractionContextType.PrivateChannel
+    ),
   async execute(interaction) {
     const botUser = interaction.client.user;
     let isTeamOwner = false;

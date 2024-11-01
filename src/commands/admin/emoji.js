@@ -1,4 +1,8 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  InteractionContextType,
+} = require("discord.js");
 const { emojiRegex } = require("../../functions.js");
 
 module.exports = {
@@ -6,7 +10,7 @@ module.exports = {
     .setName("emoji")
     .setDescription("🔧 Ajouter des emojis sous un message.")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName("id")

@@ -3,6 +3,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
+  InteractionContextType,
   SlashCommandBuilder,
 } = require("discord.js");
 const { channel_logs, color_basic } = require(process.env.CONSTANT);
@@ -16,7 +17,7 @@ module.exports = {
     .setDescription(
       "👤 Ajouter sa date de naissance pour obtenir les avantages anniversaire."
     )
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ajouter")

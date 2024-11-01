@@ -1,5 +1,6 @@
 const {
   EmbedBuilder,
+  InteractionContextType,
   PermissionFlagsBits,
   SlashCommandBuilder,
 } = require("discord.js");
@@ -13,7 +14,7 @@ module.exports = {
     .setDescription(
       "💼 Annuler l'exclusion d'un membre (qu'il puisse à nouveau parler)."
     )
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
       option
         .setName("membre")

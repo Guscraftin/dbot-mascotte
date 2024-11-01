@@ -2,6 +2,7 @@ const {
   ApplicationCommandType,
   ContextMenuCommandBuilder,
   EmbedBuilder,
+  InteractionContextType,
 } = require("discord.js");
 const { color_basic } = require(process.env.CONSTANT);
 const { Members } = require("../../dbObjects");
@@ -10,7 +11,7 @@ module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName("Profil")
     .setType(ApplicationCommandType.User)
-    .setDMPermission(false),
+    .setContexts(InteractionContextType.Guild),
   async execute(interaction) {
     // Get the information about the member
     const user = await Members.findOne({ where: { id: interaction.targetId } });

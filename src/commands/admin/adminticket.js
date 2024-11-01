@@ -2,9 +2,10 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  SlashCommandBuilder,
-  PermissionFlagsBits,
   EmbedBuilder,
+  InteractionContextType,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
 } = require("discord.js");
 const { channel_logs_tickets, color_basic } = require(process.env.CONSTANT);
 const { Tickets } = require("../../dbObjects");
@@ -16,7 +17,7 @@ module.exports = {
       "🔧 Permet de modifier les retranscriptions des tickets supprimés."
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((subcommand) =>
       subcommand
         .setName("list")

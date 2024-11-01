@@ -1,4 +1,8 @@
-const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js");
+const {
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  InteractionContextType,
+} = require("discord.js");
 const { channel_muted, role_mute } = require(process.env.CONSTANT);
 const {
   checkBirthdays,
@@ -11,7 +15,7 @@ module.exports = {
     .setName("sync")
     .setDescription("🔧 Synchroniser certains modules.")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName("module")

@@ -1,4 +1,8 @@
-const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js");
+const {
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  InteractionContextType,
+} = require("discord.js");
 const { Guilds } = require("../../dbObjects.js");
 
 module.exports = {
@@ -6,7 +10,7 @@ module.exports = {
     .setName("blacklist")
     .setDescription("🔧 Modifier une blacklist du serveur.")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName("type")

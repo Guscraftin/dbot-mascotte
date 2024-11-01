@@ -1,4 +1,8 @@
-const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js");
+const {
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  InteractionContextType,
+} = require("discord.js");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
@@ -9,7 +13,7 @@ module.exports = {
       "🔧 Permet de récupérer des informations sur un repo github."
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(true)
+    .setContexts(InteractionContextType.BotDM, InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName("group")

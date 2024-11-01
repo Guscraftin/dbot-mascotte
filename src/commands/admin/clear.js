@@ -1,11 +1,15 @@
-const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js");
+const {
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  InteractionContextType,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("clear")
     .setDescription("🔧 Supprimer un nombre défini de messages dans ce salon.")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addIntegerOption((option) =>
       option
         .setName("message")

@@ -1,6 +1,7 @@
 const {
   ActionRowBuilder,
   EmbedBuilder,
+  InteractionContextType,
   PermissionFlagsBits,
   SlashCommandBuilder,
   StringSelectMenuBuilder,
@@ -312,7 +313,7 @@ module.exports = {
     .setName("panel")
     .setDescription("🔧 Deployer un panel.")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addStringOption((option) =>
       option
         .setName("name")
