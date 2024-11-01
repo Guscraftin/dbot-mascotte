@@ -1,11 +1,12 @@
 const settings = require("./appSettings");
 const graphHelper = require("./graphHelper");
 const TurndownService = require("turndown");
-const { Mails } = require("../../dbObjects");
+const { Guilds, Mails } = require("../../dbObjects");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const {
   channel_mails,
   channel_test_mail,
+  role_admins,
   role_mail_moodle,
   role_mail_other,
   role_mail_news,
@@ -65,6 +66,14 @@ async function checkNewMail(guild) {
       const channelMails = await guild.channels.fetch(channel_mails);
       const channelTestMails = await guild.channels.fetch(channel_test_mail);
 
+      const guildDb = await Guilds.findOne({ where: { id: guild.id } });
+      if (!guildDb) {
+        await channelTestMails?.send(
+          `<@&${role_admins}>, please configure the bot with \`/config\``
+        );
+        continue;
+      }
+
       /**
        * Mail from Moodle
        */
@@ -108,7 +117,13 @@ async function checkNewMail(guild) {
             .length;
         const initPart = markdown.substring(0, initMsgMaxLength);
         markdown = markdown.substring(initMsgMaxLength);
-        await channelTestMails?.send({
+
+        let sendToChannel = channelTestMails;
+        if (guildDb.mails_from_moodle === "automatic")
+          sendToChannel = channelMails;
+        if (guildDb.mails_from_moodle === "desactivate") continue;
+
+        await sendToChannel?.send({
           content: `||<@&${role_mail_moodle}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n${initPart}`,
           components: [actionRowPublish],
         });
@@ -116,15 +131,15 @@ async function checkNewMail(guild) {
           const msgMaxLength = 2000;
           const part = markdown.substring(0, msgMaxLength);
           markdown = markdown.substring(msgMaxLength);
-          await channelTestMails?.send({
+          await sendToChannel?.send({
             content: `${part}`,
             components: [actionRowPublish],
           });
         }
       } else if (
-      /**
-       * Mail from News
-       */
+        /**
+         * Mail from News
+         */
         message.from.emailAddress.address === "discourse@forge.epita.fr"
       ) {
         // Remove the useless part of the initial message (profile + footer)
@@ -183,9 +198,9 @@ async function checkNewMail(guild) {
           }
         }
       } else {
-      /**
-       * Other Mail
-       */
+        /**
+         * Other Mail
+         */
         const patternComment = /<!--[\s\S]*?-->/g;
         const mailNoComment = message.body.content.replace(patternComment, "");
         let markdown = turndownService.turndown(mailNoComment);
@@ -195,7 +210,11 @@ async function checkNewMail(guild) {
             .length;
         const initPart = markdown.substring(0, initMsgMaxLength);
         markdown = markdown.substring(initMsgMaxLength);
-        await channelTestMails?.send({
+
+        let sendToChannel = channelTestMails;
+        if (guildDb.mails_from_other === "desactivate") continue;
+
+        await sendToChannel?.send({
           content: `||<@&${role_mail_other}>||\n\`\`\`fix\n${message.subject}\n\`\`\`\n${initPart}`,
           components: [actionRowPublish],
         });
@@ -203,7 +222,7 @@ async function checkNewMail(guild) {
           const msgMaxLength = 2000;
           const part = markdown.substring(0, msgMaxLength);
           markdown = markdown.substring(msgMaxLength);
-          await channelTestMails?.send({
+          await sendToChannel?.send({
             content: `${part}`,
             components: [actionRowPublish],
           });

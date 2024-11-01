@@ -27,5 +27,17 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue("blacklist_mention_idea_poll", data);
       },
     },
+    mails_from_moodle: {
+      type: DataTypes.ENUM,
+      values: ["automatic", "test_mail", "desactivate"],
+      defaultValue: "automatic",
+      allowNull: false,
+    },
+    mails_from_other: {
+      type: DataTypes.ENUM,
+      values: ["test_mail", "desactivate"],
+      defaultValue: "test_mail",
+      allowNull: false,
+    },
   });
 };
