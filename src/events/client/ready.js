@@ -71,7 +71,7 @@ module.exports = {
     ); // Check 5 time a day
 
     // Launch setInterval (js function)
-    setInterval(() => checkNewMail(guild), 10000); // Check every 10 seconds
+    setInterval(() => checkNewMail(guild), 12000); // Check every 12 seconds
 
     // Set the client user's activity
     await client.user.setPresence({
