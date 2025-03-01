@@ -180,7 +180,7 @@ Encore une fois **BON ANNIVERSAIRE !!!**
               ],
             },
             {
-              id: guild.roles.everyone,
+              id: guild.roles.everyone.id,
               deny: [PermissionFlagsBits.ViewChannel],
             },
             {
