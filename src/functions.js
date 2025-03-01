@@ -153,6 +153,7 @@ Comme ici, les admins sont sympas. L'heureux élu reçoit :
 Encore une fois **BON ANNIVERSAIRE !!!**
 🎉 Profite bien de ta journée 🎉`);
 
+      await user.update({ channel_birthday: 0 });
       await announceChannel.send({
         content: `||<@&${role_students}>||`,
         embeds: [embed],
